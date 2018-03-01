@@ -1,8 +1,92 @@
-﻿<Window x:Class="PicDB.MainWindow"
+﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:my="clr-namespace:PicDB"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        
-    </Grid>
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="PicDB.MainWindow"
+        Title="PicDB" Height="600" Width="800" MinWidth="800" MinHeight="600">
+    <Window.Resources>
+        <Style TargetType="ListBox">
+            <Setter Property="ItemTemplate">
+                <Setter.Value>
+                    <DataTemplate>
+                        <Image Source="{Binding Path=UriSource}" Width="100" Height="100"/>
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    <StackPanel Name="Container">
+        <!--S1-->
+        <Menu Height="18" Grid.Row="0">
+            <Menu.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <DockPanel HorizontalAlignment="Stretch"/>
+                </ItemsPanelTemplate>
+            </Menu.ItemsPanel>
+            <MenuItem Header="File" Width="auto" BorderThickness="0,0,1,0" BorderBrush="#FF4D4D4D">
+                <MenuItem Header="New Photographer" Click="OpenNewPhotographerWindow" Width="auto"/>
+            </MenuItem>
+            <MenuItem Header="Edit" Width="auto" BorderBrush="#FF4D4D4D" BorderThickness="0,0,1,0">
+                <MenuItem Header="Edit Photographer" Width="auto"/>
+                <MenuItem Header="Paste" Width="auto"/>
+            </MenuItem>
+            <MenuItem Header="Options" Width="auto" BorderBrush="#FF4D4D4D" BorderThickness="0,0,1,0">
+                <MenuItem Header="Colour" Width="auto"/>
+            </MenuItem>
+            <MenuItem Header="Help" Width="auto" HorizontalAlignment="Right" BorderThickness="1,0,0,0" BorderBrush="#FF4D4D4D">
+                <MenuItem Header="About" Width="auto"/>
+            </MenuItem>
+        </Menu>
+        <!--S2-->
+        <Grid Name="Searchbar" Height="49.667" Grid.Row="1">
+            <Border BorderBrush="Black" BorderThickness="0.5">
+                <DockPanel ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                    <Button Width="50" Height="50" Background="Transparent" BorderBrush="{x:Null}" DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Center" UseLayoutRounding="False">
+                        <Image Source="O:\GIT\SWE2\SWE2-CS\deploy\Icons\ic_search_black_24dp_1x.png" Width="16" Height="16" Opacity="0.5" Stretch="Fill"/>
+                    </Button>
+                    <TextBox x:Name ="Search" Text="Search" Width="{Binding ActualWidth, ElementName=Container}" Height="{Binding ElementName=Searchbar, Path=ActualHeight}" ScrollViewer.VerticalScrollBarVisibility="Disabled" VerticalContentAlignment="Center"/>
+                </DockPanel>
+            </Border>
+        </Grid>
+        <!--S3-->
+        <Grid Name="Picture" Height="500.761" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100*"/>
+                <ColumnDefinition Width="4*"/>
+                <ColumnDefinition Width="50*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="3*"/>
+                <RowDefinition Height="0.1*"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Column="0" Grid.Row="0">
+                <Image Name="SelectedPic" Source="{Binding}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="30,50,30,75"/>
+            </Grid>
+            <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Center"  />
+            <StackPanel Grid.Column="2"  Orientation="Vertical">
+
+            </StackPanel>
+
+            <!--S4-->
+            <GridSplitter Grid.Row="1" VerticalAlignment="Center" ResizeDirection="Rows"  Height="5"  Grid.ColumnSpan="3" Width="792" Margin="0,5.214,0,5"/>
+            <!--S5-->
+            <!--<ListView Name="Gallery" Grid.Row="2" Grid.ColumnSpan="3" ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.VerticalScrollBarVisibility="Hidden" Height="Auto" BorderBrush="{x:Null}">
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Columns="6" Rows="1"/>
+                        --><!--<Image Name="GalleryPic" Source="{Binding}" Width="100" Height="100" Margin="5" HorizontalAlignment="Center" />--><!--
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+            </ListView>-->
+            <ListBox ItemsSource="{Binding}"
+                Grid.ColumnSpan="3" Grid.Row="2" Name="Gallery">
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+            </ListBox>
+        </Grid>
+    </StackPanel>
 </Window>

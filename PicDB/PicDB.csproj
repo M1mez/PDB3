@@ -41,6 +41,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -58,12 +59,34 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Layers_B\BusinessLayer.cs" />
+    <Compile Include="Layers_DA\DAL_Conn.cs" />
+    <Compile Include="Layers_DA\DataAccessLayer.cs" />
+    <Compile Include="Models\CameraModel.cs" />
+    <Compile Include="Models\EXIFModel.cs" />
+    <Compile Include="Models\IPTCModel.cs" />
+    <Compile Include="Models\PhotographerModel.cs" />
+    <Compile Include="Models\PictureModel.cs" />
+    <Compile Include="PersInfo.cs" />
+    <Compile Include="Photographer.xaml.cs">
+      <DependentUpon>Photographer.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Uebungen\UEB3.cs" />
     <Compile Include="Uebungen\UEB4.cs" />
     <Compile Include="Uebungen\UEB5.cs" />
     <Compile Include="Uebungen\UEB6.cs" />
     <Compile Include="Uebungen\UEB2.cs" />
     <Compile Include="Uebungen\UEB1.cs" />
+    <Compile Include="ViewModels\CameraListViewModel.cs" />
+    <Compile Include="ViewModels\CameraViewModel.cs" />
+    <Compile Include="ViewModels\EXIFViewModel.cs" />
+    <Compile Include="ViewModels\IPTCViewModel.cs" />
+    <Compile Include="ViewModels\MainWindowViewModel.cs" />
+    <Compile Include="ViewModels\PhotographerListViewModel.cs" />
+    <Compile Include="ViewModels\PhotographerViewModel.cs" />
+    <Compile Include="ViewModels\PictureListViewModel.cs" />
+    <Compile Include="ViewModels\PictureViewModel.cs" />
+    <Compile Include="ViewModels\SearchViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -76,6 +99,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Photographer.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -95,6 +122,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="my.runsettings" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

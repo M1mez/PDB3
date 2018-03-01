@@ -1,5 +1,9 @@
-﻿using System;
+﻿using PicDB.Classes;
+using PicDB.ViewModels;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -22,6 +26,29 @@ namespace PicDB
         public MainWindow()
         {
             InitializeComponent();
+
+            //TODO: darf das da stehen?
+            var mwvmdl = new MainWindowViewModel();
+
+            foreach(var pic in mwvmdl.List.List)
+            {
+                Gallery.Items.Add(new BitmapImage(new Uri(PersInfo.PicPath + @"\" + pic.FileName + ".jpg")));
+            }
+
+            
+            SelectedPic.Source = (BitmapImage)Gallery.SelectedItem;
+            Console.WriteLine("SELECTED PIC: " + SelectedPic.Source);
+
+        }
+
+        private void OpenNewPhotographerWindow(object sender, RoutedEventArgs e)
+        {
+            Photographer pw = new Photographer
+            {
+                ShowInTaskbar = false,
+                Owner = Application.Current.MainWindow
+            };
+            pw.Show();
         }
     }
 }

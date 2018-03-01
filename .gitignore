@@ -4,3 +4,4 @@ obj
 deploy/
 packages/
 /PicDB/*.user
+.vs/
