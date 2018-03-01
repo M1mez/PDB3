@@ -20,7 +20,7 @@ namespace Uebungen
 
         public IBusinessLayer GetBusinessLayer()
         {
-            return new BusinessLayer();
+            return BusinessLayer.Instance;
         }
 
         public void TestSetup(string picturePath)

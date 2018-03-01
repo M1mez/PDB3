@@ -9,12 +9,27 @@ namespace PicDB.Classes
 {
     public class DAL_Conn
     {
-        private static SqlConnection Conn = new SqlConnection();
-
-        public DAL_Conn()
+        private static SqlConnection Conn = new SqlConnection()
         {
-            Conn.ConnectionString =
-                PersInfo.ConnString;
+            ConnectionString = PersInfo.ConnString
+        };
+
+        private static DAL_Conn _instance;
+
+        private DAL_Conn()
+        {
+        }
+
+        public static DAL_Conn Instance
+        {
+            get
+            {
+                if (_instance == null)
+                {
+                    _instance = new DAL_Conn();
+                }
+                return _instance;
+            }
         }
 
         ~DAL_Conn()

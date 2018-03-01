@@ -12,7 +12,7 @@ namespace PicDB.ViewModels
 {
     class PhotographerViewModel : IPhotographerViewModel
     {
-        public BusinessLayer bl = new BusinessLayer();
+        public BusinessLayer bl = BusinessLayer.Instance;
 
         public PhotographerViewModel() { }
 

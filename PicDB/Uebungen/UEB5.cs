@@ -6,6 +6,7 @@ using BIF.SWE2.Interfaces;
 using BIF.SWE2.Interfaces.Models;
 using BIF.SWE2.Interfaces.ViewModels;
 using PicDB;
+using PicDB.Classes;
 using PicDB.Models;
 using PicDB.ViewModels;
 
@@ -19,7 +20,7 @@ namespace Uebungen
 
         public IBusinessLayer GetBusinessLayer()
         {
-            throw new NotImplementedException();
+            return BusinessLayer.Instance;
         }
 
         public void TestSetup(string picturePath)

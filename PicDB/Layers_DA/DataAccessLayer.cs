@@ -12,7 +12,23 @@ namespace PicDB.Classes
 {
     class DataAccessLayer : IDataAccessLayer
     {
-        public DAL_Conn Conn = new DAL_Conn();
+        private DAL_Conn Conn = DAL_Conn.Instance;
+
+        private static DataAccessLayer _instance;
+
+        private DataAccessLayer() { }
+
+        public static DataAccessLayer Instance
+        {
+            get
+            {
+                if (_instance == null)
+                {
+                    _instance = new DataAccessLayer();
+                }
+                return _instance;
+            }
+        }
 
         public void DeletePhotographer(int ID)
         {

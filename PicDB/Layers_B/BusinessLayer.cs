@@ -14,12 +14,23 @@ namespace PicDB.Classes
 {
     class BusinessLayer : IBusinessLayer
     {
-        public BusinessLayer()
+        private BusinessLayer()
         {
-            //Sync();
-        }        
+        }
+        private static BusinessLayer _instance;
+        public static BusinessLayer Instance
+        {
+            get
+            {
+                if (_instance == null)
+                {
+                    _instance = new BusinessLayer();
+                }
+                return _instance;
+            }
+        }
 
-        private DataAccessLayer DAL = new DataAccessLayer();
+        private DataAccessLayer DAL = DataAccessLayer.Instance;
 
         public void DeletePhotographer(int ID)
         {
