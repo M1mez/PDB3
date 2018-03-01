@@ -13,20 +13,23 @@ namespace PicDB.ViewModels
     {
         public MainWindowViewModel()
         {
-            var BL = new BusinessLayer();
+        }
 
-            var mdlList = Directory.GetFiles(PersInfo.PicPath, "*.jpg")
+        public IPictureViewModel CurrentPicture { get; }
+
+        public IPictureListViewModel List { get
+            {
+                var BL = new BusinessLayer();
+
+                var mdlList = Directory.GetFiles(PersInfo.PicPath, "*.jpg")
                 .Select(filePath => new PictureModel()
                 {
                     FileName = Path.GetFileNameWithoutExtension(filePath)
                 });
 
-            List = new PictureListViewModel(mdlList);
+                return new PictureListViewModel(mdlList);
+            }
         }
-
-        public IPictureViewModel CurrentPicture { get; }
-
-        public IPictureListViewModel List { get; }
 
         public ISearchViewModel Search { get; } = new SearchViewModel();
     }
