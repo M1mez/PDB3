@@ -6,3 +6,4 @@ packages/
 /PicDB/*.user
 .vs/
 my.runsettings
+PersInfo.cs
