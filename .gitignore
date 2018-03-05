@@ -5,3 +5,4 @@ deploy/
 packages/
 /PicDB/*.user
 .vs/
+my.runsettings
