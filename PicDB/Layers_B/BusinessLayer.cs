@@ -18,15 +18,19 @@ namespace PicDB.Classes
         {
         }
         private static BusinessLayer _instance;
+        private static readonly object padlock = new object();
         public static BusinessLayer Instance
         {
             get
             {
-                if (_instance == null)
+                lock (padlock)
                 {
-                    _instance = new BusinessLayer();
+                    if (_instance == null)
+                    {
+                        _instance = new BusinessLayer();
+                    }
+                    return _instance;
                 }
-                return _instance;
             }
         }
 

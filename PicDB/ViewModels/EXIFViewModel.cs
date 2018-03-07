@@ -51,7 +51,7 @@ namespace PicDB.ViewModels
 
         public bool Flash { get; }
 
-        public string ExposureProgram { get; }
+        public string ExposureProgram { get; } 
 
         public string ExposureProgramResource { get; }
 

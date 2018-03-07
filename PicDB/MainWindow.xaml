@@ -42,7 +42,7 @@
             <Border BorderBrush="Black" BorderThickness="0.5">
                 <DockPanel ScrollViewer.VerticalScrollBarVisibility="Disabled">
                     <Button Width="50" Height="50" Background="Transparent" BorderBrush="{x:Null}" DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Center" UseLayoutRounding="False">
-                        <Image Source="O:\GIT\SWE2\SWE2-CS\deploy\Icons\ic_search_black_24dp_1x.png" Width="16" Height="16" Opacity="0.5" Stretch="Fill"/>
+                        <Image Source="C:\Users\Steffe\Desktop\FH\4.Semester\PDB3\deploy\Icons\ic_search_black_24dp_1x.png" Width="16" Height="16" Opacity="0.5" Stretch="Fill"/>
                     </Button>
                     <TextBox x:Name ="Search" Text="Search" Width="{Binding ActualWidth, ElementName=Container}" Height="{Binding ElementName=Searchbar, Path=ActualHeight}" ScrollViewer.VerticalScrollBarVisibility="Disabled" VerticalContentAlignment="Center"/>
                 </DockPanel>
@@ -61,11 +61,91 @@
                 <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
             <Grid Grid.Column="0" Grid.Row="0">
-                <Image Name="SelectedPic" Source="{Binding}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="30,50,30,75"/>
+                <Image Source="{Binding SelectedItem, ElementName=Gallery}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="30,50,30,75"/>
             </Grid>
-            <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Center"  />
+            <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Center"/>
             <StackPanel Grid.Column="2"  Orientation="Vertical">
+                <TabControl Height="367.293" >
+                    <!--IPTC-->
+                    <TabItem Header="IPTC">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="2*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="1*"/>
+                            </Grid.RowDefinitions>
+                            <Label Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center">Keywords</Label>
+                            <TextBox Grid.Column="1" Grid.Row="0"></TextBox>
 
+                            <Label Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center">ByLine</Label>
+                            <TextBox Grid.Column="1" Grid.Row="1"></TextBox>
+
+                            <Label Grid.Column="0" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                <Label.Content>
+                                    <AccessText Text="Copyright Notice" TextWrapping="Wrap"></AccessText>
+                                </Label.Content>
+                            </Label>
+                            <TextBox Grid.Column="1" Grid.Row="2" ></TextBox>
+
+                            <Label Grid.Column="0" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Center">Headline</Label>
+                            <TextBox Grid.Column="1" Grid.Row="3"></TextBox>
+
+                            <Label Grid.Column="0" Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Center">Caption</Label>
+                            <TextBox Grid.Column="1" Grid.Row="4"></TextBox>
+
+                        </Grid>
+                    </TabItem>
+                    <!--EXIF-->
+                    <TabItem Header="EXIF">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="2*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="1*"/>
+                            </Grid.RowDefinitions>
+                            <Label Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" Content="Make"></Label>
+                            <TextBox Grid.Column="1" Grid.Row="0"></TextBox>
+
+                            <Label Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Content="FNumber"></Label>
+                            <TextBox Grid.Column="1" Grid.Row="1"></TextBox>
+
+                            <Label Grid.Column="0" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                <Label.Content>
+                                    <AccessText Text="Exposure Time" TextWrapping="Wrap"></AccessText>
+                                </Label.Content>
+                            </Label>
+                            <TextBox Grid.Column="1" Grid.Row="2" ></TextBox>
+
+                            <Label Grid.Column="0" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Center" Content="ISO Value"></Label>
+                            <TextBox Grid.Column="1" Grid.Row="3"></TextBox>
+
+                            <Label Grid.Column="0" Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Center" Content="Flash"></Label>
+                            <TextBox Grid.Column="1" Grid.Row="4"></TextBox>
+
+                            <Label Grid.Column="0" Grid.Row="5" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                <Label.Content>
+                                    <AccessText Text="Exposure Program" TextWrapping="Wrap"></AccessText>
+                                </Label.Content>
+                            </Label>
+                            <TextBox Grid.Column="1" Grid.Row="5" ></TextBox>
+
+                        </Grid>
+                    </TabItem>
+                </TabControl>
             </StackPanel>
 
             <!--S4-->

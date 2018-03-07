@@ -15,6 +15,7 @@ namespace PicDB.Classes
         private DAL_Conn Conn = DAL_Conn.Instance;
 
         private static DataAccessLayer _instance;
+        private static readonly object padlock = new object();
 
         private DataAccessLayer() { }
 
@@ -22,11 +23,14 @@ namespace PicDB.Classes
         {
             get
             {
-                if (_instance == null)
+                lock (padlock)
                 {
-                    _instance = new DataAccessLayer();
+                    if (_instance == null)
+                    {
+                        _instance = new DataAccessLayer();
+                    }
+                    return _instance;
                 }
-                return _instance;
             }
         }
 

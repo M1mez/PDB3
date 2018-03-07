@@ -7,3 +7,5 @@ packages/
 .vs/
 my.runsettings
 PersInfo.cs
+BIF-SWE2.UnitTests
+BIF-SWE2.Interfaces
