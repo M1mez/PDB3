@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2026
+VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PicDB", "PicDB\PicDB.csproj", "{05F8743C-2D96-4708-B9CE-51155E907531}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BIF-SWE2.Interfaces", "..\Z_RecFiles\BIF-SWE2.Interfaces\BIF-SWE2.Interfaces.csproj", "{27C44945-CB10-48BF-AD69-457D496B32A2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BIF-SWE2.Interfaces", "BIF-SWE2.Interfaces\BIF-SWE2.Interfaces.csproj", "{27C44945-CB10-48BF-AD69-457D496B32A2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BIF-SWE2.UnitTests", "..\Z_RecFiles\BIF-SWE2.UnitTests\BIF-SWE2.UnitTests.csproj", "{6B6F4CDB-461C-4C8D-A5D5-BC2BDBC57D99}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BIF-SWE2.UnitTests", "BIF-SWE2.UnitTests\BIF-SWE2.UnitTests.csproj", "{6B6F4CDB-461C-4C8D-A5D5-BC2BDBC57D99}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

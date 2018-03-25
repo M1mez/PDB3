@@ -34,11 +34,6 @@ namespace PicDB
             {
                 Gallery.Items.Add(new BitmapImage(new Uri(PersInfo.PicPath + @"\" + pic.FileName + ".jpg")));
             }
-
-            
-            SelectedPic.Source = (BitmapImage)Gallery.SelectedItem;
-            Console.WriteLine("SELECTED PIC: " + SelectedPic.Source);
-
         }
 
         private void OpenNewPhotographerWindow(object sender, RoutedEventArgs e)

@@ -11,10 +11,11 @@ namespace PicDB.Classes
     {
         private static SqlConnection Conn = new SqlConnection()
         {
-            ConnectionString = PersInfo.ConnString
+            ConnectionString = PersInfo.ConnString //test
         };
 
         private static DAL_Conn _instance;
+        private static readonly object padlock = new object();
 
         private DAL_Conn()
         {
@@ -24,11 +25,14 @@ namespace PicDB.Classes
         {
             get
             {
-                if (_instance == null)
+                lock (padlock)
                 {
-                    _instance = new DAL_Conn();
+                    if (_instance == null)
+                    {
+                        _instance = new DAL_Conn();
+                    }
+                    return _instance;
                 }
-                return _instance;
             }
         }
 
