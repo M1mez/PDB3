@@ -102,16 +102,18 @@ namespace PicDB.Classes
                 var list = new List<ICameraModel>();
                 foreach (var row in Conn.UspList("usp_GetCameras", new List<KeyValuePair<string, string>>()))
                 {
-                    var cam = new CameraModel();
-                    cam.Producer = row[1];
-                    cam.Make = row[2];
                     DateTime.TryParse(row[3], out DateTime dt);
-                    cam.BoughtOn = dt;
-                    cam.Notes = row[4];
                     Decimal.TryParse(row[5], out Decimal decGood);
-                    cam.ISOLimitGood = decGood;
                     Decimal.TryParse(row[6], out Decimal decAcc);
-                    cam.ISOLimitAcceptable = decAcc;
+                    var cam = new CameraModel
+                    {
+                        Producer = row[1],
+                        Make = row[2],
+                        BoughtOn = dt,
+                        Notes = row[4],
+                        ISOLimitGood = decGood,
+                        ISOLimitAcceptable = decAcc
+                    };
 
                     list.Add(cam);
                 }
@@ -152,15 +154,17 @@ namespace PicDB.Classes
                 var list = new List<IPhotographerModel>();
                 foreach (var row in Conn.UspList("usp_GetPhotographers", new List<KeyValuePair<string, string>>()))
                 {
-                    var photographer = new PhotographerModel();
-                    photographer.ID = Int32.Parse(row[0]);
-                    photographer.FirstName = row[1];
-                    photographer.LastName = row[2];
                     DateTime.TryParse(row[3], out DateTime dt);
-                    photographer.BirthDay = dt;
-                    photographer.Notes = row[4];
+                    var pID = Int32.Parse(row[0]);
+                    var photographer = new PhotographerModel
+                    {
+                        ID = pID,
+                        FirstName = row[1],
+                        LastName = row[2],
+                        BirthDay = dt,
+                        Notes = row[4]
+                    };
 
-                    Console.WriteLine(photographer.ID);
                     list.Add(photographer);
                 }
                 return list;

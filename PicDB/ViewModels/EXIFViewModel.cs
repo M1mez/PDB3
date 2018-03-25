@@ -24,11 +24,11 @@ namespace PicDB.ViewModels
                 ISOValue = mdl.ISOValue;
                 Flash = mdl.Flash;
                 ExposureProgram = Enum.GetName(typeof(ExposurePrograms), mdl.ExposureProgram);
-                ISORating = getRating(mdl.ISOValue);
+                ISORating = GetRating(mdl.ISOValue);
             }
 
         }
-        private ISORatings getRating(decimal ISOVal)
+        private ISORatings GetRating(decimal ISOVal)
         {
             Console.WriteLine(ISOVal + " is ISOVAL");
             if (ISOVal < 200)

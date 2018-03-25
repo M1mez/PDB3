@@ -30,8 +30,7 @@ namespace Uebungen
 
         public BIF.SWE2.Interfaces.Models.IPictureModel GetPictureModel(string filename)
         {
-            var mdl = new PictureModel();
-            mdl.FileName = filename;
+            var mdl = new PictureModel {FileName = filename};
             return mdl;
         }
 

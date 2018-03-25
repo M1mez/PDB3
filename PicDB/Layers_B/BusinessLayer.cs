@@ -126,9 +126,7 @@ namespace PicDB.Classes
                 BitmapDecoder decoder = BitmapDecoder.Create(fs, BitmapCreateOptions.None, BitmapCacheOption.Default);
                 BitmapFrame frame = decoder.Frames[0];
 
-                BitmapMetadata metadata = frame.Metadata as BitmapMetadata;
-
-                if (metadata != null)
+                if (frame.Metadata is BitmapMetadata metadata)
                 {
                     iptc.Caption = (string)metadata.GetQuery(@"/app13/irb/8bimiptc/iptc\/Caption") ?? iptc.Caption; //Caption/Abstract
                     Console.WriteLine(iptc.Caption);
