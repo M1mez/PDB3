@@ -16,6 +16,9 @@ namespace PicDB.Classes
 
         private static DAL_Conn _instance;
         private static readonly object padlock = new object();
+        public static readonly bool IsUnitTest =
+            AppDomain.CurrentDomain.GetAssemblies().Any(
+                a => a.FullName.ToLowerInvariant().StartsWith("nunit.framework"));
 
         private DAL_Conn()
         {

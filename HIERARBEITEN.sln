@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2027
+VisualStudioVersion = 15.0.27130.2026
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PicDB", "PicDB\PicDB.csproj", "{05F8743C-2D96-4708-B9CE-51155E907531}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A90C6C66-F780-42F3-95BE-2A4C18A89ABB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BIF-SWE2.Interfaces", "BIF-SWE2.Interfaces\BIF-SWE2.Interfaces.csproj", "{27C44945-CB10-48BF-AD69-457D496B32A2}"
 EndProject
