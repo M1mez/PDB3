@@ -4,7 +4,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="PicDB.MainWindow"
         Title="PicDB" Height="600" Width="800" MinWidth="800" MinHeight="600">
-    <Window.Resources>
+    <!--<Window.Resources>
         <Style TargetType="ListBox">
             <Setter Property="ItemTemplate">
                 <Setter.Value>
@@ -14,7 +14,7 @@
                 </Setter.Value>
             </Setter>
         </Style>
-    </Window.Resources>
+    </Window.Resources>-->
     <StackPanel Name="Container">
         <!--S1-->
         <Menu Height="18" Grid.Row="0">
@@ -159,14 +159,15 @@
                     </ItemsPanelTemplate>
                 </ListView.ItemsPanel>
             </ListView>-->
-            <ListBox ItemsSource="{Binding}"
+            <!--<ListBox ItemsSource="{Binding}"
                 Grid.ColumnSpan="3" Grid.Row="2" Name="Gallery">
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel Orientation="Horizontal" />
                     </ItemsPanelTemplate>
                 </ListBox.ItemsPanel>
-            </ListBox>
+            </ListBox>-->
+            <Frame Grid.Row="2" Grid.ColumnSpan="3" Source="Gallery.xaml"/>
         </Grid>
     </StackPanel>
 </Window>

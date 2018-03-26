@@ -59,6 +59,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Gallery.xaml.cs">
+      <DependentUpon>Gallery.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Layers_B\BusinessLayer.cs" />
     <Compile Include="Layers_DA\DAL_Conn.cs" />
     <Compile Include="Layers_DA\DataAccessLayer.cs" />
@@ -87,6 +90,10 @@
     <Compile Include="ViewModels\PictureListViewModel.cs" />
     <Compile Include="ViewModels\PictureViewModel.cs" />
     <Compile Include="ViewModels\SearchViewModel.cs" />
+    <Page Include="Gallery.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

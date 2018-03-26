@@ -38,7 +38,7 @@ namespace PicDB
             }
             else
             {
-                System.Windows.MessageBox.Show(vmdl.ValidationSummary, "Add Photographer", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show(vmdl.ValidationSummary, "Add Photographer", MessageBoxButton.OK, MessageBoxImage.Information);
             }
 
         }
