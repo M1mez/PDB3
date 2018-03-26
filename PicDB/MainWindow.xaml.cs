@@ -28,12 +28,12 @@ namespace PicDB
             InitializeComponent();
 
             //TODO: darf das da stehen?
-            var mwvmdl = new MainWindowViewModel();
+            //var mwvmdl = new MainWindowViewModel();
 
-            foreach(var pic in mwvmdl.List.List)
-            {
-                Gallery.Items.Add(new BitmapImage(new Uri(PersInfo.PicPath + @"\" + pic.FileName + ".jpg")));
-            }
+            //foreach(var pic in mwvmdl.List.List)
+            //{
+            //    Gallery.Items.Add(new BitmapImage(new Uri(PersInfo.PicPath + @"\" + pic.FileName + ".jpg")));
+            //}
         }
 
         private void OpenNewPhotographerWindow(object sender, RoutedEventArgs e)
