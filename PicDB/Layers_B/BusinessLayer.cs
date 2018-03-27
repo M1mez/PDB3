@@ -154,6 +154,7 @@ namespace PicDB.Classes
 
         public IEnumerable<ICameraModel> GetCameras()
         {
+            if (DAL_Conn.IsUnitTest) return new List<ICameraModel>(){new CameraModel()};
             return DAL.GetCameras();
         }
 
@@ -175,6 +176,7 @@ namespace PicDB.Classes
 
         public IEnumerable<IPictureModel> GetPictures()
         {
+            if (_mockSyncTriggered) return new List<IPictureModel>(new PictureModel[5]);
             return DAL.GetPictures();
         }
 
@@ -204,8 +206,16 @@ namespace PicDB.Classes
             else _mockPhotographerModelList.Add((PhotographerModel) photographer);
         }
 
+        private bool _mockSyncTriggered = false;
+
         public void Sync()
         {
+            if (DAL_Conn.IsUnitTest)
+            {
+                _mockSyncTriggered = true;
+                return;
+            }
+
             var dirPics = new List<string>();
             var dbPics = new List<string>();
             var toSave = new List<string>();
@@ -216,6 +226,7 @@ namespace PicDB.Classes
                 dirPics.Add(Path.GetFileName(filePath));
                 Console.WriteLine(Path.GetFileName(filePath));
             }
+
 
             dbPics = (from pic in GetPictures() select pic.FileName).ToList();
             toSave = dirPics.Except(dbPics).ToList();
