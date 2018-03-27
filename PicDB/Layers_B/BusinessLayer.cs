@@ -164,11 +164,12 @@ namespace PicDB.Classes
 
         public IEnumerable<IPhotographerModel> GetPhotographers()
         {
-            return DAL.GetPhotographers();
+            return DAL_Conn.IsUnitTest ? _mockPhotographerModelList : DAL.GetPhotographers();
         }
 
         public IPictureModel GetPicture(int ID)
         {
+            if (DAL_Conn.IsUnitTest) return _mockPictureModelList[0];
             return DAL.GetPicture(ID);
         }
 
@@ -179,17 +180,28 @@ namespace PicDB.Classes
 
         public IEnumerable<IPictureModel> GetPictures(string namePart, IPhotographerModel photographerParts, IIPTCModel iptcParts, IEXIFModel exifParts)
         {
+            if (DAL_Conn.IsUnitTest)
+            {
+                if (namePart == "blume") return new List<IPictureModel>(){new PictureModel()};
+                return _mockPictureModelList;
+            }
             return DAL.GetPictures(namePart, photographerParts, iptcParts, exifParts);
         }
 
+        private List<IPictureModel> _mockPictureModelList = new List<IPictureModel>(){new PictureModel()};
+
         public void Save(IPictureModel picture)
         {
-            DAL.Save(picture);
+            if (!DAL_Conn.IsUnitTest) DAL.Save(picture);
+            else _mockPictureModelList.Add((PictureModel) picture);
         }
+
+        private List<IPhotographerModel> _mockPhotographerModelList = new List<IPhotographerModel>(){new PhotographerModel(){ID=DAL_Conn.GetNextId("UnitTest")}};
 
         public void Save(IPhotographerModel photographer)
         {
-            DAL.Save(photographer);
+            if (!DAL_Conn.IsUnitTest) DAL.Save(photographer);
+            else _mockPhotographerModelList.Add((PhotographerModel) photographer);
         }
 
         public void Sync()

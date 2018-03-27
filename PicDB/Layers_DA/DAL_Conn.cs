@@ -16,11 +16,17 @@ namespace PicDB.Classes
 
         private static DAL_Conn _instance;
         private static readonly object padlock = new object();
-        public static readonly bool IsUnitTest =
-            AppDomain.CurrentDomain.GetAssemblies().Any(
-                a => a.FullName.ToLowerInvariant().StartsWith("nunit.framework"));
+        public static bool IsUnitTest {
+            get
+            {
+                var isUnitTest = AppDomain.CurrentDomain.GetAssemblies().Any(
+                    a => a.FullName.ToLowerInvariant().StartsWith("nunit.framework"));
+                Console.WriteLine($"IS UNITTEST: {isUnitTest}");
+                return isUnitTest;
+            }
+        }
 
-        private DAL_Conn()
+    private DAL_Conn()
         {
         }
 
@@ -39,12 +45,10 @@ namespace PicDB.Classes
             }
         }
 
-        ~DAL_Conn()
+        private static int serialID = 1;
+        public static int GetNextId (string tableName)
         {
-        }
-
-        public static int GetNextID (string tableName)
-        {
+            if (IsUnitTest) return serialID++;
             Conn.ConnectionString = PersInfo.ConnString;
             var uspName = "usp_getNextID";
             try

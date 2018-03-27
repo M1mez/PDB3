@@ -65,6 +65,7 @@
     <Compile Include="Layers_B\BusinessLayer.cs" />
     <Compile Include="Layers_DA\DAL_Conn.cs" />
     <Compile Include="Layers_DA\DataAccessLayer.cs" />
+    <Compile Include="Layers_DA\Mock_DataAccessLayer.cs" />
     <Compile Include="Models\CameraModel.cs" />
     <Compile Include="Models\EXIFModel.cs" />
     <Compile Include="Models\IPTCModel.cs" />
@@ -135,6 +136,33 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\0NotDefined.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\1Manual.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\2Normal.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\3AperturePriority.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\4ShutterPriority.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\5CreativeProgram.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\6ActionProgram.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\7PortraitMode.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\8LandscapeMode.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

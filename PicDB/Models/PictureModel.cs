@@ -11,8 +11,8 @@ namespace PicDB.Models
     {
         public PictureModel()
         {
-            ID = DAL_Conn.GetNextID("Pictures");
-            Console.WriteLine(ID);
+            ID = DAL_Conn.GetNextId("Pictures");
+            Console.WriteLine("PictureModel ID: " + ID);
         }
 
         public int ID { get; set; }

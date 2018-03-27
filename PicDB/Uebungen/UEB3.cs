@@ -6,6 +6,7 @@ using BIF.SWE2.Interfaces;
 using BIF.SWE2.Interfaces.ViewModels;
 using PicDB;
 using PicDB.Classes;
+using PicDB.Layers_DA;
 using PicDB.ViewModels;
 
 namespace Uebungen
@@ -27,6 +28,7 @@ namespace Uebungen
 
         public IDataAccessLayer GetDataAccessLayer()
         {
+            if (DAL_Conn.IsUnitTest) return new Mock_DataAccessLayer();
             return DataAccessLayer.Instance;
         }
 

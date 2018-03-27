@@ -2,7 +2,10 @@
 using BIF.SWE2.Interfaces.Models;
 using BIF.SWE2.Interfaces.ViewModels;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 
@@ -25,9 +28,18 @@ namespace PicDB.ViewModels
                 Flash = mdl.Flash;
                 ExposureProgram = Enum.GetName(typeof(ExposurePrograms), mdl.ExposureProgram);
                 ISORating = GetRating(mdl.ISOValue);
+                ExposureProgramResource = GetExposureProgramResource(ExposureProgram);
             }
-
         }
+
+        private string GetExposureProgramResource(string program)
+        {
+            if (Enum.IsDefined(typeof(ExposurePrograms), program))
+                return "_" + (int) Enum.Parse(typeof(ExposurePrograms), program) + program;
+            else return null;
+        }
+
+
         private ISORatings GetRating(decimal ISOVal)
         {
             Console.WriteLine(ISOVal + " is ISOVAL");
