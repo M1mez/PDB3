@@ -10,13 +10,18 @@ namespace PicDB
 {
     public static class PersInfo
     {
-        public static string ConnString = "";/*
+        public static string ConnString = ""; /*
                 @"Server=DESKTOP-DIN7DPC\SQLEXPRESS;
                 Database=PicDB;
                 Trusted_Connection=True;";*/
 
-        public static string DeployPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+        private static string _workingDirectory = null;
 
-        public static string PicPath = DeployPath + @"\Pictures";
+        public static string DeployPath {
+            get { return _workingDirectory ?? (_workingDirectory = System.Environment.CurrentDirectory); }
+        }
+
+    public static string PicPath = Path.Combine(DeployPath, "Pictures");
+    public static string IcoPath = Path.Combine(DeployPath, "Icons");
     }
 }

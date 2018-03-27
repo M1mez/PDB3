@@ -2,6 +2,7 @@ bin
 obj
 *.suo
 deploy/
+!deploy/Pictures
 packages/
 /PicDB/*.user
 .vs/
