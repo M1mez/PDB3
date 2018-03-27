@@ -10,10 +10,10 @@ namespace PicDB
 {
     public static class PersInfo
     {
-        public static string ConnString = ""; /*
+        public static string ConnString =
                 @"Server=DESKTOP-DIN7DPC\SQLEXPRESS;
                 Database=PicDB;
-                Trusted_Connection=True;";*/
+                Trusted_Connection=True;";
 
         private static string _workingDirectory = null;
 
