@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using PicDB.Layers_DA;
 
 namespace PicDB.Models
 {
@@ -12,7 +13,6 @@ namespace PicDB.Models
         public PictureModel()
         {
             ID = DAL_Conn.GetNextId("Pictures");
-            Console.WriteLine("PictureModel ID: " + ID);
         }
 
         public int ID { get; set; }

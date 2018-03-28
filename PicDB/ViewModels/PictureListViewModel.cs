@@ -17,11 +17,7 @@ namespace PicDB.ViewModels
 
         public PictureListViewModel(IEnumerable<IPictureModel> mdlList)
         {
-            var newList = new List<IPictureViewModel>();
-            foreach (var mdl in mdlList)
-            {
-                newList.Add(new PictureViewModel(mdl));
-            }
+            var newList = mdlList.Select(mdl => new PictureViewModel(mdl)).Cast<IPictureViewModel>().ToList();
             List = newList;
         }
 

@@ -16,14 +16,12 @@ namespace PicDB.ViewModels
 
         public IPTCViewModel(IIPTCModel mdl)
         {
-            if (mdl != null)
-            {
-                Keywords = mdl.Keywords;
-                ByLine = mdl.ByLine;
-                CopyrightNotice = mdl.CopyrightNotice;
-                Headline = mdl.Headline;
-                Caption = mdl.Caption;
-            }
+            if (mdl == null) return;
+            Keywords = mdl.Keywords;
+            ByLine = mdl.ByLine;
+            CopyrightNotice = mdl.CopyrightNotice;
+            Headline = mdl.Headline;
+            Caption = mdl.Caption;
         }
 
         public string Keywords { get; set; }

@@ -3,68 +3,79 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
 
-namespace PicDB.Classes
+namespace PicDB.Layers_DA
 {
+    /// <summary>
+    /// Connection Class which takes commands from the DataAccessLayer. 
+    /// This was done for further splitting the real DataAccessLayer from the MockDataAccessLayer,
+    /// which inherits from DataAccessLayer.
+    /// </summary>
     public class DAL_Conn
     {
         private static SqlConnection Conn = new SqlConnection()
         {
-            ConnectionString = PersInfo.ConnString //test
+            ConnectionString = PersInfo.ConnString
         };
 
         private static DAL_Conn _instance;
-        private static readonly object padlock = new object();
+        private static readonly object Padlock = new object();
+
+        /// <summary>
+        /// returns Bool if the program is executed via UnitTest
+        /// </summary>
         public static bool IsUnitTest {
             get
             {
                 var isUnitTest = AppDomain.CurrentDomain.GetAssemblies().Any(
                     a => a.FullName.ToLowerInvariant().StartsWith("nunit.framework"));
-                Console.WriteLine($"IS UNITTEST: {isUnitTest}");
                 return isUnitTest;
             }
         }
 
-    private DAL_Conn()
-        {
-        }
+        private DAL_Conn() {}
 
+        /// <summary>
+        /// Singleton Connection Class
+        /// </summary>
         public static DAL_Conn Instance
         {
             get
             {
-                lock (padlock)
+                lock (Padlock)
                 {
-                    if (_instance == null)
-                    {
-                        _instance = new DAL_Conn();
-                    }
-                    return _instance;
+                    return _instance ?? (_instance = new DAL_Conn());
                 }
             }
         }
 
-        private static int serialID = 1;
+        private static int _serialId = 1;
+
+        /// <summary>
+        /// Get the ID which would be assigned next by the DB.
+        /// If the method is called statically by an UnitTest, return 1, then 2...
+        /// </summary>
+        /// <param name="tableName"></param>
+        /// <returns></returns>
         public static int GetNextId (string tableName)
         {
-            if (IsUnitTest) return serialID++;
+            if (IsUnitTest) return _serialId++;
             Conn.ConnectionString = PersInfo.ConnString;
             var uspName = "usp_getNextID";
             try
             {
                 Console.WriteLine("Calling usp: {0} for table: {1}", uspName, tableName);
-                int nextID = -2;
+                var nextId = -2;
 
                 Conn.Open();
                 using (var cmd = new SqlCommand(uspName, Conn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.Add(new SqlParameter("@TableName", tableName));
-                    nextID = Convert.ToInt32(cmd.ExecuteScalar());
+                    nextId = Convert.ToInt32(cmd.ExecuteScalar());
                 }
                 Conn.Close();
-                return nextID;
+                return nextId;
             }
             catch (Exception e)
             {
@@ -76,7 +87,41 @@ namespace PicDB.Classes
             }
             return -1;
         }
-        
+
+        public void OneWaySingleSql(string uspName, string column, string value) =>
+            OneWayListSql(uspName, new List<KeyValuePair<string, string>>() {new KeyValuePair<string, string>(column, value)});
+
+        public void OneWayListSql(string uspName, List<KeyValuePair<string, string>> paramList)
+        {
+            try
+            {
+                Console.WriteLine("Calling usp: " + uspName);
+
+                Conn.Open();
+                using (var cmd = new SqlCommand(uspName, Conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    foreach (var el in paramList)
+                    {
+                        if (el.Value != null)
+                        {
+                            cmd.Parameters.Add(new SqlParameter("@" + el.Key, el.Value));
+                        }
+                    }
+
+                    using (var reader = cmd.ExecuteReader()) reader.Read();
+                }
+                Conn.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Caught in OneWaySql: " + e.Message);
+            }
+            finally
+            {
+                Conn.Close();
+            }
+        }
 
         public List<List<string>> UspList(string uspName, List<KeyValuePair<string, string>> paramList)
         {
@@ -103,7 +148,7 @@ namespace PicDB.Classes
                     {
                         while (reader.Read())
                         {
-                            dataList.Add(ReadSingleRow((IDataRecord)reader));
+                            dataList.Add(ReadSingleRow(reader));
                         }
                     }
                 }
@@ -121,8 +166,7 @@ namespace PicDB.Classes
             }
             return new List<List<string>>();
         }
-
-
+        
         private static List<string> ReadSingleRow(IDataRecord record)
         {
             var list = new List<string>();
@@ -130,45 +174,9 @@ namespace PicDB.Classes
 
             for (var curr = 0; curr < columnCount; curr++)
             {
-                list.Add(String.Format("{0}", record[curr]));
+                list.Add($"{record[curr]}");
             }
             return list;
         }
-
-        /*
-        private List<KeyValuePair<string, string>> DbConnection(string cmdString)
-        {
-            var values = new List<KeyValuePair<string, string>>();
-            using (var con = new SqlConnection())
-            {
-
-                con.ConnectionString =
-                    @"Server=DESKTOP-DIN7DPC\SQLEXPRESS;
-                    Database=PicDB;
-                    Trusted_Connection=True;";
-
-                con.Open();
-
-                var dateTemps = new SqlCommand(cmdString, con);
-                try
-                {
-                    using (SqlDataReader reader = dateTemps.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            var date = String.Format("{0}", reader[0]).Substring(0, 10);
-                            var temp = String.Format("{0}", reader[1]);
-                            values.Add(new KeyValuePair<string, string>(date, temp));
-                        }
-                    }
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.Message);
-                }
-            }
-            return values;
-        }
-        */
     }
 }

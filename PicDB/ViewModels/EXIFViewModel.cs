@@ -19,20 +19,18 @@ namespace PicDB.ViewModels
 
         public EXIFViewModel(IEXIFModel mdl)
         {
-            if (mdl != null)
-            {
-                Make = mdl.Make;
-                FNumber = mdl.FNumber;
-                ExposureTime = mdl.ExposureTime;
-                ISOValue = mdl.ISOValue;
-                Flash = mdl.Flash;
-                ExposureProgram = Enum.GetName(typeof(ExposurePrograms), mdl.ExposureProgram);
-                ISORating = GetRating(mdl.ISOValue);
-                ExposureProgramResource = GetExposureProgramResource(ExposureProgram);
-            }
+            if (mdl == null) return;
+            Make = mdl.Make;
+            FNumber = mdl.FNumber;
+            ExposureTime = mdl.ExposureTime;
+            ISOValue = mdl.ISOValue;
+            Flash = mdl.Flash;
+            ExposureProgram = Enum.GetName(typeof(ExposurePrograms), mdl.ExposureProgram);
+            ISORating = GetRating(mdl.ISOValue);
+            ExposureProgramResource = GetExposureProgramResource(ExposureProgram);
         }
 
-        private string GetExposureProgramResource(string program)
+        private static string GetExposureProgramResource(string program)
         {
             if (Enum.IsDefined(typeof(ExposurePrograms), program))
                 return "_" + (int) Enum.Parse(typeof(ExposurePrograms), program) + program;
@@ -42,7 +40,6 @@ namespace PicDB.ViewModels
 
         private ISORatings GetRating(decimal ISOVal)
         {
-            Console.WriteLine(ISOVal + " is ISOVAL");
             if (ISOVal < 200)
                 return ISORatings.NotDefined;
             if (ISOVal < 800)

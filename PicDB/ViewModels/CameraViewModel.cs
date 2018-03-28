@@ -11,7 +11,7 @@ namespace PicDB.ViewModels
 {
     class CameraViewModel : ICameraViewModel
     {
-        public BusinessLayer bl = BusinessLayer.Instance;
+        public BusinessLayer BL = BusinessLayer.Instance;
 
         public CameraViewModel()
         {
@@ -19,16 +19,14 @@ namespace PicDB.ViewModels
 
         public CameraViewModel(ICameraModel mdl)
         {
-            if (mdl != null)
-            {
-                ID = mdl.ID;
-                Producer = mdl.Producer;
-                Make = mdl.Make;
-                BoughtOn = mdl.BoughtOn;
-                Notes = mdl.Notes;
-                ISOLimitAcceptable = mdl.ISOLimitAcceptable;
-                ISOLimitGood = mdl.ISOLimitGood;
-            }
+            if (mdl == null) return;
+            ID = mdl.ID;
+            Producer = mdl.Producer;
+            Make = mdl.Make;
+            BoughtOn = mdl.BoughtOn;
+            Notes = mdl.Notes;
+            ISOLimitAcceptable = mdl.ISOLimitAcceptable;
+            ISOLimitGood = mdl.ISOLimitGood;
         }
 
         public int ID { get; }

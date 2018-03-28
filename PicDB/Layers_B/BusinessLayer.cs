@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Media.Imaging;
+using PicDB.Layers_DA;
 
 namespace PicDB.Classes
 {
@@ -154,7 +155,6 @@ namespace PicDB.Classes
 
         public IEnumerable<ICameraModel> GetCameras()
         {
-            if (DAL_Conn.IsUnitTest) return new List<ICameraModel>(){new CameraModel()};
             return DAL.GetCameras();
         }
 
@@ -165,54 +165,40 @@ namespace PicDB.Classes
 
         public IEnumerable<IPhotographerModel> GetPhotographers()
         {
-            return DAL_Conn.IsUnitTest ? _mockPhotographerModelList : DAL.GetPhotographers();
+            return DAL.GetPhotographers();
         }
 
         public IPictureModel GetPicture(int ID)
         {
-            if (DAL_Conn.IsUnitTest) return _mockPictureModelList[0];
             return DAL.GetPicture(ID);
         }
 
         public IEnumerable<IPictureModel> GetPictures()
         {
-            if (_mockSyncTriggered) return new List<IPictureModel>(new PictureModel[5]);
             return DAL.GetPictures();
         }
 
         public IEnumerable<IPictureModel> GetPictures(string namePart, IPhotographerModel photographerParts, IIPTCModel iptcParts, IEXIFModel exifParts)
         {
-            if (DAL_Conn.IsUnitTest)
-            {
-                if (namePart == "blume") return new List<IPictureModel>(){new PictureModel()};
-                return _mockPictureModelList;
-            }
             return DAL.GetPictures(namePart, photographerParts, iptcParts, exifParts);
         }
 
-        private List<IPictureModel> _mockPictureModelList = new List<IPictureModel>(){new PictureModel()};
 
         public void Save(IPictureModel picture)
         {
-            if (!DAL_Conn.IsUnitTest) DAL.Save(picture);
-            else _mockPictureModelList.Add((PictureModel) picture);
+            DAL.Save(picture);
         }
-
-        private List<IPhotographerModel> _mockPhotographerModelList = new List<IPhotographerModel>(){new PhotographerModel(){ID=DAL_Conn.GetNextId("UnitTest")}};
 
         public void Save(IPhotographerModel photographer)
         {
-            if (!DAL_Conn.IsUnitTest) DAL.Save(photographer);
-            else _mockPhotographerModelList.Add((PhotographerModel) photographer);
+            DAL.Save(photographer);
         }
-
-        private bool _mockSyncTriggered = false;
 
         public void Sync()
         {
-            if (DAL_Conn.IsUnitTest)
+            if (DAL is MockDataAccessLayer mock)
             {
-                _mockSyncTriggered = true;
+                mock.SyncTriggered();
                 return;
             }
 

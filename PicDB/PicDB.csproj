@@ -36,8 +36,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="BIF-SWE2.Interfaces">
-      <HintPath>..\Libs\BIF-SWE2.Interfaces.dll</HintPath>
+    <Reference Include="BIF-SWE2.Interfaces, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\deploy\BIF-SWE2.Interfaces.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -65,14 +66,14 @@
     <Compile Include="Layers_B\BusinessLayer.cs" />
     <Compile Include="Layers_DA\DAL_Conn.cs" />
     <Compile Include="Layers_DA\DataAccessLayer.cs" />
-    <Compile Include="Layers_DA\Mock_DataAccessLayer.cs" />
+    <Compile Include="Layers_DA\MockDataAccessLayer.cs" />
     <Compile Include="Models\CameraModel.cs" />
     <Compile Include="Models\EXIFModel.cs" />
     <Compile Include="Models\IPTCModel.cs" />
     <Compile Include="Models\PhotographerModel.cs" />
     <Compile Include="Models\PictureModel.cs" />
     <Compile Include="PersInfo.cs" />
-    <Compile Include="Photographer.xaml.cs">
+    <Compile Include="WPF\Photographer.xaml.cs">
       <DependentUpon>Photographer.xaml</DependentUpon>
     </Compile>
     <Compile Include="Uebungen\UEB3.cs" />
@@ -107,7 +108,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Photographer.xaml">
+    <Page Include="WPF\Photographer.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

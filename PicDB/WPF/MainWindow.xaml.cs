@@ -46,6 +46,11 @@ namespace PicDB
             pw.Show();
         }
 
-        public string SearchIconPath => System.IO.Path.Combine(PersInfo.IcoPath, "ic_search_black_24dp_1x.png");
+        private string _searchIconPath = "";
+        public string SearchIconPath {
+            get {
+                return System.IO.Path.Combine(PersInfo.IcoPath, "ic_search_black_24dp_1x.png");
+            }
+        }
     }
 }

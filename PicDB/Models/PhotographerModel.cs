@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using BIF.SWE2.Interfaces.Models;
 using PicDB.Classes;
+using PicDB.Layers_DA;
 
 namespace PicDB.Models
 {
@@ -11,8 +12,7 @@ namespace PicDB.Models
     {
         public PhotographerModel()
         {
-                ID = DAL_Conn.GetNextId("Photographer");
-                Console.WriteLine(ID);
+            ID = DAL_Conn.GetNextId("Photographer");
         }
 
         public int ID { get; set; }

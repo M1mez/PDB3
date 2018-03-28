@@ -19,8 +19,6 @@ namespace PicDB.ViewModels
 
         public IPictureListViewModel List { get
             {
-                var BL = BusinessLayer.Instance; ;
-
                 var mdlList = Directory.GetFiles(PersInfo.PicPath, "*.jpg")
                 .Select(filePath => new PictureModel()
                 {

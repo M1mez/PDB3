@@ -1,23 +1,21 @@
-﻿using BIF.SWE2.Interfaces;
-using BIF.SWE2.Interfaces.Models;
-using PicDB.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Data;
-using System.IO;
-using System.Linq;
-using System.Text;
+using BIF.SWE2.Interfaces;
+using BIF.SWE2.Interfaces.Models;
+using PicDB.Classes;
+using PicDB.Models;
 
-namespace PicDB.Classes
+namespace PicDB.Layers_DA
 {
     class DataAccessLayer : IDataAccessLayer
     {
         private DAL_Conn Conn = DAL_Conn.Instance;
 
         private static DataAccessLayer _instance;
+        private static MockDataAccessLayer _mockInstance;
         private static readonly object padlock = new object();
 
-        private DataAccessLayer() { }
+        protected DataAccessLayer() { }
 
         public static DataAccessLayer Instance
         {
@@ -25,56 +23,42 @@ namespace PicDB.Classes
             {
                 lock (padlock)
                 {
-                    if (_instance == null)
+                    if (DAL_Conn.IsUnitTest)
                     {
-                        _instance = new DataAccessLayer();
+                        return _mockInstance ?? (_mockInstance = new MockDataAccessLayer());
                     }
-                    return _instance;
+
+                    return _instance ?? (_instance = new DataAccessLayer());
                 }
             }
         }
 
-        public void DeletePhotographer(int ID)
+        public virtual void DeletePhotographer(int ID)
         {
-            List<KeyValuePair<string, string>> tempList = new List<KeyValuePair<string, string>>()
-            {
-                new KeyValuePair<string, string>("ID", ID.ToString())
-            };
-
-            Conn.UspList("usp_DeletePhotographer", tempList);
+            Conn.OneWaySingleSql("usp_DeletePhotographer", "ID", ID.ToString());
         }
 
-        public void DeletePicture(int ID)
+        public virtual void DeletePicture(int ID)
         {
-            List<KeyValuePair<string, string>> tempList = new List<KeyValuePair<string, string>>()
-            {
-                new KeyValuePair<string, string>("ID", ID.ToString())
-            };
-
-            Conn.UspList("usp_DeletePicture", tempList);
+            Conn.OneWaySingleSql("usp_DeletePicture", "ID", ID.ToString());
         }
+
         public void DeletePicture(string fileName)
         {
-            List<KeyValuePair<string, string>> tempList = new List<KeyValuePair<string, string>>()
-            {
-                new KeyValuePair<string, string>("FileName", fileName)
-            };
-
-            Conn.UspList("usp_DeletePicture", tempList);
+            Conn.OneWaySingleSql("usp_DeletePicture", "FileName", fileName);
         }
 
         public void DeletePictures (List<string> delList)
         {
-            delList.ForEach(toDelete => DeletePicture(toDelete));
+            delList.ForEach(DeletePicture);
         }
 
-        private KeyValuePair<string, string> KeyVal (string key, string val){
-            return new KeyValuePair<string, string>(key, val);
-        }
+        private static KeyValuePair<string, string> KeyVal (string key, string val) =>
+            new KeyValuePair<string, string>(key, val);
+        
 
-        public ICameraModel GetCamera(int ID)
+        public virtual ICameraModel GetCamera(int ID)
         {
-
             var cam = new CameraModel() { ID = ID };
 
             var param = new List<KeyValuePair<string, string>>() {
@@ -86,12 +70,12 @@ namespace PicDB.Classes
 
             cam.Producer = row[1];
             cam.Make = row[2];
-            DateTime.TryParse(row[3], out DateTime dt);
+            DateTime.TryParse(row[3], out var dt);
             cam.BoughtOn = dt;
             cam.Notes = row[4];
-            Decimal.TryParse(row[5], out Decimal decGood);
+            decimal.TryParse(row[5], out var decGood);
             cam.ISOLimitGood = decGood;
-            Decimal.TryParse(row[6], out Decimal decAcc);
+            decimal.TryParse(row[6], out var decAcc);
             cam.ISOLimitAcceptable = decAcc;
 
             return cam;
@@ -99,16 +83,16 @@ namespace PicDB.Classes
 
         
 
-        public IEnumerable<ICameraModel> GetCameras()
+        public virtual IEnumerable<ICameraModel> GetCameras()
         {
             try
             {
                 var list = new List<ICameraModel>();
                 foreach (var row in Conn.UspList("usp_GetCameras", new List<KeyValuePair<string, string>>()))
                 {
-                    DateTime.TryParse(row[3], out DateTime dt);
-                    Decimal.TryParse(row[5], out Decimal decGood);
-                    Decimal.TryParse(row[6], out Decimal decAcc);
+                    DateTime.TryParse(row[3], out var dt);
+                    decimal.TryParse(row[5], out var decGood);
+                    decimal.TryParse(row[6], out var decAcc);
                     var cam = new CameraModel
                     {
                         Producer = row[1],
@@ -130,7 +114,7 @@ namespace PicDB.Classes
             return new List<ICameraModel>();
         }
 
-        public IPhotographerModel GetPhotographer(int ID)
+        public virtual IPhotographerModel GetPhotographer(int ID)
         {
             var photographer = new PhotographerModel() { ID = ID };
 
@@ -141,25 +125,25 @@ namespace PicDB.Classes
             if (rows.Count == 0 || rows[0][0] != ID.ToString()) return photographer;
             var row = rows[0];
 
-            photographer.ID = Int32.Parse(row[0]);
+            photographer.ID = int.Parse(row[0]);
             photographer.FirstName = row[1];
             photographer.LastName = row[2];
-            DateTime.TryParse(row[3], out DateTime dt);
+            DateTime.TryParse(row[3], out var dt);
             photographer.BirthDay = dt;
             photographer.Notes = row[4];
 
             return photographer;
         }
 
-        public IEnumerable<IPhotographerModel> GetPhotographers()
+        public virtual IEnumerable<IPhotographerModel> GetPhotographers()
         {
             try
             {
                 var list = new List<IPhotographerModel>();
                 foreach (var row in Conn.UspList("usp_GetPhotographers", new List<KeyValuePair<string, string>>()))
                 {
-                    DateTime.TryParse(row[3], out DateTime dt);
-                    var pID = Int32.Parse(row[0]);
+                    DateTime.TryParse(row[3], out var dt);
+                    var pID = int.Parse(row[0]);
                     var photographer = new PhotographerModel
                     {
                         ID = pID,
@@ -180,7 +164,7 @@ namespace PicDB.Classes
             return new List<IPhotographerModel>();
         }
 
-        public IPictureModel GetPicture(int ID)
+        public virtual IPictureModel GetPicture(int ID)
         {
             var pic = new PictureModel() { ID = ID };
 
@@ -196,7 +180,7 @@ namespace PicDB.Classes
             return pic;
         }
 
-        public IEnumerable<IPictureModel> GetPictures()
+        public virtual IEnumerable<IPictureModel> GetPictures()
         {
             try
             {
@@ -207,7 +191,7 @@ namespace PicDB.Classes
                     //row.ForEach(i => Console.WriteLine(i));
                     list.Add(new PictureModel()
                     {
-                        ID = Int32.Parse(row[0]),
+                        ID = int.Parse(row[0]),
                         FileName = row[1]
                     });
                 }
@@ -220,7 +204,7 @@ namespace PicDB.Classes
             return new List<IPictureModel>();
         }
 
-        public IEnumerable<IPictureModel> GetPictures(string namePart, IPhotographerModel photographerParts, IIPTCModel iptcParts, IEXIFModel exifParts)
+        public virtual IEnumerable<IPictureModel> GetPictures(string namePart, IPhotographerModel photographerParts, IIPTCModel iptcParts, IEXIFModel exifParts)
         {
             
             var paramList = new List<KeyValuePair<string, string>>();
@@ -268,15 +252,15 @@ namespace PicDB.Classes
 
                     var pic = new PictureModel()
                     {
-                        ID = Int32.Parse(row[0]),
+                        ID = int.Parse(row[0]),
                         FileName = row[1]
                     };
 
-                    if (Int32.TryParse(row[2], out int iptcID))
+                    if (int.TryParse(row[2], out var iptcID))
                         pic.IPTC = GetIPTC(iptcID);
-                    if (Int32.TryParse(row[3], out int exifID))
+                    if (int.TryParse(row[3], out var exifID))
                         pic.EXIF = GetEXIF(exifID);
-                    if (Int32.TryParse(row[4], out int cameraID))
+                    if (int.TryParse(row[4], out var cameraID))
                         pic.Camera = GetCamera(cameraID);
 
                     list.Add(pic);
@@ -290,20 +274,18 @@ namespace PicDB.Classes
             return new List<IPictureModel>();
         }
 
-        public void Save(IPictureModel picture)
+        public virtual void Save(IPictureModel picture)
         {
-            Conn.UspList("usp_SavePicture", new List<KeyValuePair<string, string>>() {
-                    new KeyValuePair<string, string>("FileName", picture.FileName)
-                });
+            Conn.OneWaySingleSql("usp_SavePicture", "FileName", picture.FileName);
 
             if (picture.IPTC != null) Save(picture.IPTC);
             if (picture.EXIF != null) Save(picture.EXIF);
             if (picture.Camera != null) Save(picture.Camera);
         }
 
-        public void Save(IPhotographerModel photographer)
+        public virtual void Save(IPhotographerModel photographer)
         {
-            Conn.UspList("usp_SavePhotographer", new List<KeyValuePair<string, string>>() {
+            Conn.OneWayListSql("usp_SavePhotographer", new List<KeyValuePair<string, string>>() {
                     new KeyValuePair<string, string>("FirstName", photographer.FirstName),
                     new KeyValuePair<string, string>("LastName", photographer.LastName),
                     new KeyValuePair<string, string>("Birthday", photographer.BirthDay.ToString()),
@@ -318,12 +300,12 @@ namespace PicDB.Classes
 
         public void Save(ICameraModel camera)
         {
-
+            throw new NotImplementedException();
         }
 
         public void Save(IIPTCModel iptc)
         {
-
+            throw new NotImplementedException();
         }
 
         public IIPTCModel GetIPTC(int ID)
@@ -333,7 +315,7 @@ namespace PicDB.Classes
 
         public void Save(IEXIFModel exif)
         {
-
+            throw new NotImplementedException();
         }
 
         public IEXIFModel GetEXIF(int ID)
