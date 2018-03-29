@@ -42,7 +42,7 @@
             <Border BorderBrush="Black" BorderThickness="0.5">
                 <DockPanel ScrollViewer.VerticalScrollBarVisibility="Disabled">
                     <Button Width="50" Height="50" Background="Transparent" BorderBrush="{x:Null}" DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Center" UseLayoutRounding="False">
-                        <Image Source="O:\GIT\SWE2-CS\deploy\Icons\ic_search_black_24dp_1x.png" Width="16" Height="16" Opacity="0.5" Stretch="Fill"/> <!--TODO Binding?-->
+                        <Image Source="O:\GIT\SWE2-CS\Icons\ic_search_black_24dp_1x.png" Width="16" Height="16" Opacity="0.5" Stretch="Fill"/> <!--TODO Binding?-->
                     </Button>
                     <TextBox x:Name ="Search" Text="Search" Width="{Binding ActualWidth, ElementName=Container}" Height="{Binding ElementName=Searchbar, Path=ActualHeight}" ScrollViewer.VerticalScrollBarVisibility="Disabled" VerticalContentAlignment="Center"/>
                 </DockPanel>
