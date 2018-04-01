@@ -12,7 +12,7 @@ namespace PicDB
     public partial class Gallery : Page
     {
         private ObservableCollection<BitmapImage> _pics = new ObservableCollection<BitmapImage>();
-        public ObservableCollection<BitmapImage> pics
+        public ObservableCollection<BitmapImage> Pics
         {
             get { return _pics; }
             set { _pics = value; }
@@ -26,9 +26,9 @@ namespace PicDB
 
             foreach (var pic in mwvmdl.List.List)
             {
-                Uri uri = new Uri(PersInfo.PicPath + @"\" + pic.FileName + ".jpg");
+                Uri uri = new Uri(Constants.PicPath + @"\" + pic.FileName + ".jpg");
                 BitmapImage img = new BitmapImage(uri);
-                pics.Add(img);
+                Pics.Add(img);
                 //GalleryRow.Items.Add(new BitmapImage(new Uri(PersInfo.PicPath + @"\" + pic.FileName + ".jpg")));
             }
         }

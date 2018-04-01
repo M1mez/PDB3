@@ -145,4 +145,170 @@
   <data name="_8LandscapeMode" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\8LandscapeMode.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="DeletePhotographer_ID" xml:space="preserve">
+    <value>DELETE FROM Photographer WHERE PG_ID = @ID;</value>
+  </data>
+  <data name="Add_Picture_To_Photographer" xml:space="preserve">
+    <value>INSERT INTO Pictures_Photographers (FK_Pic_ID, FK_PG_ID) 
+VALUES (@Pic_ID, @PG_ID);</value>
+  </data>
+  <data name="DeletePicture_FileName" xml:space="preserve">
+    <value>DELETE FROM Pictures WHERE FileName  = @FileName;</value>
+  </data>
+  <data name="DeletePicture_ID" xml:space="preserve">
+    <value>DELETE FROM Pictures WHERE Pic_ID  = @ID;</value>
+  </data>
+  <data name="GetAll_Cameras" xml:space="preserve">
+    <value>SELECT * FROM Cameras;</value>
+  </data>
+  <data name="GetAll_EXIF" xml:space="preserve">
+    <value>SELECT * FROM EXIF;</value>
+  </data>
+  <data name="GetAll_IPTC" xml:space="preserve">
+    <value>SELECT * FROM IPTC;</value>
+  </data>
+  <data name="GetAll_Photographers" xml:space="preserve">
+    <value>SELECT * FROM Photographers;</value>
+  </data>
+  <data name="GetAll_Pictures" xml:space="preserve">
+    <value>SELECT * FROM Pictures pics
+	LEFT JOIN Cameras ON pics.FK_Cam_ID = Cameras.Cam_ID
+	LEFT JOIN EXIF ON pics.FK_EXIF_ID = EXIF.EXIF_ID
+	LEFT JOIN IPTC ON pics.FK_IPTC_ID = IPTC.IPTC_ID
+	LEFT JOIN Photographers ON pics.FK_PG_ID = Photographers.PG_ID;</value>
+  </data>
+  <data name="GetNextID_TableName" xml:space="preserve">
+    <value>SELECT ident_current(@TableName) + ident_incr(@TableName);</value>
+  </data>
+  <data name="GetOne_Camera_ID" xml:space="preserve">
+    <value>SELECT * FROM Cameras WHERE Cam_ID = @ID;</value>
+  </data>
+  <data name="GetOne_Photographer_ID" xml:space="preserve">
+    <value>SELECT * FROM Photographer WHERE PG_ID = @ID;</value>
+  </data>
+  <data name="GetOne_Picture_ID" xml:space="preserve">
+    <value>SELECT * FROM Pictures 
+LEFT JOIN Cameras ON pics.FK_Cam_ID = Cameras.Cam_ID
+	LEFT JOIN EXIF ON pics.FK_EXIF_ID = EXIF.EXIF_ID
+	LEFT JOIN IPTC ON pics.FK_IPTC_ID = IPTC.IPTC_ID
+	LEFT JOIN Photographers ON pics.FK_PG_ID = Photographers.PG_ID
+WHERE Pic_ID = @ID;</value>
+  </data>
+  <data name="Save_Photographer" xml:space="preserve">
+    <value>INSERT INTO Photographers (FirstName, LastName, BirthDay, Notes_PG) 
+VALUES (@FirstName, @LastName, @BirthDay, @Notes)</value>
+  </data>
+  <data name="Save_Picture" xml:space="preserve">
+    <value>INSERT INTO Pictures (FileName, FK_Cam_ID) 
+VALUES (@FileName, @Cam_ID);</value>
+  </data>
+  <data name="Get_Search_Pictures" xml:space="preserve">
+    <value>SELECT *
+	FROM Pictures as Pics
+		LEFT JOIN Photographers as PG ON PG.PG_ID = P_PG.FK_PG_ID
+		LEFT JOIN EXIF ON EXIF_ID = Pics.FK_EXIF_ID
+		LEFT JOIN IPTC ON IPTC_ID = Pics.FK_IPTC_ID
+		LEFT JOIN Cameras ON Cam_ID = Pics.FK_Cam_ID
+
+	WHERE (@namePart IS NULL OR FileName LIKE '%' + @namePart + '%' )
+
+		AND (@PG_PG_ID IS NULL OR @PG_PG_ID = PG.PG_ID)
+		AND (@PG_Birthday IS NULL OR @PG_Birthday = PG.BirthDay)
+		AND (@PG_FirstName IS NULL OR @PG_FirstName = PG.FirstName)
+		AND (@PG_LastName IS NULL OR @PG_LastName = PG.LastName)
+		AND (@PG_Notes IS NULL OR PG.Notes_PG LIKE '%' + @PG_Notes + '%' )
+	
+		AND (@IPTC_Keywords IS NULL OR IPTC.Keywords LIKE '%' + @IPTC_Keywords + '%' )
+		AND (@IPTC_ByLine IS NULL OR @IPTC_ByLine = IPTC.ByLine)
+		AND (@IPTC_CopyrightNotice IS NULL OR @IPTC_CopyrightNotice = IPTC.CopyrightNotice)
+		AND (@IPTC_Headline IS NULL OR @IPTC_Headline = IPTC.Headline)
+		AND (@IPTC_Caption IS NULL OR @IPTC_Caption = IPTC.Caption)
+
+		AND (@EXIF_Make IS NULL OR @EXIF_Make = EXIF.Make_EXIF)
+		AND (@EXIF_FNumber IS NULL OR @EXIF_FNumber = EXIF.FNumber)
+		AND (@EXIF_ExposureTime IS NULL OR @EXIF_ExposureTime = EXIF.ExposureTime)
+		AND (@EXIF_ISOValue IS NULL OR @EXIF_ISOValue = EXIF.ISOValue)
+		AND (@EXIF_Flash IS NULL OR @EXIF_Flash = EXIF.Flash)
+		AND (@EXIF_ExposureProgram IS NULL OR @EXIF_ExposureProgram = EXIF.ExposureProgram)
+
+	ORDER BY Pics.Pic_ID asc;</value>
+  </data>
+  <data name="Save_Exif" xml:space="preserve">
+    <value>MERGE
+INTO EXIF WITH (HOLDLOCK) AS target
+USING (SELECT
+    @Make AS Make_EXIF,
+   @FNumber AS FNumber,
+   @ExposureTime AS ExposureTime,
+   @ISOValue AS ISOValue,
+   @Flash AS Flash,
+   @ExposureProgram AS ExposureProgram,
+   @FK_Pic_ID AS EXIF_FK_Pic_ID) AS source
+(Make_EXIF, FNumber, ExposureTime, ISOValue, Flash, ExposureProgram, EXIF_FK_Pic_ID)
+ON (target.EXIF_FK_Pic_ID = source.EXIF_FK_Pic_ID)
+WHEN MATCHED
+  THEN UPDATE
+      SET Make_EXIF = @Make,
+         FNumber = @FNumber,
+		 ExposureTime = @ExposureTime,
+		 ISOValue = @ISOValue,
+		 Flash = @Flash,
+		 ExposureProgram = @ExposureProgram
+WHEN NOT MATCHED
+  THEN INSERT (Make_EXIF, FNumber, ExposureTime, ISOValue, Flash, ExposureProgram, EXIF_FK_Pic_ID)
+      VALUES (@Make, @FNumber, @ExposureTime, @ISOValue, @Flash, @ExposureProgram, @FK_Pic_ID);</value>
+  </data>
+  <data name="Save_Iptc" xml:space="preserve">
+    <value>MERGE
+INTO IPTC WITH (HOLDLOCK) AS target
+USING (SELECT
+   @Keywords AS Keywords,
+   @ByLine AS ByLine,
+   @CopyrightNotice AS CopyrightNotice,
+   @Headline AS Headline,
+   @Caption AS Caption,
+   @FK_Pic_ID AS IPTC_FK_Pic_ID) AS source
+(Keywords, ByLine, CopyrightNotice, Headline, Caption, IPTC_FK_Pic_ID)
+ON (target.IPTC_FK_Pic_ID = source.IPTC_FK_Pic_ID)
+WHEN MATCHED
+  THEN UPDATE
+      SET Keywords = @Keywords,
+         ByLine = @ByLine,
+		 CopyrightNotice = @CopyrightNotice,
+		 Headline = @Headline,
+		 Caption = @Caption
+WHEN NOT MATCHED
+  THEN INSERT (Keywords, ByLine, CopyrightNotice, Headline, Caption, IPTC_FK_Pic_ID)
+      VALUES (@Keywords, @ByLine, @CopyrightNotice, @Headline, @Caption, @FK_Pic_ID);</value>
+  </data>
+  <data name="Save_Camera" xml:space="preserve">
+    <value>IF (@Cam_ID IS NULL) BEGIN
+INSERT INTO Cameras (Producer, Make_Cam, BoughtOn, Notes_Cam, ISOLimitGood, ISOLimitAcceptable)
+VALUES (@Producer, @Make, @BoughtOn, @Notes, @ISOLimitGood, @ISOLimitAcceptable);
+END ELSE BEGIN
+UPDATE Cameras
+SET Producer = @Producer, Make_Cam = @Make, BoughtOn = @BoughtOn, Notes_Cam = @Notes, ISOLimitGood = @ISOLimitGood, ISOLimitAcceptable = @ISOLimitAcceptable
+WHERE Cameras.Cam_ID = @Cam_ID;
+END</value>
+  </data>
+  <data name="Update_Pictures_Camera" xml:space="preserve">
+    <value>UPDATE Pictures
+SET Pictures.FK_Cam_ID = @Cam_ID
+WHERE Pictures.Pic_ID = @Pic_ID;</value>
+  </data>
+  <data name="Update_Pictures_EXIF" xml:space="preserve">
+    <value>UPDATE Pictures
+SET Pictures.FK_EXIF_ID = @EXIF_ID
+WHERE Pictures.Pic_ID = @Pic_ID;</value>
+  </data>
+  <data name="Update_Pictures_IPTC" xml:space="preserve">
+    <value>UPDATE Pictures
+SET Pictures.FK_IPTC_ID = @IPTC_ID
+WHERE Pictures.Pic_ID = @Pic_ID;</value>
+  </data>
+  <data name="Update_Pictures_Photographer" xml:space="preserve">
+    <value>UPDATE Pictures
+SET Pictures.FK_PG_ID = @PG_ID
+WHERE Pictures.Pic_ID = @Pic_ID;</value>
+  </data>
 </root>

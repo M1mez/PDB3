@@ -9,8 +9,6 @@ namespace PicDB.ViewModels
 {
     class PictureListViewModel : IPictureListViewModel
     {
-        private IEnumerable<IPictureViewModel> list;
-
         public PictureListViewModel()
         {
         }

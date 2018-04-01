@@ -12,7 +12,6 @@ namespace PicDB.Models
     {
         public PhotographerModel()
         {
-            ID = DAL_Conn.GetNextId("Photographer");
         }
 
         public int ID { get; set; }

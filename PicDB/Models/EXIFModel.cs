@@ -15,5 +15,8 @@ namespace PicDB.Models
         public decimal ISOValue { get; set; }
         public bool Flash { get; set; }
         public ExposurePrograms ExposureProgram { get; set; }
+        //additional variables
+        public int Pic_ID { get; set; }
+        public int EXIF_ID { get; set; }
     }
 }

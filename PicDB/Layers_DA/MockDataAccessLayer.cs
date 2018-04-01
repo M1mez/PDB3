@@ -8,7 +8,7 @@ namespace PicDB.Layers_DA
     class MockDataAccessLayer : DataAccessLayer
     {
         private List<IPictureModel> _mockPictureModelList = new List<IPictureModel>(){new PictureModel()};
-        private List<IPhotographerModel> _mockPhotographerModelList = new List<IPhotographerModel>(){new PhotographerModel(){ID=DAL_Conn.GetNextId("UnitTest")}};
+        private List<IPhotographerModel> _mockPhotographerModelList = new List<IPhotographerModel>(){new PhotographerModel(){ID=GetNextId("UnitTest", false)}};
         private bool _mockSyncTriggered = false;
 
         public void SyncTriggered() { _mockSyncTriggered = true; }

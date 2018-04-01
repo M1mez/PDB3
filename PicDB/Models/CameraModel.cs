@@ -8,7 +8,7 @@ namespace PicDB.Models
 {
     class CameraModel : ICameraModel
     {
-        public int ID { get; set; }
+        public int ID { get; set; } = -1;
         public string Producer { get; set; }
         public string Make { get; set; }
         public DateTime? BoughtOn { get; set; }

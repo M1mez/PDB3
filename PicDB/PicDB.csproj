@@ -60,11 +60,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="FileInformation.cs" />
+    <Compile Include="Layers_DA\DTOParser.cs" />
+    <Compile Include="Layers_DA\PreparedStatements.cs" />
     <Compile Include="WPF\Gallery.xaml.cs">
       <DependentUpon>Gallery.xaml</DependentUpon>
     </Compile>
     <Compile Include="Layers_B\BusinessLayer.cs" />
-    <Compile Include="Layers_DA\DAL_Conn.cs" />
     <Compile Include="Layers_DA\DataAccessLayer.cs" />
     <Compile Include="Layers_DA\MockDataAccessLayer.cs" />
     <Compile Include="Models\CameraModel.cs" />
@@ -72,7 +74,7 @@
     <Compile Include="Models\IPTCModel.cs" />
     <Compile Include="Models\PhotographerModel.cs" />
     <Compile Include="Models\PictureModel.cs" />
-    <Compile Include="PersInfo.cs" />
+    <Compile Include="Constants.cs" />
     <Compile Include="WPF\Photographer.xaml.cs">
       <DependentUpon>Photographer.xaml</DependentUpon>
     </Compile>

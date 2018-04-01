@@ -149,5 +149,285 @@ namespace PicDB.Properties {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to INSERT INTO Pictures_Photographers (FK_Pic_ID, FK_PG_ID) 
+        ///VALUES (@Pic_ID, @PG_ID);.
+        /// </summary>
+        internal static string Add_Picture_To_Photographer {
+            get {
+                return ResourceManager.GetString("Add_Picture_To_Photographer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DELETE FROM Photographer WHERE PG_ID = @ID;.
+        /// </summary>
+        internal static string DeletePhotographer_ID {
+            get {
+                return ResourceManager.GetString("DeletePhotographer_ID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DELETE FROM Pictures WHERE FileName  = @FileName;.
+        /// </summary>
+        internal static string DeletePicture_FileName {
+            get {
+                return ResourceManager.GetString("DeletePicture_FileName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DELETE FROM Pictures WHERE Pic_ID  = @ID;.
+        /// </summary>
+        internal static string DeletePicture_ID {
+            get {
+                return ResourceManager.GetString("DeletePicture_ID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SELECT *
+        ///	FROM Pictures as Pics
+        ///		LEFT JOIN Pictures_Photographers as P_PG ON P_PG.FK_Pic_ID = Pics.Pic_ID
+        ///		LEFT JOIN Photographers as PG ON PG.PG_ID = P_PG.FK_PG_ID
+        ///		LEFT JOIN EXIF ON EXIF_ID = Pics.FK_EXIF_ID
+        ///		LEFT JOIN IPTC ON IPTC_ID = Pics.FK_IPTC_ID
+        ///		LEFT JOIN Cameras ON Cam_ID = Pics.FK_Cam_ID
+        ///
+        ///	WHERE (@namePart IS NULL OR FileName LIKE &apos;%&apos; + @namePart + &apos;%&apos; )
+        ///
+        ///		AND (@PG_PG_ID IS NULL OR @PG_PG_ID = PG.PG_ID)
+        ///		AND (@PG_Birthday IS NULL OR @PG_Birthday = PG.BirthDay)
+        ///		AND (@PG_First [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string Get_Search_Pictures {
+            get {
+                return ResourceManager.GetString("Get_Search_Pictures", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SELECT * FROM Cameras;.
+        /// </summary>
+        internal static string GetAll_Cameras {
+            get {
+                return ResourceManager.GetString("GetAll_Cameras", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SELECT * FROM EXIF;.
+        /// </summary>
+        internal static string GetAll_EXIF {
+            get {
+                return ResourceManager.GetString("GetAll_EXIF", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SELECT * FROM IPTC;.
+        /// </summary>
+        internal static string GetAll_IPTC {
+            get {
+                return ResourceManager.GetString("GetAll_IPTC", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SELECT * FROM Photographer;.
+        /// </summary>
+        internal static string GetAll_Photographers {
+            get {
+                return ResourceManager.GetString("GetAll_Photographers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SELECT * FROM Pictures pics
+        ///	LEFT JOIN Cameras ON pics.FK_Cam_ID = Cameras.Cam_ID
+        ///	LEFT JOIN EXIF ON pics.FK_EXIF_ID = EXIF.EXIF_ID
+        ///	LEFT JOIN IPTC ON pics.FK_IPTC_ID = IPTC.IPTC_ID
+        ///	LEFT JOIN Photographers ON pics.FK_PG_ID = Photographers.PG_ID;.
+        /// </summary>
+        internal static string GetAll_Pictures {
+            get {
+                return ResourceManager.GetString("GetAll_Pictures", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SELECT ident_current(@TableName) + ident_incr(@TableName);.
+        /// </summary>
+        internal static string GetNextID_TableName {
+            get {
+                return ResourceManager.GetString("GetNextID_TableName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SELECT * FROM Cameras WHERE Cam_ID = @ID;.
+        /// </summary>
+        internal static string GetOne_Camera_ID {
+            get {
+                return ResourceManager.GetString("GetOne_Camera_ID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SELECT * FROM Photographer WHERE PG_ID = @ID;.
+        /// </summary>
+        internal static string GetOne_Photographer_ID {
+            get {
+                return ResourceManager.GetString("GetOne_Photographer_ID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SELECT * FROM Pictures 
+        ///LEFT JOIN Cameras ON pics.FK_Cam_ID = Cameras.Cam_ID
+        ///	LEFT JOIN EXIF ON pics.FK_EXIF_ID = EXIF.EXIF_ID
+        ///	LEFT JOIN IPTC ON pics.FK_IPTC_ID = IPTC.IPTC_ID
+        ///	LEFT JOIN Photographers ON pics.FK_PG_ID = Photographers.PG_ID
+        ///WHERE Pic_ID = @ID;.
+        /// </summary>
+        internal static string GetOne_Picture_ID {
+            get {
+                return ResourceManager.GetString("GetOne_Picture_ID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to IF (@Cam_ID IS NULL) BEGIN
+        ///INSERT INTO Cameras (Producer, Make, BoughtOn, Notes, ISOLimitGood, ISOLimitAcceptable)
+        ///VALUES (@Producer, @Make, @BoughtOn, @Notes, @ISOLimitGood, @ISOLimitAcceptable);
+        ///END ELSE BEGIN
+        ///UPDATE Cameras
+        ///SET Producer = @Producer, Make = @Make, BoughtOn = @BoughtOn, Notes = @Notes, ISOLimitGood = @ISOLimitGood, ISOLimitAcceptable = @ISOLimitAcceptable
+        ///WHERE Cameras.Cam_ID = @Cam_ID;
+        ///END.
+        /// </summary>
+        internal static string Save_Camera {
+            get {
+                return ResourceManager.GetString("Save_Camera", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MERGE
+        ///INTO EXIF WITH (HOLDLOCK) AS target
+        ///USING (SELECT
+        ///    @Make AS Make,
+        ///   @FNumber AS FNumber,
+        ///   @ExposureTime AS ExposureTime,
+        ///   @ISOValue AS ISOValue,
+        ///   @Flash AS Flash,
+        ///   @ExposureProgram AS ExposureProgram,
+        ///   @FK_Pic_ID AS FK_Pic_ID) AS source
+        ///(Make, FNumber, ExposureTime, ISOValue, Flash, ExposureProgram, FK_Pic_ID)
+        ///ON (target.FK_Pic_ID = source.FK_Pic_ID)
+        ///WHEN MATCHED
+        ///  THEN UPDATE
+        ///      SET Make = @Make,
+        ///         FNumber = @FNumber,
+        ///		 ExposureTime = @ExposureTime,
+        ///		 ISOVal [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string Save_Exif {
+            get {
+                return ResourceManager.GetString("Save_Exif", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MERGE
+        ///INTO IPTC WITH (HOLDLOCK) AS target
+        ///USING (SELECT
+        ///   @Keywords AS Keywords,
+        ///   @ByLine AS ByLine,
+        ///   @CopyrightNotice AS CopyrightNotice,
+        ///   @Headline AS Headline,
+        ///   @Caption AS Caption,
+        ///   @FK_Pic_ID AS FK_Pic_ID) AS source
+        ///(Keywords, ByLine, CopyrightNotice, Headline, Caption, FK_Pic_ID)
+        ///ON (target.FK_Pic_ID = source.FK_Pic_ID)
+        ///WHEN MATCHED
+        ///  THEN UPDATE
+        ///      SET Keywords = @Keywords,
+        ///         ByLine = @ByLine,
+        ///		 CopyrightNotice = @CopyrightNotice,
+        ///		 Headline = @Headline,
+        ///		 Cap [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string Save_Iptc {
+            get {
+                return ResourceManager.GetString("Save_Iptc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to INSERT INTO Photographer (FirstName, LastName, BirthDay, Notes) 
+        ///VALUES (@FirstName, @LastName, @BirthDay, @Notes).
+        /// </summary>
+        internal static string Save_Photographer {
+            get {
+                return ResourceManager.GetString("Save_Photographer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to INSERT INTO Pictures (FileName, FK_Cam_ID) 
+        ///VALUES (@FileName, @Cam_ID);.
+        /// </summary>
+        internal static string Save_Picture {
+            get {
+                return ResourceManager.GetString("Save_Picture", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to UPDATE Pictures
+        ///SET Pictures.FK_Cam_ID = @Cam_ID
+        ///WHERE Pictures.Pic_ID = @Pic_ID;.
+        /// </summary>
+        internal static string Update_Pictures_Camera {
+            get {
+                return ResourceManager.GetString("Update_Pictures_Camera", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to UPDATE Pictures
+        ///SET Pictures.FK_EXIF_ID = @EXIF_ID
+        ///WHERE Pictures.Pic_ID = @Pic_ID;.
+        /// </summary>
+        internal static string Update_Pictures_EXIF {
+            get {
+                return ResourceManager.GetString("Update_Pictures_EXIF", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to UPDATE Pictures
+        ///SET Pictures.FK_IPTC_ID = @IPTC_ID
+        ///WHERE Pictures.Pic_ID = @Pic_ID;.
+        /// </summary>
+        internal static string Update_Pictures_IPTC {
+            get {
+                return ResourceManager.GetString("Update_Pictures_IPTC", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to UPDATE Pictures
+        ///SET Pictures.FK_PG_ID = @PG_ID
+        ///WHERE Pictures.Pic_ID = @Pic_ID;.
+        /// </summary>
+        internal static string Update_Pictures_Photographer {
+            get {
+                return ResourceManager.GetString("Update_Pictures_Photographer", resourceCulture);
+            }
+        }
     }
 }

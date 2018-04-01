@@ -12,7 +12,7 @@ namespace PicDB.Models
     {
         public PictureModel()
         {
-            ID = DAL_Conn.GetNextId("Pictures");
+            //ID = DataAccessLayer.GetNextId("Pictures", false);
         }
 
         public int ID { get; set; }

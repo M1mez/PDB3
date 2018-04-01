@@ -46,10 +46,10 @@ namespace PicDB
             pw.Show();
         }
 
-        private string _searchIconPath = "";
+        //private string _searchIconPath = "";
         public string SearchIconPath {
             get {
-                return System.IO.Path.Combine(PersInfo.IcoPath, "ic_search_black_24dp_1x.png");
+                return System.IO.Path.Combine(Constants.IcoPath, "ic_search_black_24dp_1x.png");
             }
         }
     }

@@ -19,7 +19,7 @@ namespace PicDB.ViewModels
 
         public IPictureListViewModel List { get
             {
-                var mdlList = Directory.GetFiles(PersInfo.PicPath, "*.jpg")
+                var mdlList = Directory.GetFiles(Constants.PicPath, "*.jpg")
                 .Select(filePath => new PictureModel()
                 {
                     FileName = Path.GetFileNameWithoutExtension(filePath)

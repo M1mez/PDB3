@@ -13,5 +13,8 @@ namespace PicDB.Models
         public string CopyrightNotice { get; set; } = "N/A";
         public string Headline { get; set; } = "N/A";
         public string Caption { get; set; } = "N/A";
+        //additional variables
+        public int Pic_ID { get; set; }
+        public int IPTC_ID { get; set; }
     }
 }
