@@ -8,7 +8,7 @@ namespace PicDB.Layers_DA
     class MockDataAccessLayer : DataAccessLayer
     {
         private List<IPictureModel> _mockPictureModelList = new List<IPictureModel>(){new PictureModel()};
-        private List<IPhotographerModel> _mockPhotographerModelList = new List<IPhotographerModel>(){new PhotographerModel(){ID=GetNextId("UnitTest", false)}};
+        private List<IPhotographerModel> _mockPhotographerModelList = new List<IPhotographerModel>(){new PhotographerModel(){ID=_serialId++}};
         private bool _mockSyncTriggered = false;
 
         public void SyncTriggered() { _mockSyncTriggered = true; }
@@ -55,5 +55,8 @@ namespace PicDB.Layers_DA
         public override IEnumerable<ICameraModel> GetCameras() => new List<ICameraModel>() { new CameraModel() };
 
         public override ICameraModel GetCamera(int ID) => new CameraModel() { ID = ID };
+
+        private static int _serialId;
+        public override int GetNextId(string tableName) => _serialId++;
     }
 }

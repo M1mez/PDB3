@@ -15,7 +15,16 @@ namespace PicDB.Models
         }
 
         public int ID { get; set; }
-        public string FirstName { get; set; }
+        private string _firstName;
+        public string FirstName
+        {
+            get => _firstName;
+            set
+            {
+                _firstName = value;
+                ID = Constants.GetRandomInt();
+            }
+        }
         public string LastName { get; set; }
         public DateTime? BirthDay { get; set; } = null;
         public string Notes { get; set; }

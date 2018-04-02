@@ -31,7 +31,7 @@ namespace PicDB.Classes
             }
         }
 
-        private DataAccessLayer DAL = DataAccessLayer.Instance;
+        private static DataAccessLayer DAL = DataAccessLayer.Instance;
 
         public void DeletePhotographer(int ID)
         {

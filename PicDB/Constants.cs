@@ -10,7 +10,8 @@ namespace PicDB
 {
     public static class Constants
     {
-
+        private static Random rnd = new Random();
+        public static int GetRandomInt() => rnd.Next();
         private static bool JohannesPC => (Environment.MachineName == "DESKTOP-DIN7DPC");
         public static string ConnString
         {
@@ -32,9 +33,11 @@ namespace PicDB
         {
             get
             {
-                var isUnitTest = AppDomain.CurrentDomain.GetAssemblies().Any(
-                    a => a.FullName.ToLowerInvariant().StartsWith("nunit.framework"));
-                return isUnitTest;
+                /*var isUnitTest = AppDomain.CurrentDomain.GetAssemblies().Any(
+                    a => a.FullName.ToLowerInvariant().StartsWith("nunit.framework"));*/
+                return true;
+                /*var name = Environment.MachineName;
+                return !(name == "STEFFE-PC" || name == "DESKTOP-DIN7DPC");*/
             }
         }
 

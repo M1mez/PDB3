@@ -593,10 +593,9 @@ namespace PicDB.Layers_DA
         /// </summary>
         /// <param name="tableName"></param>
         /// <returns></returns>
-        public static int GetNextId(string tableName, bool connOpen)
+        public virtual int GetNextId(string tableName)
         {
-            if (Instance is MockDataAccessLayer) return _serialId++;
-            if (!connOpen) Conn.ConnectionString = Constants.ConnString;
+            //if (!connOpen) Conn.ConnectionString = Constants.ConnString;
             var uspName = "usp_getNextID";
             try
             {
@@ -605,9 +604,9 @@ namespace PicDB.Layers_DA
                 var cmd = PreparedStatements.GetNextIdTableName;
                 cmd.Parameters["@TableName"].Value = tableName;
 
-                if (!connOpen) Conn.Open();
+                //if (!connOpen) Conn.Open();
                 nextId = Convert.ToInt32(cmd.ExecuteScalar());
-                if (!connOpen) Conn.Close();
+                //if (!connOpen) Conn.Close();
                 return nextId;
             }
             catch (Exception e)

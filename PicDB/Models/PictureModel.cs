@@ -10,13 +10,16 @@ namespace PicDB.Models
 {
     class PictureModel : IPictureModel
     {
-        public PictureModel()
-        {
-            //ID = DataAccessLayer.GetNextId("Pictures", false);
-        }
-
+        private string _fileName;
         public int ID { get; set; }
-        public string FileName { get; set; }
+        public string FileName
+        {
+            get => _fileName;
+            set {
+                _fileName = value;
+                ID = Constants.GetRandomInt();
+            }
+        }
         public IIPTCModel IPTC { get; set; }
         public IEXIFModel EXIF { get; set; }
         public ICameraModel Camera { get; set; }
