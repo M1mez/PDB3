@@ -4,17 +4,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="PicDB.MainWindow"
         Title="PicDB" Height="600" Width="800" MinWidth="800" MinHeight="600">
-    <!--<Window.Resources>
-        <Style TargetType="ListBox">
-            <Setter Property="ItemTemplate">
-                <Setter.Value>
-                    <DataTemplate>
-                        <Image Source="{Binding Path=UriSource}" Width="100" Height="100"/>
-                    </DataTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-    </Window.Resources>-->
+
     <StackPanel Name="Container">
         <!--S1-->
         <Menu Height="18" Grid.Row="0">
@@ -42,7 +32,7 @@
             <Border BorderBrush="Black" BorderThickness="0.5">
                 <DockPanel ScrollViewer.VerticalScrollBarVisibility="Disabled">
                     <Button Width="50" Height="50" Background="Transparent" BorderBrush="{x:Null}" DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Center" UseLayoutRounding="False">
-                        <Image Source="O:\GIT\SWE2-CS\Icons\ic_search_black_24dp_1x.png" Width="16" Height="16" Opacity="0.5" Stretch="Fill"/> <!--TODO Binding?-->
+                        <Image Source="{Binding SearchIconPath}" Width="16" Height="16" Opacity="0.5" Stretch="Fill"/> <!--TODO Binding?-->
                     </Button>
                     <TextBox x:Name ="Search" Text="Search" Width="{Binding ActualWidth, ElementName=Container}" Height="{Binding ElementName=Searchbar, Path=ActualHeight}" ScrollViewer.VerticalScrollBarVisibility="Disabled" VerticalContentAlignment="Center"/>
                 </DockPanel>
@@ -60,8 +50,9 @@
                 <RowDefinition Height="0.1*"/>
                 <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
-            <Grid Grid.Column="0" Grid.Row="0">
-                <Image Source="{Binding SelectedItem, ElementName=Gallery}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="30,50,30,75"/>
+            <Grid Grid.Column="0" Grid.Row="0" >
+                <Image Source="{Binding SelectedPic, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource}" Name="BigImage" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="30,50,30,75"/>
+                <TextBlock Text="{Binding SelectedPic}"/>
             </Grid>
             <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Center"/>
             <StackPanel Grid.Column="2"  Orientation="Vertical">
@@ -151,23 +142,7 @@
             <!--S4-->
             <GridSplitter Grid.Row="1" VerticalAlignment="Center" ResizeDirection="Rows"  Height="5"  Grid.ColumnSpan="3" Width="792" Margin="0,5.214,0,5"/>
             <!--S5-->
-            <!--<ListView Name="Gallery" Grid.Row="2" Grid.ColumnSpan="3" ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.VerticalScrollBarVisibility="Hidden" Height="Auto" BorderBrush="{x:Null}">
-                <ListView.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <UniformGrid Columns="6" Rows="1"/>
-                        --><!--<Image Name="GalleryPic" Source="{Binding}" Width="100" Height="100" Margin="5" HorizontalAlignment="Center" />--><!--
-                    </ItemsPanelTemplate>
-                </ListView.ItemsPanel>
-            </ListView>-->
-            <!--<ListBox ItemsSource="{Binding}"
-                Grid.ColumnSpan="3" Grid.Row="2" Name="Gallery">
-                <ListBox.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <StackPanel Orientation="Horizontal" />
-                    </ItemsPanelTemplate>
-                </ListBox.ItemsPanel>
-            </ListBox>-->
-            <Frame Grid.Row="2" Grid.ColumnSpan="3" Source="Gallery.xaml"/>
+            <Frame Grid.Row="2" Grid.ColumnSpan="3"  Name="Gallery"/>
         </Grid>
     </StackPanel>
 </Window>
