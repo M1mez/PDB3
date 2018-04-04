@@ -57,6 +57,6 @@ namespace PicDB.Layers_DA
         public override ICameraModel GetCamera(int ID) => new CameraModel() { ID = ID };
 
         private static int _serialId;
-        public override int GetNextId(string tableName) => _serialId++;
+        //public int GetNextId(string tableName) => _serialId++;
     }
 }

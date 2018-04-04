@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using System.Diagnostics;
 using System.Windows.Data;
 using System.IO;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace PicDB
@@ -30,8 +31,8 @@ namespace PicDB
             }
         }
 
-        private Image _selectedPic { get; set; }
-        public Image SelectedPic
+        private ImageSource _selectedPic { get; set; }
+        public ImageSource SelectedPic
         {
             get { return _selectedPic; }
             set
@@ -39,7 +40,7 @@ namespace PicDB
                 if(_selectedPic != value)
                 {
                     _selectedPic = value;
-                    Console.WriteLine("!!!!SELECTEDPIC: " +_selectedPic.Name);
+                    Console.WriteLine("!!!!SELECTEDPIC: " +_selectedPic);
                     OnPropertyChanged("SelectedPic");
                 }
             }

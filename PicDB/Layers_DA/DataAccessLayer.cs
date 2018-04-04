@@ -586,7 +586,7 @@ namespace PicDB.Layers_DA
             }
         }
         
-        private static int _serialId = 1;
+       /* private static int _serialId = 1;
         /// <summary>
         /// Get the ID which would be assigned next by the DB.
         /// If the method is called statically by an UnitTest, return 1, then 2...
@@ -618,7 +618,7 @@ namespace PicDB.Layers_DA
             {
                 Conn.Close();
             }
-        }
+        }*/
 
         private static Dictionary<string, object> RecordToDictionary(IDataRecord record)
         {

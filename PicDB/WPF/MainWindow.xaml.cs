@@ -37,12 +37,12 @@ namespace PicDB
         {
             InitializeComponent();
             DataContext = new Gallery();
-            Gallery.NavigationService.Navigate(new Gallery());
+            Gallery.NavigationService.Navigate(DataContext);
 
             //BigImg = new BitmapImage(new Uri(gal.SelectedPic.UriSource.ToString(), UriKind.Absolute));
             //_test[0] = gal.SelectedPic;
 
-            BigImage = gal.SelectedPic;
+            //BigImage = gal.SelectedPic;
 
             Console.WriteLine("SECPIC: " + gal.SelectedPic);
             Console.WriteLine("_BIGIMG: " + _bigimg);
