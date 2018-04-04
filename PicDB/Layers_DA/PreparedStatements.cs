@@ -156,6 +156,8 @@ namespace PicDB.Layers_DA
             }
 
             private static SqlCommand NewComm(string str) => new SqlCommand(str, Conn);
+
+            //private static SqlCommand fillParameters
         }
     }
 }

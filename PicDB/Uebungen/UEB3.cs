@@ -28,7 +28,6 @@ namespace Uebungen
 
         public IDataAccessLayer GetDataAccessLayer()
         {
-            if (Constants.IsUnitTest) return new MockDataAccessLayer();
             return DataAccessLayer.Instance;
         }
 

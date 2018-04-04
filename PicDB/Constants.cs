@@ -36,8 +36,6 @@ namespace PicDB
                 var isUnitTest = AppDomain.CurrentDomain.GetAssemblies().Any(
                     a => a.FullName.ToLowerInvariant().StartsWith("nunit.framework"));
                 return isUnitTest;
-                /*var name = Environment.MachineName;
-                return !(name == "STEFFE-PC" || name == "DESKTOP-DIN7DPC");*/
             }
         }
 
