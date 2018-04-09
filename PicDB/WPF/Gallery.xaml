@@ -1,4 +1,4 @@
-﻿<Page x:Class="PicDB.Gallery"
+﻿<UserControl x:Class="PicDB.Gallery"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -7,8 +7,8 @@
       xmlns:local="clr-namespace:PicDB"
       mc:Ignorable="d" 
       d:DesignHeight="300" d:DesignWidth="300"
-      Title="Gallery">
-    <Page.Resources>
+      Name="GalleryRow">
+    <UserControl.Resources>
         <Style TargetType="ListBox">
             <Setter Property="ItemTemplate">
                 <Setter.Value>
@@ -18,9 +18,9 @@
                 </Setter.Value>
             </Setter>
         </Style>
-    </Page.Resources>
+    </UserControl.Resources>
     <Grid>
-        <ListBox ItemsSource="{Binding Pics, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedPic, Mode=TwoWay}" Name="GalleryRow">
+        <ListBox ItemsSource="{Binding Pics, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedPic, Mode=TwoWay}" >
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
                     <StackPanel Orientation="Horizontal" />
@@ -46,4 +46,4 @@
             </DataTemplate>
         </ListBox.ItemTemplate>
     </ListBox>-->
-</Page>
+</UserControl>

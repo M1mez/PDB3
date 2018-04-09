@@ -13,7 +13,7 @@ namespace PicDB
     /// <summary>
     /// Interaktionslogik für Gallery.xaml
     /// </summary>
-    public partial class Gallery : Page, INotifyPropertyChanged
+    public partial class Gallery : UserControl, INotifyPropertyChanged
     {
         
         private ObservableCollection<Image> _pics = new ObservableCollection<Image>();
