@@ -80,6 +80,7 @@
     <Compile Include="Models\PhotographerModel.cs" />
     <Compile Include="Models\PictureModel.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="ViewModel.cs" />
     <Compile Include="WPF\Photographer.xaml.cs">
       <DependentUpon>Photographer.xaml</DependentUpon>
     </Compile>

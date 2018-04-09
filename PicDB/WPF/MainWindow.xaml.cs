@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Media.Imaging;
 using System.Windows.Controls;
 using System.Windows.Media;
+using PicDB.ViewModels;
 
 namespace PicDB
 {
@@ -19,7 +20,7 @@ namespace PicDB
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new Gallery();;
+            this.DataContext = new MainWindowViewModel();
         }
 
         private void OpenNewPhotographerWindow(object sender, RoutedEventArgs e)

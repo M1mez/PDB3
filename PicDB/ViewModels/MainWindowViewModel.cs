@@ -9,20 +9,31 @@ using System.Text;
 
 namespace PicDB.ViewModels
 {
-    class MainWindowViewModel : IMainWindowViewModel
+    class MainWindowViewModel : ViewModel, IMainWindowViewModel
     {
         public MainWindowViewModel()
         {
         }
 
-        public IPictureViewModel CurrentPicture { get; }
+        private IPictureViewModel _currentPicture;
+        public IPictureViewModel CurrentPicture
+        {
+            get { return _currentPicture; }
+            set { if(_currentPicture != value)
+                {
+                    _currentPicture = value;
+                    OnPropertyChanged("CurrentPicture");
+                    Console.WriteLine("CURRENTPIC: " + value);
+                }
+            }
+        }
 
         public IPictureListViewModel List { get
             {
                 var mdlList = Directory.GetFiles(Constants.PicPath, "*.jpg")
-                .Select(filePath => new PictureModel()
+                .Select(FilePath => new PictureModel()
                 {
-                    FileName = Path.GetFileNameWithoutExtension(filePath)
+                    FileName = Path.GetFileNameWithoutExtension(FilePath)
                 });
 
                 return new PictureListViewModel(mdlList);

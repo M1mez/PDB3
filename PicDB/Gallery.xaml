@@ -4,21 +4,22 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:PicDB"
+             xmlns:vmdl="clr-namespace:PicDB.ViewModels" 
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
                 <Style TargetType="ListBox">
                     <Setter Property="ItemTemplate">
                         <Setter.Value>
-                            <DataTemplate>
-                                <Image Source="{Binding Path=UriSource}" Width="100" Height="100"/>
+                            <DataTemplate DataType="vmdl:MainWindowViewModel">
+                                <Image Source="{Binding FilePath, Mode=OneWay}" Width="100" Height="100"/>
                             </DataTemplate>
                         </Setter.Value>
                     </Setter>
                 </Style>
             </UserControl.Resources>
     <Grid>
-        <ListBox ItemsSource="{Binding Pics, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedPic, Mode=TwoWay}" >
+        <ListBox ItemsSource="{Binding List.List}" SelectedItem="{Binding CurrentPicture, Mode=TwoWay}" >
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
                     <VirtualizingStackPanel Orientation="Horizontal" /> 
@@ -26,5 +27,16 @@
             </ListBox.ItemsPanel>
         </ListBox>
     </Grid>
+    <!--<Grid>
+        <ListBox Name="GalleryRow" ItemsSource="{Binding List}">
+            <ListBox.ItemTemplate>
+                <DataTemplate DataType="vmdl:MainWindowViewModel">
+                    <VirtualizingStackPanel>
+                        <TextBlock Text="{Binding List.List, Mode=OneWay}" Width="100" Height="100"/>
+                    </VirtualizingStackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </Grid>-->
 </UserControl>
 
