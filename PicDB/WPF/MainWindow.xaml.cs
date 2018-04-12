@@ -6,6 +6,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Controls;
 using System.Windows.Media;
 using PicDB.ViewModels;
+using PicDB.Classes;
 
 namespace PicDB
 {
@@ -14,12 +15,12 @@ namespace PicDB
     /// </summary>
     public partial class MainWindow : Window
     {
-
-        private Gallery gal = new Gallery();
+        private BusinessLayer bl = BusinessLayer.Instance;
 
         public MainWindow()
         {
             InitializeComponent();
+            bl.Sync();
             this.DataContext = new MainWindowViewModel();
         }
 

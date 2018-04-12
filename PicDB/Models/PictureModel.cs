@@ -10,6 +10,14 @@ namespace PicDB.Models
 {
     class PictureModel : IPictureModel
     {
+       public PictureModel()
+       { }
+
+       public PictureModel(string fileName)
+        {
+            _fileName = fileName;
+        }
+
         private string _fileName;
         public int ID { get; set; }
         public string FileName
@@ -17,7 +25,7 @@ namespace PicDB.Models
             get => _fileName;
             set {
                 _fileName = value;
-                ID = Constants.GetRandomInt();
+               // ID = Constants.GetRandomInt();
             }
         }
         public IIPTCModel IPTC { get; set; }

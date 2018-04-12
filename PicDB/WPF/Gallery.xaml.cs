@@ -13,13 +13,12 @@ namespace PicDB
     /// <summary>
     /// Interaktionslogik für Gallery.xaml
     /// </summary>
-    public partial class Gallery : UserControl, ViewModel
+    public partial class Gallery : UserControl
     {
 
         public Gallery()
         {
-
-            
+            InitializeComponent();
         }
     }
 }

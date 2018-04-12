@@ -66,9 +66,6 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="FileInformation.cs" />
-    <Compile Include="Gallery.xaml.cs">
-      <DependentUpon>Gallery.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Layers_DA\DTOParser.cs" />
     <Compile Include="Layers_DA\PreparedStatements.cs" />
     <Compile Include="Layers_B\BusinessLayer.cs" />
@@ -81,6 +78,9 @@
     <Compile Include="Models\PictureModel.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="ViewModel.cs" />
+    <Compile Include="WPF\Gallery.xaml.cs">
+      <DependentUpon>Gallery.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WPF\Photographer.xaml.cs">
       <DependentUpon>Photographer.xaml</DependentUpon>
     </Compile>
@@ -100,9 +100,9 @@
     <Compile Include="ViewModels\PictureListViewModel.cs" />
     <Compile Include="ViewModels\PictureViewModel.cs" />
     <Compile Include="ViewModels\SearchViewModel.cs" />
-    <Page Include="Gallery.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="WPF\Gallery.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="WPF\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

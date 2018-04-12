@@ -20,7 +20,7 @@ namespace PicDB.ViewModels
             {
                 ID = mdl.ID;
                 FileName = mdl.FileName;
-                FilePath = Constants.PicPath + @"\" + mdl.FileName + ".jpg";
+                FilePath = Path.Combine(Constants.PicPath, mdl.FileName);
                 IPTC = new IPTCViewModel(mdl.IPTC);
                 EXIF = new EXIFViewModel(mdl.EXIF);
                 Camera = new CameraViewModel(mdl.Camera);

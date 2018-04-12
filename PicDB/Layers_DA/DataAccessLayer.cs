@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Xml;
 using BIF.SWE2.Interfaces;
@@ -14,11 +15,19 @@ namespace PicDB.Layers_DA
 {
     partial class DataAccessLayer : IDataAccessLayer
     {
-        private static SqlConnection Conn = new SqlConnection() {ConnectionString = Constants.ConnString};
+        private static SqlConnection Conn = new SqlConnection() { ConnectionString = Constants.ConnString };
         private static DataAccessLayer _instance;
         private static MockDataAccessLayer _mockInstance;
         private static readonly object padlock = new object();
         private readonly PreparedStatements PS;
+
+        private List<string> _dirPics = null;
+        public List<string> dirPics
+            {
+                get { return _dirPics ?? (_dirPics = Directory.GetFiles(Constants.PicPath, "*.jpg").Select(Path.GetFileName).ToList()); }
+            }
+
+        public void RefreshGallery() => _dirPics = Directory.GetFiles(Constants.PicPath, "*.jpg").Select(Path.GetFileName).ToList();
 
         protected DataAccessLayer()
         {

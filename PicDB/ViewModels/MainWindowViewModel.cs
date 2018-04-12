@@ -11,6 +11,7 @@ namespace PicDB.ViewModels
 {
     class MainWindowViewModel : ViewModel, IMainWindowViewModel
     {
+        public BusinessLayer Bl = BusinessLayer.Instance;
         public MainWindowViewModel()
         {
         }
@@ -23,20 +24,21 @@ namespace PicDB.ViewModels
                 {
                     _currentPicture = value;
                     OnPropertyChanged("CurrentPicture");
-                    Console.WriteLine("CURRENTPIC: " + value);
                 }
             }
         }
 
         public IPictureListViewModel List { get
             {
-                var mdlList = Directory.GetFiles(Constants.PicPath, "*.jpg")
-                .Select(FilePath => new PictureModel()
-                {
-                    FileName = Path.GetFileNameWithoutExtension(FilePath)
-                });
+                //var mdlList = Directory.GetFiles(Constants.PicPath, "*.jpg")
+                //.Select(FilePath => new PictureModel()
+                //{
+                //    FileName = Path.GetFileNameWithoutExtension(FilePath)
+                //});
 
-                return new PictureListViewModel(mdlList);
+                //return new PictureListViewModel(mdlList);
+
+                return new PictureListViewModel(Bl.GetDirPicModels());
             }
         }
 
