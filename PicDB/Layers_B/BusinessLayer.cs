@@ -70,7 +70,7 @@ namespace PicDB.Classes
             try
             {
                 FileInformation.WriteIPTC(filename, iptc);
-                DAL.Save((IPTCModel) iptc);
+                DAL.Save((IPTCModel)iptc);
             }
             catch (Exception e)
             {
@@ -173,7 +173,7 @@ namespace PicDB.Classes
                 throw;
             }
         }
-        
+
         public void Save(IPictureModel picture)
         {
             try
@@ -200,6 +200,13 @@ namespace PicDB.Classes
             }
         }
 
+        public List<PictureModel> GetDirPicModels()
+        {
+            var picList = new List<PictureModel>();
+            DAL.dirPics.ForEach(el => picList.Add(new PictureModel(el)));
+            return picList;
+        }
+
         public void Sync()
         {
             try
@@ -219,7 +226,8 @@ namespace PicDB.Classes
 
                 var dbPics = GetPictures().ToList();
                 var dbPicNames = dbPics.Select(x => x.FileName).ToList();
-                var dirPics = Directory.GetFiles(Constants.PicPath, "*.jpg").Select(Path.GetFileName).ToList();
+                DAL.RefreshGallery();
+                var dirPics = DAL.dirPics;
 
                 toSave = dirPics.Except(dbPicNames).ToList();
                 toDelete = dbPicNames.Except(dirPics).ToList();

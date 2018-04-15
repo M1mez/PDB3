@@ -3,6 +3,7 @@ using BIF.SWE2.Interfaces.ViewModels;
 using PicDB.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -19,6 +20,7 @@ namespace PicDB.ViewModels
             {
                 ID = mdl.ID;
                 FileName = mdl.FileName;
+                FilePath = Path.Combine(Constants.PicPath, mdl.FileName);
                 IPTC = new IPTCViewModel(mdl.IPTC);
                 EXIF = new EXIFViewModel(mdl.EXIF);
                 Camera = new CameraViewModel(mdl.Camera);

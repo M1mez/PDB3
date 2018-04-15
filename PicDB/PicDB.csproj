@@ -40,7 +40,10 @@
   <ItemGroup>
     <Reference Include="BIF-SWE2.Interfaces, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\deploy\BIF-SWE2.Interfaces.dll</HintPath>
+      <HintPath>..\BIF-SWE2.Interfaces\bin\Debug\BIF-SWE2.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework">
+      <HintPath>..\..\SWE2\SWE2-CS\packages\NUnit.3.6.1\lib\net40\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -65,9 +68,6 @@
     <Compile Include="FileInformation.cs" />
     <Compile Include="Layers_DA\DTOParser.cs" />
     <Compile Include="Layers_DA\PreparedStatements.cs" />
-    <Compile Include="WPF\Gallery.xaml.cs">
-      <DependentUpon>Gallery.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Layers_B\BusinessLayer.cs" />
     <Compile Include="Layers_DA\DataAccessLayer.cs" />
     <Compile Include="Layers_DA\MockDataAccessLayer.cs" />
@@ -77,6 +77,10 @@
     <Compile Include="Models\PhotographerModel.cs" />
     <Compile Include="Models\PictureModel.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="ViewModel.cs" />
+    <Compile Include="WPF\Gallery.xaml.cs">
+      <DependentUpon>Gallery.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WPF\Photographer.xaml.cs">
       <DependentUpon>Photographer.xaml</DependentUpon>
     </Compile>
@@ -97,8 +101,8 @@
     <Compile Include="ViewModels\PictureViewModel.cs" />
     <Compile Include="ViewModels\SearchViewModel.cs" />
     <Page Include="WPF\Gallery.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="WPF\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
