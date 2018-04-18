@@ -23,7 +23,8 @@ namespace PicDB.Models
         public string FileName
         {
             get => _fileName;
-            set {
+            set
+            {
                 _fileName = value;
                // ID = Constants.GetRandomInt();
             }

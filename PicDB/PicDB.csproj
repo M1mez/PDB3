@@ -189,7 +189,7 @@
     <None Include="Resources\8LandscapeMode.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\SearchIcon.png" />
+    <Resource Include="Resources\SearchIcon.png" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">

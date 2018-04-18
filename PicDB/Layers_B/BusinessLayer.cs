@@ -197,6 +197,7 @@ namespace PicDB.Classes
 
         public List<PictureModel> GetDirPicModels()
         {
+            return _dal.GetPictures().Cast<PictureModel>().ToList();
             var picList = new List<PictureModel>();
             _dal.dirPics.ForEach(el => picList.Add(new PictureModel(el)));
             return picList;

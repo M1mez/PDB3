@@ -22,6 +22,8 @@ namespace PicDB.ViewModels
             CopyrightNotice = mdl.CopyrightNotice;
             Headline = mdl.Headline;
             Caption = mdl.Caption;
+            //Pic_ID = mdl.Pic_ID;
+            //IPTC_ID = mdl.IPTC_ID;
         }
 
         public string Keywords { get; set; }
@@ -40,5 +42,7 @@ namespace PicDB.ViewModels
 
         public string Headline { get; set; }
         public string Caption { get; set; }
+        public int Pic_ID { get; set; }
+        public int IPTC_ID { get; set; }
     }
 }

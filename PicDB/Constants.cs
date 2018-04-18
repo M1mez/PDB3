@@ -24,7 +24,7 @@ namespace PicDB
         }
 
 
-        public static string DeployPath => (JohannesPC) ? @"O:\GIT\SWE2-CS" : @"C:\Users\Steffe\Desktop\FH\4.Semester\PDB3\deploy";
+        public static string DeployPath => (JohannesPC) ? @"O:\GIT\SWE2-CS" : @"C:\Users\Steffe\Desktop\FH\4.Semester\PDB3\";
 
         /// <summary>
         /// returns Bool if the program is executed via UnitTest
