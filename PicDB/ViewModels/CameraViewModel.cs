@@ -11,8 +11,6 @@ namespace PicDB.ViewModels
 {
     class CameraViewModel : ICameraViewModel
     {
-        public BusinessLayer BL = BusinessLayer.Instance;
-
         public CameraViewModel()
         {
         }

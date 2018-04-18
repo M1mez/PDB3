@@ -15,30 +15,25 @@ namespace PicDB.Classes
 {
     class BusinessLayer : IBusinessLayer
     {
-        private BusinessLayer()
+        public BusinessLayer()
         {
-        }
-        private static BusinessLayer _instance;
-        private static readonly object padlock = new object();
-        public static BusinessLayer Instance
-        {
-            get
-            {
-                lock (padlock)
-                {
-                    return _instance ?? (_instance = new BusinessLayer());
-                }
-            }
+            _dal = new DataAccessLayer();
         }
 
-        private static DataAccessLayer DAL = DataAccessLayer.Instance;
+        public BusinessLayer(bool IsUnitTest)
+        {
+            _dal = new MockDataAccessLayer();
+        }
+
+
+        private static DataAccessLayer _dal;
 
         public void DeletePhotographer(int ID)
         {
             try
             {
 
-                DAL.DeletePhotographer(ID);
+                _dal.DeletePhotographer(ID);
             }
             catch (Exception e)
             {
@@ -52,7 +47,7 @@ namespace PicDB.Classes
             try
             {
 
-                DAL.DeletePicture(ID);
+                _dal.DeletePicture(ID);
             }
             catch (Exception e)
             {
@@ -70,7 +65,7 @@ namespace PicDB.Classes
             try
             {
                 FileInformation.WriteIPTC(filename, iptc);
-                DAL.Save((IPTCModel)iptc);
+                _dal.Save((IPTCModel)iptc);
             }
             catch (Exception e)
             {
@@ -83,7 +78,7 @@ namespace PicDB.Classes
         {
             try
             {
-                return DAL.GetCamera(ID);
+                return _dal.GetCamera(ID);
 
             }
             catch (Exception e)
@@ -97,7 +92,7 @@ namespace PicDB.Classes
         {
             try
             {
-                return DAL.GetCameras();
+                return _dal.GetCameras();
             }
             catch (Exception e)
             {
@@ -110,7 +105,7 @@ namespace PicDB.Classes
         {
             try
             {
-                return DAL.GetPhotographer(ID);
+                return _dal.GetPhotographer(ID);
 
             }
             catch (Exception e)
@@ -124,7 +119,7 @@ namespace PicDB.Classes
         {
             try
             {
-                return DAL.GetPhotographers();
+                return _dal.GetPhotographers();
 
             }
             catch (Exception e)
@@ -138,7 +133,7 @@ namespace PicDB.Classes
         {
             try
             {
-                return DAL.GetPicture(ID);
+                return _dal.GetPicture(ID);
 
             }
             catch (Exception e)
@@ -152,7 +147,7 @@ namespace PicDB.Classes
         {
             try
             {
-                return DAL.GetPictures();
+                return _dal.GetPictures();
             }
             catch (Exception e)
             {
@@ -165,7 +160,7 @@ namespace PicDB.Classes
         {
             try
             {
-                return DAL.GetPictures(namePart, photographerParts, iptcParts, exifParts);
+                return _dal.GetPictures(namePart, photographerParts, iptcParts, exifParts);
             }
             catch (Exception e)
             {
@@ -178,7 +173,7 @@ namespace PicDB.Classes
         {
             try
             {
-                DAL.Save(picture);
+                _dal.Save(picture);
             }
             catch (Exception e)
             {
@@ -191,7 +186,7 @@ namespace PicDB.Classes
         {
             try
             {
-                DAL.Save(photographer);
+                _dal.Save(photographer);
             }
             catch (Exception e)
             {
@@ -203,7 +198,7 @@ namespace PicDB.Classes
         public List<PictureModel> GetDirPicModels()
         {
             var picList = new List<PictureModel>();
-            DAL.dirPics.ForEach(el => picList.Add(new PictureModel(el)));
+            _dal.dirPics.ForEach(el => picList.Add(new PictureModel(el)));
             return picList;
         }
 
@@ -211,7 +206,7 @@ namespace PicDB.Classes
         {
             try
             {
-                if (DAL is MockDataAccessLayer mock)
+                if (_dal is MockDataAccessLayer mock)
                 {
                     mock.SyncTriggered();
                     return;
@@ -226,14 +221,14 @@ namespace PicDB.Classes
 
                 var dbPics = GetPictures().ToList();
                 var dbPicNames = dbPics.Select(x => x.FileName).ToList();
-                DAL.RefreshGallery();
-                var dirPics = DAL.dirPics;
+                _dal.RefreshGallery();
+                var dirPics = _dal.dirPics;
 
                 toSave = dirPics.Except(dbPicNames).ToList();
                 toDelete = dbPicNames.Except(dirPics).ToList();
 
-                DAL.Save(toSave);
-                DAL.DeletePictures(toDelete);
+                _dal.Save(toSave);
+                _dal.DeletePictures(toDelete);
 
                 /*DAL.Save(new CameraModel()
                 {
@@ -267,8 +262,8 @@ namespace PicDB.Classes
                    // DAL.UpdatePicsPhotographer(pic.ID, DAL.GetPhotographers().ToList()[0].ID);
                 }
 
-                exifList.ForEach(DAL.Save);
-                iptcList.ForEach(DAL.Save);
+                exifList.ForEach(_dal.Save);
+                iptcList.ForEach(_dal.Save);
             }
             catch (Exception e)
             {

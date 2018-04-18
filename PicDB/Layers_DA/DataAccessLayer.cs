@@ -16,9 +16,6 @@ namespace PicDB.Layers_DA
     partial class DataAccessLayer : IDataAccessLayer
     {
         private static SqlConnection Conn = new SqlConnection() { ConnectionString = Constants.ConnString };
-        private static DataAccessLayer _instance;
-        private static MockDataAccessLayer _mockInstance;
-        private static readonly object padlock = new object();
         private readonly PreparedStatements PS;
 
         private List<string> _dirPics = null;
@@ -29,25 +26,9 @@ namespace PicDB.Layers_DA
 
         public void RefreshGallery() => _dirPics = Directory.GetFiles(Constants.PicPath, "*.jpg").Select(Path.GetFileName).ToList();
 
-        protected DataAccessLayer()
+        public  DataAccessLayer()
         {
             PS = new PreparedStatements();
-        }
-
-        public static DataAccessLayer Instance
-        {
-            get
-            {
-                lock (padlock)
-                {
-                    if (Constants.IsUnitTest)
-                    {
-                        return _mockInstance ?? (_mockInstance = new MockDataAccessLayer());
-                    }
-
-                    return _instance ?? (_instance = new DataAccessLayer());
-                }
-            }
         }
 
         public virtual void DeletePhotographer(int ID)
@@ -373,7 +354,8 @@ namespace PicDB.Layers_DA
                 Conn.Open();
                 PS.SavePhotographer.Parameters["@FirstName"].Value = photographer.FirstName;
                 PS.SavePhotographer.Parameters["@LastName"].Value = photographer.LastName;
-                PS.SavePhotographer.Parameters["@BirthDay"].Value = photographer.BirthDay;
+                PS.SavePhotographer.Parameters["@BirthDay"].Value =
+                    photographer.BirthDay != null ? (object)photographer.BirthDay : DBNull.Value;
                 PS.SavePhotographer.Parameters["@Notes"].Value = photographer.Notes;
                 PS.SavePhotographer.ExecuteNonQuery();
                 Conn.Close();

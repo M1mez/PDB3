@@ -15,12 +15,9 @@ namespace PicDB
     /// </summary>
     public partial class MainWindow : Window
     {
-        private BusinessLayer bl = BusinessLayer.Instance;
-
         public MainWindow()
         {
             InitializeComponent();
-            bl.Sync();
             this.DataContext = new MainWindowViewModel();
         }
 

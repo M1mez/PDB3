@@ -11,9 +11,10 @@ namespace PicDB.ViewModels
 {
     class MainWindowViewModel : ViewModel, IMainWindowViewModel
     {
-        public BusinessLayer Bl = BusinessLayer.Instance;
+        public BusinessLayer Bl = new BusinessLayer();
         public MainWindowViewModel()
         {
+            Bl.Sync();
         }
 
         private IPictureViewModel _currentPicture;
@@ -30,14 +31,6 @@ namespace PicDB.ViewModels
 
         public IPictureListViewModel List { get
             {
-                //var mdlList = Directory.GetFiles(Constants.PicPath, "*.jpg")
-                //.Select(FilePath => new PictureModel()
-                //{
-                //    FileName = Path.GetFileNameWithoutExtension(FilePath)
-                //});
-
-                //return new PictureListViewModel(mdlList);
-
                 return new PictureListViewModel(Bl.GetDirPicModels());
             }
         }

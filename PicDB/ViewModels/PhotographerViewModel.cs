@@ -12,8 +12,6 @@ namespace PicDB.ViewModels
 {
     class PhotographerViewModel : IPhotographerViewModel
     {
-        public BusinessLayer bl = BusinessLayer.Instance;
-
         public PhotographerViewModel() { }
 
         public PhotographerViewModel(IPhotographerModel mdl)

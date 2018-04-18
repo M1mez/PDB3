@@ -7,7 +7,7 @@ namespace PicDB
 {
     public partial class Photographer : Window
     {
-        BusinessLayer bl = BusinessLayer.Instance;
+        BusinessLayer bl = new BusinessLayer();
 
         public Photographer()
         {

@@ -22,21 +22,10 @@
         <ListBox ItemsSource="{Binding List.List}" SelectedItem="{Binding CurrentPicture, Mode=TwoWay}" >
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <VirtualizingStackPanel Orientation="Horizontal" /> 
+                    <VirtualizingStackPanel Orientation="Horizontal" />
                 </ItemsPanelTemplate>
             </ListBox.ItemsPanel>
         </ListBox>
     </Grid>
-    <!--<Grid>
-        <ListBox Name="GalleryRow" ItemsSource="{Binding List}">
-            <ListBox.ItemTemplate>
-                <DataTemplate DataType="vmdl:MainWindowViewModel">
-                    <VirtualizingStackPanel>
-                        <TextBlock Text="{Binding List.List, Mode=OneWay}" Width="100" Height="100"/>
-                    </VirtualizingStackPanel>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
-    </Grid>-->
 </UserControl>
 
