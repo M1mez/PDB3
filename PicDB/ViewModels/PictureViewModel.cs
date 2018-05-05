@@ -1,5 +1,6 @@
 ﻿using BIF.SWE2.Interfaces.Models;
 using BIF.SWE2.Interfaces.ViewModels;
+using PicDB.Layers_DA;
 using PicDB.Models;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ namespace PicDB.ViewModels
 {
     class PictureViewModel : IPictureViewModel
     {
+        public DataAccessLayer _dal = new DataAccessLayer();
         public PictureViewModel()
         {
         }
