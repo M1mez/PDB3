@@ -8,7 +8,7 @@
         x:Class="PicDB.MainWindow"
         Title="PicDB" Height="600" Width="800" MinWidth="800" MinHeight="600">
     <Window.Resources>
-        <!--<vmdl:StringToImageConverter x:Key="converter"/>-->
+        <vmdl:StringToImageConverter x:Key="converter"/>
     </Window.Resources>
     <StackPanel Name="Container">
         <!--S1-->
@@ -60,7 +60,7 @@
                 <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
             <Grid Grid.Column="0" Grid.Row="0" >
-                <Image Source="{Binding CurrentPicture.FilePath}" Name="BigImage" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="30,50,30,75"/>
+                <Image Source="{Binding CurrentPicture.FilePath, Converter={StaticResource converter}, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" Name="BigImage" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="30,50,30,75"/>
             </Grid>
             <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Center"/>
             <StackPanel Grid.Column="2"  Orientation="Vertical">

@@ -8,11 +8,12 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
+        <vmdl:StringToImageConverter x:Key="converter"/>
         <Style TargetType="ListBox">
                     <Setter Property="ItemTemplate">
                         <Setter.Value>
                             <DataTemplate DataType="vmdl:MainWindowViewModel">
-                        <Image Source="{Binding FilePath}" Width="100" Height="100"/>
+                        <Image Source="{Binding FilePath, Converter={StaticResource converter}, Mode=OneWay}" Width="100" Height="100"/>
                             </DataTemplate>
                         </Setter.Value>
                     </Setter>
