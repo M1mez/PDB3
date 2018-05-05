@@ -8,11 +8,15 @@ namespace PicDB.ViewModels
 {
     class SearchViewModel : ISearchViewModel
     {
-        public string SearchText {
-            get {
+        public string SearchText
+        {
+            get
+            {
                 return _searchtext;
             }
-            set {
+
+            set
+            {
                 _searchtext = value;
                 _isActive = !String.IsNullOrWhiteSpace(_searchtext);
             }

@@ -118,31 +118,65 @@
                                 <RowDefinition Height="1*"/>
                             </Grid.RowDefinitions>
                             <Label Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" Content="Make"></Label>
-                            <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding CurrentPicture.EXIF.Make, Mode=OneWay}"></TextBox>
+                            <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding CurrentPicture.EXIF.Make, Mode=OneWay}" IsReadOnly="True"></TextBox>
 
                             <Label Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Content="FNumber"></Label>
-                            <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding CurrentPicture.EXIF.FNumber, Mode=OneWay}"></TextBox>
+                            <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding CurrentPicture.EXIF.FNumber, Mode=OneWay}" IsReadOnly="True"></TextBox>
 
                             <Label Grid.Column="0" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center">
                                 <Label.Content>
                                     <AccessText Text="Exposure Time" TextWrapping="Wrap"></AccessText>
                                 </Label.Content>
                             </Label>
-                            <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding CurrentPicture.EXIF.ExposureTime, Mode=OneWay}"></TextBox>
+                            <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding CurrentPicture.EXIF.ExposureTime, Mode=OneWay}" IsReadOnly="True"></TextBox>
 
                             <Label Grid.Column="0" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Center" Content="ISO Value"></Label>
-                            <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding CurrentPicture.EXIF.ISOValue, Mode=OneWay}"></TextBox>
+                            <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding CurrentPicture.EXIF.ISOValue, Mode=OneWay}" IsReadOnly="True"></TextBox>
 
                             <Label Grid.Column="0" Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Center" Content="Flash"></Label>
-                            <TextBox Grid.Column="1" Grid.Row="4" Text="{Binding CurrentPicture.EXIF.Flash, Mode=OneWay}"></TextBox>
+                            <TextBox Grid.Column="1" Grid.Row="4" Text="{Binding CurrentPicture.EXIF.Flash, Mode=OneWay}" IsReadOnly="True"></TextBox>
 
                             <Label Grid.Column="0" Grid.Row="5" VerticalAlignment="Center" HorizontalAlignment="Center">
                                 <Label.Content>
                                     <AccessText Text="Exposure Program" TextWrapping="Wrap"></AccessText>
                                 </Label.Content>
                             </Label>
-                            <TextBox Grid.Column="1" Grid.Row="5" Text="{Binding CurrentPicture.EXIF.ExposureProgram, Mode=OneWay}"></TextBox>
+                            <TextBox Grid.Column="1" Grid.Row="5" Text="{Binding CurrentPicture.EXIF.ExposureProgram, Mode=OneWay}" IsReadOnly="True"></TextBox>
 
+                        </Grid>
+                    </TabItem>
+                    <!--Photographer Info-->
+                    <TabItem Header="Photographer">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="2*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="1*"/>
+                            </Grid.RowDefinitions>
+                            <Label Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center">ID</Label>
+                            <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding CurrentPicture.Photographer.ID}" IsReadOnly="True"></TextBox>
+                            
+
+                            <Label Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center">First Name</Label>
+                            <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding CurrentPicture.Photographer.FirstName}" IsReadOnly="True"></TextBox>
+
+                            <Label Grid.Column="0" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center">Last Name</Label>
+                            <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding CurrentPicture.Photographer.LastName}" IsReadOnly="True"></TextBox>
+
+                            <Label Grid.Column="0" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Center">Birthday</Label>
+                            <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding CurrentPicture.Photographer.BirthDay}" IsReadOnly="True"></TextBox>
+
+                            <Label Grid.Column="0" Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Center">Notes</Label>
+                            <TextBox Grid.Column="1" Grid.Row="4" Text="{Binding CurrentPicture.Photographer.Notes}" IsReadOnly="True"></TextBox>
+
+                         <!--   <Button Grid.Column="1" Grid.Row="5"  Width="120" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center">Update</Button> -->
                         </Grid>
                     </TabItem>
                 </TabControl>

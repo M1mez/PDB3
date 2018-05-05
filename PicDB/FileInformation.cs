@@ -130,7 +130,7 @@ namespace PicDB
                     writer.SetQuery("/app13/irb/8bimiptc/iptc/by-line", iptc.ByLine);
                     writer.SetQuery("/app13/irb/8bimiptc/iptc/copyright notice", iptc.CopyrightNotice);
                     writer.SetQuery("/app13/irb/8bimiptc/iptc/headline", iptc.Headline);
-                    BitmapMetadata
+                    
                 }
                 fs.Close();
             }
