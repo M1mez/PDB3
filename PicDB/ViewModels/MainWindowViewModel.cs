@@ -3,17 +3,26 @@ using PicDB.Classes;
 using PicDB.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
+using PicDB.Annotations;
 
 namespace PicDB.ViewModels
 {
-    class MainWindowViewModel : ViewModel, IMainWindowViewModel
+    class MainWindowViewModel : IMainWindowViewModel, INotifyPropertyChanged
     {
+        //notify
+        public event PropertyChangedEventHandler PropertyChanged;
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) =>
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
         public BusinessLayer Bl = new BusinessLayer();
         public MainWindowViewModel()
         {
@@ -23,12 +32,11 @@ namespace PicDB.ViewModels
         private IPictureViewModel _currentPicture;
         public IPictureViewModel CurrentPicture
         {
-            get { return _currentPicture; }
-            set { if(_currentPicture != value)
-                {
-                    _currentPicture = value;
-                    OnPropertyChanged("CurrentPicture");
-                }
+            get => _currentPicture;
+            set {
+                if (_currentPicture == value) return;
+                _currentPicture = value;
+                OnPropertyChanged();
             }
         }
 
@@ -45,20 +53,14 @@ namespace PicDB.ViewModels
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            object result = null;
-            string uri = value as string;
+            if (!(value is string uri)) return null;
 
-            if (uri != null)
-            {
-                BitmapImage image = new BitmapImage();
-                image.BeginInit();
-                image.CacheOption = BitmapCacheOption.OnLoad;
-                image.UriSource = new Uri(uri);
-                image.EndInit();
-                result = image;
-            }
-
-            return result;
+            BitmapImage image = new BitmapImage();
+            image.BeginInit();
+            image.CacheOption = BitmapCacheOption.OnLoad;
+            image.UriSource = new Uri(uri);
+            image.EndInit();
+            return image;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

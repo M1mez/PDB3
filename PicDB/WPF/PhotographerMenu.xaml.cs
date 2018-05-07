@@ -16,18 +16,13 @@ namespace PicDB
 
         public void AddPhotographer(object sender, RoutedEventArgs e)
         {
-            var mdl = new PhotographerModel();
-
-            mdl.FirstName = _FirstName.Text;
-            mdl.LastName = _LastName.Text;
-            mdl.Notes = _Notes.Text;
-
-            if(_BirthDay.SelectedDate == null)
-                mdl.BirthDay = null;
-            else
-                mdl.BirthDay = _BirthDay.SelectedDate;
-            
-            
+            var mdl = new PhotographerModel
+            {
+                FirstName = _FirstName.Text,
+                LastName = _LastName.Text,
+                Notes = _Notes.Text,
+                BirthDay = _BirthDay.SelectedDate
+            };
 
             var vmdl = new PhotographerViewModel(mdl);
 

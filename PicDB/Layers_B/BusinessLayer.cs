@@ -9,7 +9,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Media.Imaging;
+using BIF.SWE2.Interfaces.ViewModels;
 using PicDB.Layers_DA;
+using PicDB.ViewModels;
 
 namespace PicDB.Classes
 {
@@ -59,7 +61,7 @@ namespace PicDB.Classes
         public IEXIFModel ExtractEXIF(string filename) => FileInformation.ExtractEXIF(filename);
 
         public IIPTCModel ExtractIPTC(string filename) => FileInformation.ExtractIPTC(filename);
-
+        
         public void WriteIPTC(string filename, IIPTCModel iptc)
         {
             try
@@ -182,6 +184,7 @@ namespace PicDB.Classes
             }
         }
 
+        public void Save(PhotographerViewModel phVM) => Save(phVM.photographerModel);
         public void Save(IPhotographerModel photographer)
         {
             try
@@ -198,9 +201,6 @@ namespace PicDB.Classes
         public List<PictureModel> GetDirPicModels()
         {
             return _dal.GetPictures().Cast<PictureModel>().ToList();
-            var picList = new List<PictureModel>();
-            _dal.dirPics.ForEach(el => picList.Add(new PictureModel(el)));
-            return picList;
         }
 
         public void Sync()
@@ -223,7 +223,7 @@ namespace PicDB.Classes
                 var dbPics = GetPictures().ToList();
                 var dbPicNames = dbPics.Select(x => x.FileName).ToList();
                 _dal.RefreshGallery();
-                var dirPics = _dal.dirPics;
+                var dirPics = _dal.DirPics;
 
                 toSave = dirPics.Except(dbPicNames).ToList();
                 toDelete = dbPicNames.Except(dirPics).ToList();

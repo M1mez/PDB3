@@ -4,69 +4,60 @@ using BIF.SWE2.Interfaces.ViewModels;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
+using PicDB.Annotations;
+using PicDB.Models;
 
 namespace PicDB.ViewModels
 {
-    class EXIFViewModel : IEXIFViewModel
+    class EXIFViewModel : IEXIFViewModel, INotifyPropertyChanged
     {
-        public EXIFViewModel()
-        {
-        }
+        //notify
+        public event PropertyChangedEventHandler PropertyChanged;
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) =>
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
+        //ctor
+        public EXIFViewModel() { }
         public EXIFViewModel(IEXIFModel mdl)
         {
-            if (mdl == null) return;
-            Make = mdl.Make;
-            FNumber = mdl.FNumber;
-            ExposureTime = mdl.ExposureTime;
-            ISOValue = mdl.ISOValue;
-            Flash = mdl.Flash;
-            ExposureProgram = Enum.GetName(typeof(ExposurePrograms), mdl.ExposureProgram);
-            ISORating = GetRating(mdl.ISOValue);
-            ExposureProgramResource = GetExposureProgramResource(ExposureProgram);
+            if (mdl != null) Exifmodel = mdl;
         }
+        
+        //model
+        public readonly IEXIFModel Exifmodel = new EXIFModel();
+        public string Make => Exifmodel.Make;
+        public decimal FNumber => Exifmodel.FNumber;
+        public decimal ExposureTime => Exifmodel.ExposureTime;
+        public decimal ISOValue => Exifmodel.ISOValue;
+        public bool Flash => Exifmodel.Flash;
+        public string ExposureProgram => Exifmodel.ExposureProgram.ToString();
 
+        public string ExposureProgramResource => 
+            $"pack://application:,,,/Resources/{(int)Exifmodel.ExposureProgram}{ExposureProgram}.png";
         private static string GetExposureProgramResource(string program)
         {
             if (Enum.IsDefined(typeof(ExposurePrograms), program))
-                return "_" + (int) Enum.Parse(typeof(ExposurePrograms), program) + program;
-            else return null;
-        }
-
-
-        private ISORatings GetRating(decimal ISOVal)
-        {
-            if (ISOVal < 200)
-                return ISORatings.NotDefined;
-            if (ISOVal < 800)
-                return ISORatings.Good;
-            if (ISOVal < 1600)
-                return ISORatings.Acceptable;
-            else
-                return ISORatings.Noisey;
-        }
-
-        public string Make { get; }
-
-        public decimal FNumber { get; }
-
-        public decimal ExposureTime { get; }
-
-        public decimal ISOValue { get; }
-
-        public bool Flash { get; }
-
-        public string ExposureProgram { get; } 
-
-        public string ExposureProgramResource { get; }
+                return "_" + (int)Enum.Parse(typeof(ExposurePrograms), program) + program;
+            return GetExposureProgramResource("NotDefined");
+        } //old version of ExposureProgramResource
 
         public ICameraViewModel Camera { get; set; }
 
-        public ISORatings ISORating { get; }
+        public ISORatings ISORating => GetRating(ISOValue);
+        public ISORatings GetRating(decimal iso)
+        {
+            if (iso <= 0) return ISORatings.NotDefined;
+            if (iso <= 400) return ISORatings.Good;
+            if (iso <= 800) return ISORatings.Acceptable;
+            return ISORatings.Noisey;
+        }
 
         public string ISORatingResource { get; }
     }

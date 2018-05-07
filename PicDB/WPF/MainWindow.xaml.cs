@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Media.Imaging;
 using System.Windows.Controls;
 using System.Windows.Media;
+using BIF.SWE2.Interfaces.ViewModels;
 using PicDB.ViewModels;
 using PicDB.Classes;
 using PicDB.Models;
@@ -38,10 +39,8 @@ namespace PicDB
 
         private void WriteIPTC(object sender, RoutedEventArgs e)
         {
-            var im = new IPTCModel((IPTCViewModel)mwvmdl.CurrentPicture.IPTC);
-            im.Pic_ID = mwvmdl.CurrentPicture.ID;
-            mwvmdl.Bl.WriteIPTC(mwvmdl.CurrentPicture.FileName, im);
-
+            var iptcVm = (IPTCViewModel) mwvmdl.CurrentPicture.IPTC;
+            mwvmdl.Bl.WriteIPTC(mwvmdl.CurrentPicture.FileName, iptcVm.IPTCModel);
         }
     }
 }

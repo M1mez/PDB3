@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+// ReSharper disable InconsistentNaming
 
 namespace PicDB.Models
 {
@@ -12,7 +13,7 @@ namespace PicDB.Models
         public IPTCModel()
         { }
 
-        public IPTCModel(IPTCViewModel vmdl)
+        /*public IPTCModel(IPTCViewModel vmdl)
         {
             if (vmdl == null) return;
             Keywords = vmdl.Keywords;
@@ -22,7 +23,7 @@ namespace PicDB.Models
             Caption = vmdl.Caption;
             Pic_ID = vmdl.Pic_ID;
             IPTC_ID = vmdl.IPTC_ID;
-        }
+        }*/
 
         public string Keywords { get; set; } = "N/A";
         public string ByLine { get; set; } = "N/A";

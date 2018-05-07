@@ -19,7 +19,7 @@ namespace PicDB.Layers_DA
         private readonly PreparedStatements PS;
 
         private List<string> _dirPics = null;
-        public List<string> dirPics
+        public List<string> DirPics
             {
                 get { return _dirPics ?? (_dirPics = Directory.GetFiles(Constants.PicPath, "*.jpg").Select(Path.GetFileName).ToList()); }
             }
@@ -196,7 +196,8 @@ namespace PicDB.Layers_DA
                 Conn.Open();
                 using (var reader = PS.GetAllPhotographers.ExecuteReader())
                 {
-                    while (reader.Read()) photographers.Add(DTOParser.ParsePhotographerModel(RecordToDictionary(reader)));
+                    while (reader.Read())
+                        photographers.Add(DTOParser.ParsePhotographerModel(RecordToDictionary(reader)));
                 }
                 Conn.Close();
                 return photographers;

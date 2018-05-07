@@ -4,87 +4,122 @@ using BIF.SWE2.Interfaces.ViewModels;
 using PicDB.Classes;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
+using PicDB.Annotations;
+using PicDB.Models;
 
 namespace PicDB.ViewModels
 {
-    class CameraViewModel : ICameraViewModel
+    class CameraViewModel : ICameraViewModel, INotifyPropertyChanged
     {
-        public CameraViewModel()
-        {
-        }
+        //notify
+        public event PropertyChangedEventHandler PropertyChanged;
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) =>
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
+        //ctor
+        public CameraViewModel() { }
         public CameraViewModel(ICameraModel mdl)
         {
-            if (mdl == null) return;
-            ID = mdl.ID;
-            Producer = mdl.Producer;
-            Make = mdl.Make;
-            BoughtOn = mdl.BoughtOn;
-            Notes = mdl.Notes;
-            ISOLimitAcceptable = mdl.ISOLimitAcceptable;
-            ISOLimitGood = mdl.ISOLimitGood;
+            if (mdl != null) CameraModel = mdl;
         }
 
-        public int ID { get; }
+        //model
+        public readonly ICameraModel CameraModel = new CameraModel();
+        public int ID => CameraModel.ID;
+        public string Producer
+        {
+            get => CameraModel.Producer;
+            set
+            {
+                if (CameraModel.Producer == value) return;
+                CameraModel.Producer = value;
+                OnPropertyChanged();
+            }
+        }
+        public string Make
+        {
+            get => CameraModel.Make;
+            set
+            {
+                if (CameraModel.Make == value) return;
+                CameraModel.Make = value;
+                OnPropertyChanged();
+            }
+        }
+        public DateTime? BoughtOn
+        {
+            get => CameraModel.BoughtOn;
+            set
+            {
+                if (CameraModel.BoughtOn == value) return;
+                CameraModel.BoughtOn = value;
+                OnPropertyChanged();
+            }
+        }
+        public string Notes
+        {
+            get => CameraModel.Notes;
+            set
+            {
+                if (CameraModel.Notes == value) return;
+                CameraModel.Notes = value;
+                OnPropertyChanged();
+            }
+        }
+        public decimal ISOLimitGood
+        {
+            get => CameraModel.ISOLimitGood;
+            set
+            {
+                if (CameraModel.ISOLimitGood == value) return;
+                CameraModel.ISOLimitGood = value;
+                OnPropertyChanged();
+            }
+        }
+        public decimal ISOLimitAcceptable
+        {
+            get => CameraModel.ISOLimitAcceptable;
+            set
+            {
+                if (CameraModel.ISOLimitAcceptable == value) return;
+                CameraModel.ISOLimitAcceptable = value;
+                OnPropertyChanged();
+            }
+        }
 
-        public string Producer { get; set; }
-        public string Make { get; set; }
-        public DateTime? BoughtOn { get; set; }
-        public string Notes { get; set; }
+        public ISORatings TranslateISORating(decimal iso)
+        {
+            if (iso <= 0) return ISORatings.NotDefined;
+            if (iso <= 400) return ISORatings.Good;
+            if (iso <= 800) return ISORatings.Acceptable;
+            return ISORatings.Noisey;
+        }
 
         public int NumberOfPictures { get; }
 
-        public bool IsValid
-        {
-            get { return (IsValidProducer && IsValidMake && IsValidBoughtOn) ? true : false; }
-        }
-
+        //validity check
+        public bool IsValidProducer => (!string.IsNullOrEmpty(Producer));
+        public bool IsValidMake => (!string.IsNullOrEmpty(Make));
+        public bool IsValidBoughtOn => (BoughtOn <= DateTime.Today || BoughtOn == null);
+        public bool IsValid => (IsValidProducer && IsValidMake && IsValidBoughtOn);
         public string ValidationSummary
         {
             get
             {
-                if(!IsValidProducer)
-                {
-                    return "Producer hat was";
-                }
-                else if (!IsValidMake)
-                {
-                    return "Make hat was";
-                }
-                else if(!IsValidBoughtOn)
-                {
-                    return "BoughtOn hat was";
-                }
-                else
-                return "";
+                string errorMessage = "";
+                if(!IsValidProducer)  errorMessage += "Producer, ";
+                if (!IsValidMake) errorMessage += "Make, ";
+                if(!IsValidBoughtOn) errorMessage += "BoughtOn, ";
+                if (string.IsNullOrEmpty(errorMessage)) return "";
+                return errorMessage.TrimEnd(',', ' ') + "passt nicht!";
             }
-
         }
 
-        public bool IsValidProducer
-        {
-            get { return (String.IsNullOrEmpty(Producer)) ? false : true; }
-
-        }
-
-        public bool IsValidMake
-        {
-            get { return (String.IsNullOrEmpty(Make)) ? false : true; }
-        }
-
-        public bool IsValidBoughtOn
-        {
-            get { return (BoughtOn <= DateTime.Today || BoughtOn == null) ? true : false; }
-        }
-
-        public decimal ISOLimitGood { get; set; }
-        public decimal ISOLimitAcceptable { get; set; }
-
-        public ISORatings TranslateISORating(decimal iso)
-        {
-            return new ISORatings();
-        }
+        
     }
 }

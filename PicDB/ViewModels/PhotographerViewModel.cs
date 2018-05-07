@@ -4,32 +4,74 @@ using PicDB.Classes;
 using PicDB.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
+using PicDB.Annotations;
 
 namespace PicDB.ViewModels
 {
-    class PhotographerViewModel : IPhotographerViewModel
+    class PhotographerViewModel : IPhotographerViewModel, INotifyPropertyChanged
     {
-        public PhotographerViewModel() { }
+        //notify
+        public event PropertyChangedEventHandler PropertyChanged;
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) =>
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
+        // ctor
+        public PhotographerViewModel() { }
         public PhotographerViewModel(IPhotographerModel mdl)
         {
-            if (mdl == null) return;
-            ID = mdl.ID;
-            FirstName = mdl.FirstName;
-            LastName = mdl.LastName;
-            BirthDay = mdl.BirthDay;
-            Notes = mdl.Notes;
+            if (mdl != null) photographerModel = mdl;
         }
 
-        public int ID { get; }
+        // model
+        public IPhotographerModel photographerModel = new PhotographerModel();
 
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public DateTime? BirthDay { get; set; }
-        public string Notes { get; set; }
+        public int ID => photographerModel.ID;
+        public string FirstName
+        {
+            get => photographerModel.FirstName;
+            set
+            {
+                if (photographerModel.FirstName == value) return;
+                photographerModel.FirstName = value;
+                OnPropertyChanged();
+            }
+        }
+        public string LastName
+        {
+            get => photographerModel.LastName;
+            set
+            {
+                if (photographerModel.LastName == value) return;
+                photographerModel.LastName = value;
+                OnPropertyChanged();
+            }
+        }
+        public DateTime? BirthDay
+        {
+            get => photographerModel.BirthDay;
+            set
+            {
+                if (photographerModel.BirthDay == value) return;
+                photographerModel.BirthDay = value;
+                OnPropertyChanged();
+            }
+        }
+        public string Notes
+        {
+            get => photographerModel.Notes;
+            set
+            {
+                if (photographerModel.Notes == value) return;
+                photographerModel.Notes = value;
+                OnPropertyChanged();
+            }
+        }
 
         public int NumberOfPictures { get; }
         
@@ -51,5 +93,7 @@ namespace PicDB.ViewModels
         public bool IsValid => IsValidLastName && IsValidBirthDay;
         public bool IsValidLastName => !(string.IsNullOrEmpty(LastName) || LastName.Length >= 50 || Regex.IsMatch(LastName, @"\d"));
         public bool IsValidBirthDay => (BirthDay < DateTime.Today || !BirthDay.HasValue);
+
+        
     }
 }
