@@ -27,7 +27,9 @@ namespace Uebungen
 
         public IPictureModel GetEmptyPictureModel()
         {
-            return new PictureModel();
+            PictureModel p = new PictureModel();
+            p.ID = p.GetHashCode();
+            return p;
         }
 
         public IPhotographerModel GetEmptyPhotographerModel()
