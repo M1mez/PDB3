@@ -17,14 +17,9 @@ namespace PicDB.Classes
 {
     class BusinessLayer : IBusinessLayer
     {
-        public BusinessLayer()
+        public BusinessLayer(bool IsUnitTest = false)
         {
-            _dal = new DataAccessLayer();
-        }
-
-        public BusinessLayer(bool IsUnitTest)
-        {
-            _dal = new MockDataAccessLayer();
+            _dal = IsUnitTest ? new MockDataAccessLayer() : new DataAccessLayer();
         }
 
 

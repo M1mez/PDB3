@@ -24,7 +24,7 @@ namespace PicDB
             get
             {
                 if (JohannesPC)
-                    return @"Server=DESKTOP-DIN7DPC\SQLEXPRESS; Database=PicDB; Trusted_Connection=True;";
+                    return ""; //@"Server=DESKTOP-DIN7DPC\SQLEXPRESS; Database=PicDB; Trusted_Connection=True;";
                 if (StefanPC)
                     return @"Server=STEFFE-PC\SQLEXPRESS; Database=PicDB; Trusted_Connection=True;"; //TODO
                 if (StefanLAPTOP)

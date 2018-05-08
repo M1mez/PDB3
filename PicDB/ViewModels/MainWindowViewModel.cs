@@ -23,7 +23,7 @@ namespace PicDB.ViewModels
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) =>
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
-        public BusinessLayer Bl = new BusinessLayer();
+        public BusinessLayer Bl = new BusinessLayer(Constants.IsUnitTest);
         public MainWindowViewModel()
         {
             Bl.Sync();
