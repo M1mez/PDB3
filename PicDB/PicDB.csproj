@@ -102,7 +102,7 @@
     <Compile Include="Models\PictureModel.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Properties\Annotations.cs" />
-    <Compile Include="ViewModel.cs" />
+    <Compile Include="ViewModels\ViewModel.cs" />
     <Compile Include="WPF\Gallery.xaml.cs">
       <DependentUpon>Gallery.xaml</DependentUpon>
     </Compile>
@@ -209,6 +209,9 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Libs\BIF-SWE2.Interfaces.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
