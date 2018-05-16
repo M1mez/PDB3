@@ -22,7 +22,6 @@ namespace PicDB.Models
             set
             {
                 _firstName = value;
-                ID = Constants.GetRandomInt();
             }
         }
         public string LastName { get; set; }

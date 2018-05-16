@@ -10,7 +10,7 @@ using PicDB.Annotations;
 
 namespace PicDB.ViewModels
 {
-    class PictureListViewModel : IPictureListViewModel, INotifyPropertyChanged
+    public class PictureListViewModel : IPictureListViewModel, INotifyPropertyChanged
     {
         //notify
         public event PropertyChangedEventHandler PropertyChanged;
@@ -18,10 +18,8 @@ namespace PicDB.ViewModels
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) =>
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
-        public PictureListViewModel()
-        {
-        }
-
+        //ctors
+        public PictureListViewModel() { }
         public PictureListViewModel(IEnumerable<IPictureModel> mdlList)
         {
             var newList = mdlList.Select(mdl => new PictureViewModel(mdl)).Cast<IPictureViewModel>().ToList();
@@ -30,7 +28,22 @@ namespace PicDB.ViewModels
 
         public IPictureViewModel CurrentPicture { get; }
 
-        public IEnumerable<IPictureViewModel> List { get; }
+        private IEnumerable<IPictureViewModel> _list;
+        public IEnumerable<IPictureViewModel> List {
+            get => _list;
+            set
+            {
+                _list = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public IEnumerable<IPictureModel> modelList {
+            set
+            {
+                List = value.Select(mdl => new PictureViewModel(mdl)).Cast<IPictureViewModel>().ToList();
+            }
+        }
 
         public IEnumerable<IPictureViewModel> PrevPictures { get; }
 

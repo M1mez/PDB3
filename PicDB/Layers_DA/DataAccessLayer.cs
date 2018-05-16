@@ -20,13 +20,13 @@ namespace PicDB.Layers_DA
 
         private List<string> _dirPics = null;
         public List<string> DirPics
-            {
-                get { return _dirPics ?? (_dirPics = Directory.GetFiles(Constants.PicPath, "*.jpg").Select(Path.GetFileName).ToList()); }
-            }
+        {
+            get { return _dirPics ?? (_dirPics = Directory.GetFiles(Constants.PicPath, "*.jpg").Select(Path.GetFileName).ToList()); }
+        }
 
         public void RefreshGallery() => _dirPics = Directory.GetFiles(Constants.PicPath, "*.jpg").Select(Path.GetFileName).ToList();
 
-        public  DataAccessLayer()
+        public DataAccessLayer()
         {
             PS = new PreparedStatements();
         }
@@ -96,14 +96,14 @@ namespace PicDB.Layers_DA
             }
         }
 
-        public void DeletePictures (List<string> delList)
+        public void DeletePictures(List<string> delList)
         {
             delList.ForEach(DeletePicture);
         }
 
-        private static KeyValuePair<string, string> KeyVal (string key, string val) =>
+        private static KeyValuePair<string, string> KeyVal(string key, string val) =>
             new KeyValuePair<string, string>(key, val);
-        
+
         public virtual ICameraModel GetCamera(int ID)
         {
             var output = $"Get Camera with ID: {ID}";
@@ -131,7 +131,7 @@ namespace PicDB.Layers_DA
                 Conn.Close();
             }
         }
-        
+
         public virtual IEnumerable<ICameraModel> GetCameras()
         {
             var output = "Get all cameras";
@@ -142,7 +142,7 @@ namespace PicDB.Layers_DA
                 Conn.Open();
                 using (var reader = PS.GetAllCameras.ExecuteReader())
                 {
-                    while(reader.Read()) cameras.Add(DTOParser.ParseCameraModel(RecordToDictionary(reader)));
+                    while (reader.Read()) cameras.Add(DTOParser.ParseCameraModel(RecordToDictionary(reader)));
                 }
                 Conn.Close();
                 return cameras;
@@ -272,35 +272,70 @@ namespace PicDB.Layers_DA
         {
             var output = "Search Pictures";
             Console.WriteLine(output);
-            
+
             var pictures = new List<IPictureModel>();
             try
             {
                 PS.GetSearchPictures.Parameters["@namePart"].Value = (object)namePart ?? DBNull.Value;
 
-                PS.GetSearchPictures.Parameters["@PG_PG_ID"].Value = (object)photographerParts?.ID ?? DBNull.Value;
+                // Photographer
+                if (photographerParts?.ID == 0 || photographerParts?.ID == null)
+                    PS.GetSearchPictures.Parameters["@PG_PG_ID"].Value = DBNull.Value;
+                else PS.GetSearchPictures.Parameters["@PG_PG_ID"].Value = (object) photographerParts.ID;
                 PS.GetSearchPictures.Parameters["@PG_Birthday"].Value = (object)photographerParts?.BirthDay ?? DBNull.Value;
                 PS.GetSearchPictures.Parameters["@PG_FirstName"].Value = (object)photographerParts?.FirstName ?? DBNull.Value;
                 PS.GetSearchPictures.Parameters["@PG_LastName"].Value = (object)photographerParts?.LastName ?? DBNull.Value;
                 PS.GetSearchPictures.Parameters["@PG_Notes"].Value = (object)photographerParts?.Notes ?? DBNull.Value;
 
-                PS.GetSearchPictures.Parameters["@IPTC_Keywords"].Value = (object)iptcParts?.Keywords ?? DBNull.Value;
+                // IPTC
+                if (iptcParts?.Keywords == "" || iptcParts?.Keywords == null)
+                    PS.GetSearchPictures.Parameters["@IPTC_Keywords"].Value = DBNull.Value;
+                else PS.GetSearchPictures.Parameters["@IPTC_Keywords"].Value = iptcParts.Keywords;
+
+                if (iptcParts?.ByLine == "" || iptcParts?.ByLine == null)
+                    PS.GetSearchPictures.Parameters["@IPTC_ByLine"].Value = DBNull.Value;
+                else PS.GetSearchPictures.Parameters["@IPTC_ByLine"].Value = iptcParts.ByLine;
+
+                if (iptcParts?.CopyrightNotice == "" || iptcParts?.CopyrightNotice == null)
+                    PS.GetSearchPictures.Parameters["@IPTC_CopyrightNotice"].Value = DBNull.Value;
+                else PS.GetSearchPictures.Parameters["@IPTC_CopyrightNotice"].Value = iptcParts.CopyrightNotice;
+
+                if (iptcParts?.Headline == "" || iptcParts?.Headline == null)
+                    PS.GetSearchPictures.Parameters["@IPTC_Headline"].Value = DBNull.Value;
+                else PS.GetSearchPictures.Parameters["@IPTC_Headline"].Value = iptcParts.Headline;
+
+                if (iptcParts?.Caption == "" || iptcParts?.Caption == null)
+                    PS.GetSearchPictures.Parameters["@IPTC_Caption"].Value = DBNull.Value;
+                else PS.GetSearchPictures.Parameters["@IPTC_Caption"].Value = iptcParts.Caption;
+
+                /*PS.GetSearchPictures.Parameters["@IPTC_Keywords"].Value = (object)iptcParts?.Keywords ?? DBNull.Value;
                 PS.GetSearchPictures.Parameters["@IPTC_ByLine"].Value = (object)iptcParts?.ByLine ?? DBNull.Value;
                 PS.GetSearchPictures.Parameters["@IPTC_CopyrightNotice"].Value = (object)iptcParts?.CopyrightNotice ?? DBNull.Value;
                 PS.GetSearchPictures.Parameters["@IPTC_Headline"].Value = (object)iptcParts?.Headline ?? DBNull.Value;
-                PS.GetSearchPictures.Parameters["@IPTC_Caption"].Value = (object)iptcParts?.Caption ?? DBNull.Value;
+                PS.GetSearchPictures.Parameters["@IPTC_Caption"].Value = (object)iptcParts?.Caption ?? DBNull.Value;*/
 
+                // EXIF
                 PS.GetSearchPictures.Parameters["@EXIF_Make"].Value = (object)exifParts?.Make ?? DBNull.Value;
-                PS.GetSearchPictures.Parameters["@EXIF_FNumber"].Value = (object)exifParts?.FNumber ?? DBNull.Value;
-                PS.GetSearchPictures.Parameters["@EXIF_ExposureTime"].Value = (object)exifParts?.ExposureTime ?? DBNull.Value;
-                PS.GetSearchPictures.Parameters["@EXIF_ISOValue"].Value = (object)exifParts?.ISOValue ?? DBNull.Value;
+                //TODO cant search for value 0 because of interface, what to do?
+                PS.GetSearchPictures.Parameters["@EXIF_FNumber"].Value =
+                    exifParts?.FNumber == 0 || exifParts?.FNumber == null
+                        ? DBNull.Value
+                        : (object)exifParts.FNumber; //(object)exifParts?.FNumber ?? DBNull.Value;
+                PS.GetSearchPictures.Parameters["@EXIF_ExposureTime"].Value =
+                    exifParts?.ExposureTime == 0 || exifParts?.ExposureTime == null
+                        ? DBNull.Value
+                        : (object)exifParts.ExposureTime; //(object)exifParts?.ExposureTime ?? DBNull.Value;
+                PS.GetSearchPictures.Parameters["@EXIF_ISOValue"].Value =
+                    exifParts?.ISOValue == 0 || exifParts?.ISOValue == null
+                        ? DBNull.Value
+                        : (object)exifParts.ISOValue; //(object)exifParts?.ISOValue ?? DBNull.Value;
                 PS.GetSearchPictures.Parameters["@EXIF_Flash"].Value = (object)exifParts?.Flash ?? DBNull.Value;
                 PS.GetSearchPictures.Parameters["@EXIF_ExposureProgram"].Value = (object)exifParts?.ExposureProgram ?? DBNull.Value;
 
                 Conn.Open();
                 using (var reader = PS.GetSearchPictures.ExecuteReader())
                 {
-                    Console.WriteLine(reader.FieldCount);
+                    Console.WriteLine("FieldCount" + reader.FieldCount);
                     while (reader.Read())
                     {
                         pictures.Add(DTOParser.ParsePictureModel(RecordToDictionary(reader)));
@@ -380,7 +415,7 @@ namespace PicDB.Layers_DA
             try
             {
                 Conn.Open();
-                PS.SaveExif.Parameters["@Make"].Value = exif.Make != null ? (object) exif.Make : DBNull.Value;
+                PS.SaveExif.Parameters["@Make"].Value = exif.Make != null ? (object)exif.Make : DBNull.Value;
                 PS.SaveExif.Parameters["@FNumber"].Value = exif.FNumber;
                 PS.SaveExif.Parameters["@ExposureTime"].Value = exif.ExposureTime;
                 PS.SaveExif.Parameters["@ISOValue"].Value = exif.ISOValue;
@@ -544,7 +579,7 @@ namespace PicDB.Layers_DA
             }
         }
 
-        public void Save (List<string> picList)
+        public void Save(List<string> picList)
         {
             picList.ForEach(fileName => Save(new PictureModel() { FileName = fileName }));
         }
@@ -557,7 +592,7 @@ namespace PicDB.Layers_DA
             try
             {
                 Conn.Open();
-                PS.SaveCamera.Parameters["@Cam_ID"].Value = camera.ID <= 0 ? DBNull.Value : (object) camera.ID;
+                PS.SaveCamera.Parameters["@Cam_ID"].Value = camera.ID <= 0 ? DBNull.Value : (object)camera.ID;
                 PS.SaveCamera.Parameters["@Producer"].Value = camera.Producer;
                 PS.SaveCamera.Parameters["@Make"].Value = camera.Make;
                 PS.SaveCamera.Parameters["@BoughtOn"].Value = camera.BoughtOn;
@@ -577,40 +612,40 @@ namespace PicDB.Layers_DA
                 Conn.Close();
             }
         }
-        
-       /* private static int _serialId = 1;
-        /// <summary>
-        /// Get the ID which would be assigned next by the DB.
-        /// If the method is called statically by an UnitTest, return 1, then 2...
-        /// </summary>
-        /// <param name="tableName"></param>
-        /// <returns></returns>
-        public virtual int GetNextId(string tableName)
-        {
-            //if (!connOpen) Conn.ConnectionString = Constants.ConnString;
-            var uspName = "usp_getNextID";
-            try
-            {
-                Console.WriteLine("Calling usp: {0} for table: {1}", uspName, tableName);
-                var nextId = -2;
-                var cmd = PreparedStatements.GetNextIdTableName;
-                cmd.Parameters["@TableName"].Value = tableName;
 
-                //if (!connOpen) Conn.Open();
-                nextId = Convert.ToInt32(cmd.ExecuteScalar());
-                //if (!connOpen) Conn.Close();
-                return nextId;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Caught in usp_getNextID: " + e.Message);
-                throw;
-            }
-            finally
-            {
-                Conn.Close();
-            }
-        }*/
+        /* private static int _serialId = 1;
+         /// <summary>
+         /// Get the ID which would be assigned next by the DB.
+         /// If the method is called statically by an UnitTest, return 1, then 2...
+         /// </summary>
+         /// <param name="tableName"></param>
+         /// <returns></returns>
+         public virtual int GetNextId(string tableName)
+         {
+             //if (!connOpen) Conn.ConnectionString = Constants.ConnString;
+             var uspName = "usp_getNextID";
+             try
+             {
+                 Console.WriteLine("Calling usp: {0} for table: {1}", uspName, tableName);
+                 var nextId = -2;
+                 var cmd = PreparedStatements.GetNextIdTableName;
+                 cmd.Parameters["@TableName"].Value = tableName;
+
+                 //if (!connOpen) Conn.Open();
+                 nextId = Convert.ToInt32(cmd.ExecuteScalar());
+                 //if (!connOpen) Conn.Close();
+                 return nextId;
+             }
+             catch (Exception e)
+             {
+                 Console.WriteLine("Caught in usp_getNextID: " + e.Message);
+                 throw;
+             }
+             finally
+             {
+                 Conn.Close();
+             }
+         }*/
 
         private static Dictionary<string, object> RecordToDictionary(IDataRecord record)
         {

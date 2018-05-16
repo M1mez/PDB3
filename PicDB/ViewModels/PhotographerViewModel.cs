@@ -13,62 +13,85 @@ using PicDB.Annotations;
 
 namespace PicDB.ViewModels
 {
-    class PhotographerViewModel : IPhotographerViewModel, INotifyPropertyChanged
+    public class PhotographerViewModel : IPhotographerViewModel, INotifyPropertyChanged
     {
         //notify
         public event PropertyChangedEventHandler PropertyChanged;
         [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) =>
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) => 
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
         // ctor
         public PhotographerViewModel() { }
         public PhotographerViewModel(IPhotographerModel mdl)
         {
-            if (mdl != null) photographerModel = mdl;
+            if (mdl != null) PhotographerModel = mdl;
         }
 
         // model
-        public IPhotographerModel photographerModel = new PhotographerModel();
+        public IPhotographerModel PhotographerModel { get; } = new PhotographerModel();
 
-        public int ID => photographerModel.ID;
-        public string FirstName
+        public int ID
         {
-            get => photographerModel.FirstName;
+            get => PhotographerModel.ID;
             set
             {
-                if (photographerModel.FirstName == value) return;
-                photographerModel.FirstName = value;
+                if (PhotographerModel.ID == value) return;
+                PhotographerModel.ID = value;
                 OnPropertyChanged();
             }
         }
-        public string LastName
+        public string FirstName
         {
-            get => photographerModel.LastName;
+            get => PhotographerModel.FirstName;
             set
             {
-                if (photographerModel.LastName == value) return;
-                photographerModel.LastName = value;
+                if (PhotographerModel.FirstName == value) return;
+                PhotographerModel.FirstName = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string LastName
+        {
+            get => PhotographerModel.LastName;
+            set
+            {
+                if (PhotographerModel.LastName == value) return;
+                PhotographerModel.LastName = value;
                 OnPropertyChanged();
             }
         }
         public DateTime? BirthDay
         {
-            get => photographerModel.BirthDay;
+            get => PhotographerModel.BirthDay;
             set
             {
-                if (photographerModel.BirthDay == value) return;
-                photographerModel.BirthDay = value;
+                if (PhotographerModel.BirthDay == value) return;
+                PhotographerModel.BirthDay = value;
                 OnPropertyChanged();
             }
         }
-        public string Notes
+
+        private string _dateString;
+        public string DateInString
         {
-            get => photographerModel.Notes;
+            get => _dateString;
             set
             {
-                if (photographerModel.Notes == value) return;
-                photographerModel.Notes = value;
+                _dateString = value;
+                if (value == null) BirthDay = null;
+                else BirthDay = DateTime.Parse(value);
+            }
+        }
+
+        public string Notes
+        {
+            get => PhotographerModel.Notes;
+            set
+            {
+                if (PhotographerModel.Notes == value) return;
+                PhotographerModel.Notes = value;
                 OnPropertyChanged();
             }
         }
@@ -79,14 +102,16 @@ namespace PicDB.ViewModels
         {
             get
             {
+                string message = "";
                 if (!IsValidLastName)
                 {
-                    if (LastName.Length > 50) return "Nachname zu lang";
-                    if (Regex.IsMatch(LastName, @"\d")) return "Keine Zahlen im Nachnamen erlaubt";
-                    return "Bitte einen Nachnamen eingeben";
+                    if (LastName.Length == 0) message += "Bitte einen Nachnamen eingeben!\n";
+                    if (LastName.Length > 50) message += "Nachname zu lang!\n";
+                    if (Regex.IsMatch(LastName, @"\d")) message += "Keine Zahlen im Nachnamen erlaubt!\n";
+                    
                 }
-
-                return !IsValidBirthDay ? "Geburtsdatum kann nicht heute oder in der Zukunft sein >.>" : "";
+                if (!IsValidBirthDay) message += "Geburtsdatum kann nicht heute oder in der Zukunft sein >.>\n";
+                return message.TrimEnd('\n');
             }
         }
 

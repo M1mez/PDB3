@@ -8,7 +8,7 @@ using PicDB.Layers_DA;
 
 namespace PicDB.Models
 {
-    class PictureModel : IPictureModel
+    public class PictureModel : IPictureModel
     {
        public PictureModel()
        { }

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.Globalization;
 using System.Windows;
 using System.Windows.Media.Imaging;
 using System.Windows.Controls;
@@ -9,38 +11,65 @@ using BIF.SWE2.Interfaces.ViewModels;
 using PicDB.ViewModels;
 using PicDB.Classes;
 using PicDB.Models;
+using System.Collections.Generic;
+using BIF.SWE2.Interfaces.Models;
 
 namespace PicDB
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    partial class MainWindow : Window
+    public partial class MainWindow : Window
     {
         MainWindowViewModel mwvmdl = new MainWindowViewModel();
+        private PhotographerListViewModel PhotographerList;
+        private PictureListViewModel PictureList;
+        private BusinessLayer BL;
 
         public MainWindow()
         {
+            BL = mwvmdl.Bl;
+            PictureList = new PictureListViewModel(BL.GetPictures());
             InitializeComponent();
-            
             this.DataContext = mwvmdl;
+            ActualizePhotographerList();
         }
 
         private void OpenNewPhotographerWindow(object sender, RoutedEventArgs e)
         {
-            Photographer pw = new Photographer
-            {
+            PhotographerWindow pw = new PhotographerWindow(this, BL);
+            /*{
                 ShowInTaskbar = false,
                 Owner = Application.Current.MainWindow
-            };
+            };*/
             pw.Show();
         }
+        private void OpenNewSearchWindow(object sender, RoutedEventArgs e)
+        {
+            AdvancedSearchWindow sw = new AdvancedSearchWindow(this, BL);
+            sw.Show();
+        }
 
+        public void ActualizePhotographerList()
+        {
+            PhotographerList = new PhotographerListViewModel(BL.GetPhotographers());
+        }
 
         private void WriteIPTC(object sender, RoutedEventArgs e)
         {
             var iptcVm = (IPTCViewModel) mwvmdl.CurrentPicture.IPTC;
             mwvmdl.Bl.WriteIPTC(mwvmdl.CurrentPicture.FileName, iptcVm.IPTCModel);
         }
+
+        public void UpdatePictureList(IEnumerable<IPictureModel> newList)
+        {
+            PictureList.modelList = newList;
+            foreach (var pictureModel in newList)
+            {
+                Console.WriteLine(pictureModel.FileName);
+            }
+        }
+
+        private void Quit(object sender, RoutedEventArgs e) { Close(); }
     }
 }

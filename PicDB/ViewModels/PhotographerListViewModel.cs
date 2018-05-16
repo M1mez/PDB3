@@ -10,7 +10,7 @@ using PicDB.Annotations;
 
 namespace PicDB.ViewModels
 {
-    class PhotographerListViewModel : IPhotographerListViewModel, INotifyPropertyChanged
+    public class PhotographerListViewModel : IPhotographerListViewModel, INotifyPropertyChanged
     {
         //notify
         public event PropertyChangedEventHandler PropertyChanged;
@@ -18,7 +18,16 @@ namespace PicDB.ViewModels
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) =>
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
-        public IEnumerable<IPhotographerViewModel> List { get; }
+        private IEnumerable<IPhotographerViewModel> _list;
+        public IEnumerable<IPhotographerViewModel> List {
+            get => _list;
+            set
+            {
+                //if (_list == value) return;
+                _list = value;
+                OnPropertyChanged();
+            }
+        }
 
         public PhotographerListViewModel() { }
         public PhotographerListViewModel(IEnumerable<IPhotographerModel> pList)

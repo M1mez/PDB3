@@ -11,7 +11,7 @@ using PicDB.Annotations;
 
 namespace PicDB.ViewModels
 {
-    class IPTCViewModel : IIPTCViewModel, INotifyPropertyChanged
+    public class IPTCViewModel : IIPTCViewModel, INotifyPropertyChanged
     {
         //notify
         public event PropertyChangedEventHandler PropertyChanged;
@@ -28,7 +28,7 @@ namespace PicDB.ViewModels
 
         //model
         // ReSharper disable once InconsistentNaming
-        public readonly IIPTCModel IPTCModel = new IPTCModel();
+        public IIPTCModel IPTCModel { get; } = new IPTCModel();
         public string Keywords
         {
             get => IPTCModel.Keywords;

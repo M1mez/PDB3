@@ -15,7 +15,7 @@ using PicDB.Models;
 
 namespace PicDB.ViewModels
 {
-    class EXIFViewModel : IEXIFViewModel, INotifyPropertyChanged
+    public class EXIFViewModel : IEXIFViewModel, INotifyPropertyChanged
     {
         //notify
         public event PropertyChangedEventHandler PropertyChanged;
@@ -27,20 +27,56 @@ namespace PicDB.ViewModels
         public EXIFViewModel() { }
         public EXIFViewModel(IEXIFModel mdl)
         {
-            if (mdl != null) Exifmodel = mdl;
+            if (mdl != null) EXIFModel = mdl;
         }
         
         //model
-        public readonly IEXIFModel Exifmodel = new EXIFModel();
-        public string Make => Exifmodel.Make;
-        public decimal FNumber => Exifmodel.FNumber;
-        public decimal ExposureTime => Exifmodel.ExposureTime;
-        public decimal ISOValue => Exifmodel.ISOValue;
-        public bool Flash => Exifmodel.Flash;
-        public string ExposureProgram => Exifmodel.ExposureProgram.ToString();
+        public IEXIFModel EXIFModel { get; } = new EXIFModel();
+        public string Make
+        {
+            get => EXIFModel.Make;
+            set => EXIFModel.Make = value;
+        }
+
+        public decimal FNumber
+        {
+            get => EXIFModel.FNumber;
+            set => EXIFModel.FNumber = value;
+        }
+
+        public decimal ExposureTime
+        {
+            get => EXIFModel.ExposureTime;
+            set => EXIFModel.ExposureTime = value;
+        }
+
+        public decimal ISOValue
+        {
+            get => EXIFModel.ISOValue;
+            set => EXIFModel.ISOValue = value;
+        }
+
+        public bool Flash
+        {
+            get => EXIFModel.Flash;
+            set => EXIFModel.Flash = value;
+        }
+
+        public string ExposureProgram
+        {
+            get => EXIFModel.ExposureProgram.ToString();
+            set
+            {
+                Console.WriteLine($"got {(int) (ExposurePrograms)Enum.Parse(typeof(ExposurePrograms), value)} from Exp Program");
+                EXIFModel.ExposureProgram = (ExposurePrograms) Enum.Parse(typeof(ExposurePrograms), value);
+            }
+        }
+
+        public string[] GetExposureProgramsStringList => Enum.GetNames(typeof(ExposurePrograms));
+
 
         public string ExposureProgramResource => 
-            $"pack://application:,,,/Resources/{(int)Exifmodel.ExposureProgram}{ExposureProgram}.png";
+            $"pack://application:,,,/Resources/{(int)EXIFModel.ExposureProgram}{ExposureProgram}.png";
         private static string GetExposureProgramResource(string program)
         {
             if (Enum.IsDefined(typeof(ExposurePrograms), program))

@@ -60,6 +60,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\BIF-SWE2.Interfaces\bin\Debug\BIF-SWE2.Interfaces.dll</HintPath>
     </Reference>
+    <Reference Include="Dragablz, Version=0.0.3.203, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dragablz.0.0.3.203\lib\net45\Dragablz.dll</HintPath>
+    </Reference>
     <Reference Include="MaterialDesignColors, Version=1.1.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MaterialDesignColors.1.1.2\lib\net45\MaterialDesignColors.dll</HintPath>
     </Reference>
@@ -68,6 +71,9 @@
     </Reference>
     <Reference Include="nunit.framework">
       <HintPath>..\..\SWE2\SWE2-CS\packages\NUnit.3.6.1\lib\net40\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="ShowMeTheXAML, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ShowMeTheXAML.1.0.10\lib\net45\ShowMeTheXAML.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -103,11 +109,11 @@
     <Compile Include="Constants.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="ViewModels\ViewModel.cs" />
+    <Compile Include="WPF\AdvancedSearchWindow.xaml.cs">
+      <DependentUpon>AdvancedSearchWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WPF\Gallery.xaml.cs">
       <DependentUpon>Gallery.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="WPF\PhotographerMenu.xaml.cs">
-      <DependentUpon>PhotographerMenu.xaml</DependentUpon>
     </Compile>
     <Compile Include="Uebungen\UEB3.cs" />
     <Compile Include="Uebungen\UEB4.cs" />
@@ -125,6 +131,23 @@
     <Compile Include="ViewModels\PictureListViewModel.cs" />
     <Compile Include="ViewModels\PictureViewModel.cs" />
     <Compile Include="ViewModels\SearchViewModel.cs" />
+    <Compile Include="WPF\PhotographerWindow.xaml.cs">
+      <DependentUpon>PhotographerWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WPF\SearchBy_EXIF.xaml.cs">
+      <DependentUpon>SearchBy_EXIF.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WPF\SearchBy_IPTC.xaml.cs">
+      <DependentUpon>SearchBy_IPTC.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WPF\SearchBy_Photographer.xaml.cs">
+      <DependentUpon>SearchBy_Photographer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WPF\Helper.cs" />
+    <Page Include="WPF\AdvancedSearchWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="WPF\Gallery.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -141,7 +164,19 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="WPF\PhotographerMenu.xaml">
+    <Page Include="WPF\PhotographerWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="WPF\SearchBy_EXIF.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="WPF\SearchBy_IPTC.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="WPF\SearchBy_Photographer.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

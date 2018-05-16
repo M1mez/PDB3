@@ -34,7 +34,9 @@ namespace Uebungen
 
         public IPhotographerModel GetEmptyPhotographerModel()
         {
-            return new PhotographerModel();
+            return new PhotographerModel(){
+                    ID = Constants.GetRandomInt()
+            };
         }
     }
 }

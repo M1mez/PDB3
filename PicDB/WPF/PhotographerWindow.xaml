@@ -1,0 +1,57 @@
+﻿<Window 
+    x:Class="PicDB.PhotographerWindow"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vmdl="clr-namespace:PicDB.ViewModels"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    
+    TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+    TextElement.FontWeight="Regular"
+    TextElement.FontSize="13"
+    Title="Add Photographer"
+    TextOptions.TextFormattingMode="Ideal"
+    TextOptions.TextRenderingMode="Auto"
+    Background="{DynamicResource MaterialDesignPaper}"
+    FontFamily="{DynamicResource MaterialDesignFont}" 
+    ResizeMode="NoResize"
+    Width="320" Height="170.889"
+    >
+    <StackPanel Name="Insert">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="3*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="10*"/>
+                <RowDefinition Height="10*"/>
+                <RowDefinition Height="10*"/>
+                <RowDefinition Height="500*"/>
+                <RowDefinition Height="20*"/>
+                <RowDefinition Height="20*"/>
+                <RowDefinition Height="3*"/>
+            </Grid.RowDefinitions>
+            <Label Grid.Column="0" Grid.Row="0">First Name</Label>
+            <TextBox Name ="_FirstName" Text="{Binding _FirstName}" TextWrapping="Wrap" 
+                     Grid.Column="1" Grid.Row="0"/>
+
+            <Label Grid.Row="1" Grid.Column="0">Last Name</Label>
+            <TextBox Name ="_LastName" TextWrapping="Wrap" 
+                     Grid.Column="1" Grid.Row="1"/>
+
+            <Label Grid.Row="2" Grid.Column="0">Birth Day</Label>
+            <DatePicker Name="_BirthDay" 
+                        Grid.Column="1" Grid.Row="2"/>
+
+            <Label Grid.Row="3" Grid.Column="0">Notes</Label>
+            <TextBox Name="_Notes" TextWrapping="Wrap" AcceptsReturn="True" AcceptsTab="True" SpellCheck.IsEnabled="True" 
+                     Grid.Column="1" Grid.Row="3"/>
+
+            <Label Grid.Row="4"/>
+            <Button Grid.Row="5" Grid.ColumnSpan="2" Height="Auto"  Click="CreatePhotographer" VerticalAlignment="Top" >Submit</Button>
+            <Label Grid.Row="6" Height="5"/>
+
+        </Grid>
+    </StackPanel>
+</Window>

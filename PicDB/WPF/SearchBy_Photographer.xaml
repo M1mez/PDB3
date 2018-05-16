@@ -1,0 +1,49 @@
+﻿<UserControl x:Class="PicDB.WPF.SearchBy_Photographer"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:PicDB.WPF"
+             xmlns:helper="clr-namespace:Helper"
+             Width="250"
+             >
+
+    <UserControl.Resources>
+        <helper:IntZeroToEmptyConverter x:Key="intConverter" />
+    </UserControl.Resources>
+
+    <StackPanel Name="Insert">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="2*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="10*"/>
+                <RowDefinition Height="10*"/>
+                <RowDefinition Height="10*"/>
+                <RowDefinition Height="10*"/>
+                <RowDefinition Height="10*"/>
+            </Grid.RowDefinitions>
+            <!--<Label Grid.Column="0" Grid.Row="0">Database ID</Label>
+            <TextBox Name ="_ID" Text="{Binding ID, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource intConverter}}" PreviewTextInput="NumberValidationTextBox"
+                     Grid.Column="1" Grid.Row="0"/>-->
+            
+            <Label Grid.Column="0" Grid.Row="1">First Name</Label>
+            <TextBox Name ="_FirstName" Text="{Binding FirstName, UpdateSourceTrigger=PropertyChanged}" 
+                     Grid.Column="1" Grid.Row="1"/>
+
+            <Label Grid.Column="0" Grid.Row="2">Last Name</Label>
+            <TextBox Name ="_LastName" Text="{Binding LastName, UpdateSourceTrigger=PropertyChanged}" 
+                     Grid.Column="1" Grid.Row="2"/>
+
+            <Label Grid.Column="0" Grid.Row="3">Birth Day</Label>
+            <DatePicker Name="_BirthDay" Text="{Binding DateInString, UpdateSourceTrigger=PropertyChanged}" 
+                        Grid.Column="1" Grid.Row="3"/>
+
+            <Label Grid.Column="0" Grid.Row="4">Notes</Label>
+            <TextBox Name="_Notes" Text="{Binding Notes, UpdateSourceTrigger=PropertyChanged}"  
+                     Grid.Column="1" Grid.Row="4"/>
+        </Grid>
+    </StackPanel>
+</UserControl>

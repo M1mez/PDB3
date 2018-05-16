@@ -205,13 +205,13 @@ VALUES (@FileName, @Cam_ID);</value>
   <data name="Get_Search_Pictures" xml:space="preserve">
     <value>SELECT *
 	FROM Pictures as Pics
-		LEFT JOIN Photographers as PG ON PG.PG_ID = P_PG.FK_PG_ID
+		LEFT JOIN Photographers as PG ON PG.PG_ID = Pics.FK_PG_ID
 		LEFT JOIN EXIF ON EXIF_ID = Pics.FK_EXIF_ID
 		LEFT JOIN IPTC ON IPTC_ID = Pics.FK_IPTC_ID
 		LEFT JOIN Cameras ON Cam_ID = Pics.FK_Cam_ID
 
 	WHERE (@namePart IS NULL OR FileName LIKE '%' + @namePart + '%' )
-
+	
 		AND (@PG_PG_ID IS NULL OR @PG_PG_ID = PG.PG_ID)
 		AND (@PG_Birthday IS NULL OR @PG_Birthday = PG.BirthDay)
 		AND (@PG_FirstName IS NULL OR @PG_FirstName = PG.FirstName)

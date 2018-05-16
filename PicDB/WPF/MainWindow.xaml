@@ -1,187 +1,109 @@
-﻿<Window
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:my="clr-namespace:PicDB"
-        xmlns:vmdl="clr-namespace:PicDB.ViewModels"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
-        x:Class="PicDB.MainWindow"
-        Title="PicDB" Height="600" Width="800" MinWidth="800" MinHeight="600">
-    <StackPanel Name="Container">
-        <!--S1-->
-        <Menu Height="18" Grid.Row="0">
-            <Menu.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <DockPanel HorizontalAlignment="Stretch"/>
-                </ItemsPanelTemplate>
-            </Menu.ItemsPanel>
-            <MenuItem Header="File" Width="auto" BorderThickness="0,0,1,0" BorderBrush="#FF4D4D4D">
-                <MenuItem Header="New Photographer" Click="OpenNewPhotographerWindow" Width="auto"/>
-            </MenuItem>
-            <MenuItem Header="Edit" Width="auto" BorderBrush="#FF4D4D4D" BorderThickness="0,0,1,0">
-                <MenuItem Header="Edit Photographer" Width="auto"/>
-                <MenuItem Header="Paste" Width="auto"/>
-            </MenuItem>
-            <MenuItem Header="Options" Width="auto" BorderBrush="#FF4D4D4D" BorderThickness="0,0,1,0">
-                <MenuItem Header="Colour" Width="auto"/>
-            </MenuItem>
-            <MenuItem Header="Help" Width="auto" HorizontalAlignment="Right" BorderThickness="1,0,0,0" BorderBrush="#FF4D4D4D">
-                <MenuItem Header="About" Width="auto"/>
-            </MenuItem>
-        </Menu>
-        <!--S2-->
-        <Grid Name="Searchbar" Height="49.667" Grid.Row="1">
-            <Border BorderBrush="Black" BorderThickness="0.5">
-                <DockPanel ScrollViewer.VerticalScrollBarVisibility="Disabled">
-                    <Button Width="50" Height="50" BorderBrush="{x:Null}" Background="Transparent" DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Center" UseLayoutRounding="False">
-                        <Button.Template>
-                            <ControlTemplate>
-                                <Image Source="pack://application:,,,/Resources/SearchIcon.png"/>
-                            </ControlTemplate>
-                        </Button.Template>
-                    </Button>
-                    <TextBox x:Name ="Search" Text="Search" Width="{Binding ActualWidth, ElementName=Container}" Height="{Binding ElementName=Searchbar, Path=ActualHeight}" ScrollViewer.VerticalScrollBarVisibility="Disabled" VerticalContentAlignment="Center"/>
-                </DockPanel>
-            </Border>
-        </Grid>
-        <!--S3-->
-        <Grid Name="Picture" Height="500.761" >
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="100*"/>
-                <ColumnDefinition Width="4*"/>
-                <ColumnDefinition Width="50*"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="3*"/>
-                <RowDefinition Height="0.1*"/>
-                <RowDefinition Height="1*"/>
-            </Grid.RowDefinitions>
-            <Grid Grid.Column="0" Grid.Row="0" >
+﻿<Window  
+    x:Class="PicDB.MainWindow"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vmdl="clr-namespace:PicDB.ViewModels"
+    
+    TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+    TextElement.FontWeight="Regular"
+    TextElement.FontSize="13"
+    Title="SWE 2 - PicDB"
+    TextOptions.TextFormattingMode="Ideal"
+    TextOptions.TextRenderingMode="Auto"
+    Background="{DynamicResource MaterialDesignPaper}"
+    FontFamily="{DynamicResource MaterialDesignFont}" 
+    MinWidth="640" 
+    MinHeight="520"
+    Width="640" Height="520"
+    >
+
+    <Grid>
+
+        <!--Grid Definitions-->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="60"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+        </Grid.ColumnDefinitions>
+
+        <!--Main Menu-->
+        <materialDesign:ColorZone Mode="PrimaryDark" Padding="10" Grid.Row="0">
+            <DockPanel>
+                <Menu IsMainMenu="True" Background="{DynamicResource PrimaryHueMidBrush}">
+                    <Menu.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <DockPanel HorizontalAlignment="Stretch"/>
+                        </ItemsPanelTemplate>
+                    </Menu.ItemsPanel>
+                    <MenuItem Header="_File"  VerticalAlignment="Center" HorizontalAlignment="Left">
+                        <MenuItem Header="Save">
+                            <MenuItem.Icon>
+                                <materialDesign:PackIcon Kind="ContentSave" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Header="Save As.." />
+                        <MenuItem Header="Quit" InputGestureText="Ctrl+Q" Click="Quit">
+                            <MenuItem.Icon>
+                                <materialDesign:PackIcon Kind="ExitToApp" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                    </MenuItem>
+                    <MenuItem Header="_Edit"  VerticalAlignment="Center" HorizontalAlignment="Left">
+                        <MenuItem Name="tabItem_AddPhotographer" Header="Add Photographer" Click="OpenNewPhotographerWindow">
+                            <MenuItem.Icon>
+                                <materialDesign:PackIcon Kind="Account" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Header="_Copy" Command="Copy">
+                            <MenuItem.Icon>
+                                <materialDesign:PackIcon Kind="ContentCopy" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Header="_Paste" Command="Paste">
+                            <MenuItem.Icon>
+                                <materialDesign:PackIcon Kind="ContentPaste" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                    </MenuItem>
+                    <MenuItem Header="_Options"  VerticalAlignment="Center" HorizontalAlignment="Left">
+                        <MenuItem Header="Save">
+                            <MenuItem.Icon>
+                                <materialDesign:PackIcon Kind="ContentSave" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                    </MenuItem>
+                    <MenuItem Header="_Help"  VerticalAlignment="Center" HorizontalAlignment="Right">
+                        <MenuItem Header="Save">
+                            <MenuItem.Icon>
+                                <materialDesign:PackIcon Kind="ContentSave" />
+                            </MenuItem.Icon>
+                        </MenuItem> f
+                    </MenuItem>
+                </Menu>
+            </DockPanel>
+        </materialDesign:ColorZone>
+
+        <!--<Separator Grid.Row="1"></Separator>-->
+        
+        <!--Search Bar-->
+        <materialDesign:ColorZone Mode="PrimaryDark" Padding="10,0,0,10" Grid.Row="2">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBox Grid.Column="0" VerticalAlignment="Center" materialDesign:HintAssist.Hint="  Search"/>
+                <Button Grid.Column="1" VerticalAlignment="Center" Style="{DynamicResource MaterialDesignToolButton}" Click="OpenNewSearchWindow">
+                    <materialDesign:PackIcon Kind="Settings"></materialDesign:PackIcon>
+                </Button>
+                <Button Grid.Column="2" Style="{DynamicResource MaterialDesignToolButton}">
+                    <materialDesign:PackIcon Kind="Magnify"></materialDesign:PackIcon>
+                </Button>
             </Grid>
-            <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Center"/>
-            <StackPanel Grid.Column="2"  Orientation="Vertical">
-                <TabControl Height="367.293" >
-                    <!--IPTC-->
-                    <TabItem Header="IPTC">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="1*"/>
-                                <ColumnDefinition Width="2*"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="1*"/>
-                                <RowDefinition Height="1*"/>
-                                <RowDefinition Height="1*"/>
-                                <RowDefinition Height="1*"/>
-                                <RowDefinition Height="1*"/>
-                                <RowDefinition Height="1*"/>
-                            </Grid.RowDefinitions>
-                            <Label Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center">Keywords</Label>
-                            <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding CurrentPicture.IPTC.Keywords, Mode=TwoWay}"/>
-
-                            <Label Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center">ByLine</Label>
-                            <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding CurrentPicture.IPTC.ByLine, Mode=TwoWay}"></TextBox>
-
-                            <Label Grid.Column="0" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center">
-                                <Label.Content>
-                                    <AccessText Text="Copyright Notice" TextWrapping="Wrap"></AccessText>
-                                </Label.Content>
-                            </Label>
-                            <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding CurrentPicture.IPTC.CopyrightNotice, Mode=TwoWay}"></TextBox>
-
-                            <Label Grid.Column="0" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Center">Headline</Label>
-                            <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding CurrentPicture.IPTC.Headline, Mode=TwoWay}"></TextBox>
-
-                            <Label Grid.Column="0" Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Center">Caption</Label>
-                            <TextBox Grid.Column="1" Grid.Row="4" Text="{Binding CurrentPicture.IPTC.Caption, Mode=TwoWay}"></TextBox>
-
-                            <Button Grid.Row="5" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" Width="120" Click="WriteIPTC">Save</Button>
-                        </Grid>
-                    </TabItem>
-                    <!--EXIF-->
-                    <TabItem Header="EXIF">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="1*"/>
-                                <ColumnDefinition Width="2*"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="1*"/>
-                                <RowDefinition Height="1*"/>
-                                <RowDefinition Height="1*"/>
-                                <RowDefinition Height="1*"/>
-                                <RowDefinition Height="1*"/>
-                                <RowDefinition Height="1*"/>
-                            </Grid.RowDefinitions>
-                            <Label Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" Content="Make"></Label>
-                            <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding CurrentPicture.EXIF.Make, Mode=OneWay}" IsReadOnly="True"></TextBox>
-
-                            <Label Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Content="FNumber"></Label>
-                            <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding CurrentPicture.EXIF.FNumber, Mode=OneWay}" IsReadOnly="True"></TextBox>
-
-                            <Label Grid.Column="0" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center">
-                                <Label.Content>
-                                    <AccessText Text="Exposure Time" TextWrapping="Wrap"></AccessText>
-                                </Label.Content>
-                            </Label>
-                            <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding CurrentPicture.EXIF.ExposureTime, Mode=OneWay}" IsReadOnly="True"></TextBox>
-
-                            <Label Grid.Column="0" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Center" Content="ISO Value"></Label>
-                            <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding CurrentPicture.EXIF.ISOValue, Mode=OneWay}" IsReadOnly="True"></TextBox>
-
-                            <Label Grid.Column="0" Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Center" Content="Flash"></Label>
-                            <TextBox Grid.Column="1" Grid.Row="4" Text="{Binding CurrentPicture.EXIF.Flash, Mode=OneWay}" IsReadOnly="True"></TextBox>
-
-                            <Label Grid.Column="0" Grid.Row="5" VerticalAlignment="Center" HorizontalAlignment="Center">
-                                <Label.Content>
-                                    <AccessText Text="Exposure Program" TextWrapping="Wrap"></AccessText>
-                                </Label.Content>
-                            </Label>
-                            <TextBox Grid.Column="1" Grid.Row="5" Text="{Binding CurrentPicture.EXIF.ExposureProgram, Mode=OneWay}" IsReadOnly="True"></TextBox>
-
-                        </Grid>
-                    </TabItem>
-                    <!--Photographer Info-->
-                    <TabItem Header="Photographer">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="1*"/>
-                                <ColumnDefinition Width="2*"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="1*"/>
-                                <RowDefinition Height="1*"/>
-                                <RowDefinition Height="1*"/>
-                                <RowDefinition Height="1*"/>
-                                <RowDefinition Height="1*"/>
-                                <RowDefinition Height="1*"/>
-                            </Grid.RowDefinitions>
-                            <Label Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center">ID</Label>
-                            <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding CurrentPicture.Photographer.ID}" IsReadOnly="True"></TextBox>
-                            
-
-                            <Label Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center">First Name</Label>
-                            <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding CurrentPicture.Photographer.FirstName}" IsReadOnly="True"></TextBox>
-
-                            <Label Grid.Column="0" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center">Last Name</Label>
-                            <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding CurrentPicture.Photographer.LastName}" IsReadOnly="True"></TextBox>
-
-                            <Label Grid.Column="0" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Center">Birthday</Label>
-                            <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding CurrentPicture.Photographer.BirthDay}" IsReadOnly="True"></TextBox>
-
-                            <Label Grid.Column="0" Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Center">Notes</Label>
-                            <TextBox Grid.Column="1" Grid.Row="4" Text="{Binding CurrentPicture.Photographer.Notes}" IsReadOnly="True"></TextBox>
-
-                         <!--   <Button Grid.Column="1" Grid.Row="5"  Width="120" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center">Update</Button> -->
-                        </Grid>
-                    </TabItem>
-                </TabControl>
-            </StackPanel>
-
-            <!--S4-->
-            <GridSplitter Grid.Row="1" VerticalAlignment="Center" ResizeDirection="Rows"  Height="5"  Grid.ColumnSpan="3" Width="792" Margin="0,5.214,0,5"/>
-            <!--S5-->
-            <my:Gallery x:Name="Gallery" Grid.Row="2" Grid.ColumnSpan="3"/>
-        </Grid>
-    </StackPanel>
+        </materialDesign:ColorZone>
+    </Grid>
 </Window>

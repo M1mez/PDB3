@@ -19,21 +19,17 @@ namespace PicDB.ViewModels
 
         public string SearchText
         {
-            get
-            {
-                return _searchtext;
-            }
+            get => _searchtext;
 
             set
             {
                 _searchtext = value;
-                _isActive = !String.IsNullOrWhiteSpace(_searchtext);
+                IsActive = !String.IsNullOrWhiteSpace(_searchtext);
             }
         }
         private string _searchtext = "";
-        private bool _isActive = false;
 
-        public bool IsActive => _isActive;
+        public bool IsActive { get; private set; } = false;
 
         public int ResultCount { get; }
     }

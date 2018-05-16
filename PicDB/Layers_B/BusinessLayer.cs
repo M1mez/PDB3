@@ -15,11 +15,11 @@ using PicDB.ViewModels;
 
 namespace PicDB.Classes
 {
-    class BusinessLayer : IBusinessLayer
+    public class BusinessLayer : IBusinessLayer
     {
-        public BusinessLayer(bool IsUnitTest = false)
+        public BusinessLayer(bool isUnitTest = false)
         {
-            _dal = IsUnitTest ? new MockDataAccessLayer() : new DataAccessLayer();
+            _dal = isUnitTest ? new MockDataAccessLayer() : new DataAccessLayer();
         }
 
 
@@ -179,7 +179,7 @@ namespace PicDB.Classes
             }
         }
 
-        public void Save(PhotographerViewModel phVM) => Save(phVM.photographerModel);
+        public void Save(PhotographerViewModel phVM) => Save(phVM.PhotographerModel);
         public void Save(IPhotographerModel photographer)
         {
             try

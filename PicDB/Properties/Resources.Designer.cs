@@ -200,17 +200,17 @@ namespace PicDB.Properties {
         /// <summary>
         ///   Looks up a localized string similar to SELECT *
         ///	FROM Pictures as Pics
-        ///		LEFT JOIN Photographers as PG ON PG.PG_ID = P_PG.FK_PG_ID
+        ///		LEFT JOIN Photographers as PG ON PG.PG_ID = Pics.FK_PG_ID
         ///		LEFT JOIN EXIF ON EXIF_ID = Pics.FK_EXIF_ID
         ///		LEFT JOIN IPTC ON IPTC_ID = Pics.FK_IPTC_ID
         ///		LEFT JOIN Cameras ON Cam_ID = Pics.FK_Cam_ID
         ///
         ///	WHERE (@namePart IS NULL OR FileName LIKE &apos;%&apos; + @namePart + &apos;%&apos; )
-        ///
+        ///	
         ///		AND (@PG_PG_ID IS NULL OR @PG_PG_ID = PG.PG_ID)
         ///		AND (@PG_Birthday IS NULL OR @PG_Birthday = PG.BirthDay)
         ///		AND (@PG_FirstName IS NULL OR @PG_FirstName = PG.FirstName)
-        ///		AND (@PG_LastName IS NULL O [rest of string was truncated]&quot;;.
+        ///		AND (@PG_LastName IS NULL  [rest of string was truncated]&quot;;.
         /// </summary>
         public static string Get_Search_Pictures {
             get {

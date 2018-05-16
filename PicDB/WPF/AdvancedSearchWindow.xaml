@@ -1,0 +1,52 @@
+﻿<Window 
+    x:Class="PicDB.AdvancedSearchWindow"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vmdl="clr-namespace:PicDB.ViewModels"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:PicDB.WPF"
+    
+    TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+    TextElement.FontWeight="Regular"
+    TextElement.FontSize="13"
+    Title="Search Pictures"
+    TextOptions.TextFormattingMode="Ideal"
+    TextOptions.TextRenderingMode="Auto"
+    Background="{DynamicResource MaterialDesignPaper}"
+    FontFamily="{DynamicResource MaterialDesignFont}" 
+    ResizeMode="NoResize"
+    Width="320" Height="171" >
+
+
+    <StackPanel Name="Insert">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <TextBox Grid.Row="0" Text="{Binding namePart}"
+                     VerticalAlignment="Center" materialDesign:HintAssist.Hint="  Search"/>
+
+            <StackPanel Grid.Row="1" Orientation="Vertical" TextBlock.Foreground="{DynamicResource MaterialDesignBody}" >
+                <TabControl Background="{DynamicResource MaterialDesignPaper}" Margin="10,0,0,0" BorderBrush="{DynamicResource PrimaryHueMidBrush}" BorderThickness="2">
+                    
+                    <TabItem Header="Photographer" Name="tab_Photographer">
+                        <local:SearchBy_Photographer DataContext="{Binding PhotographerPart}"/>
+                    </TabItem>
+                    
+                    <TabItem Header="IPTC" Name="tab_IPTC">
+                        <local:SearchBy_IPTC DataContext="{Binding IPTCPart}"/>
+                    </TabItem>
+                    
+                    <TabItem Header="EXIF" Name="tab_EXIF">
+                        <local:SearchBy_EXIF DataContext="{Binding EXIFPart}"/>
+                    </TabItem>
+                    
+                </TabControl>
+            </StackPanel>
+        </Grid>
+        <Button Height="Auto" Click="Search" VerticalAlignment="Bottom" >Search</Button>
+    </StackPanel>
+</Window>
