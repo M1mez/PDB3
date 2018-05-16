@@ -37,12 +37,10 @@ namespace PicDB
         private MainWindow Sender { get; }
         private BusinessLayer BL { get; }
 
-        public string namePart { get; set; } = null;
+        public string NamePart { get; set; } = null;
         public PhotographerViewModel PhotographerPart { get; set; } = new PhotographerViewModel(){ID = 0};
         public IPTCViewModel IPTCPart { get; set; } = new IPTCViewModel();
         public EXIFViewModel EXIFPart { get; set; } = new EXIFViewModel();
-
-        public object placeholderEXIF { get; set; } = new object();
 
         //public PhotographerModel PhotographerPart { get; set; } = new PhotographerModel();
         //public IPTCModel IPTCPart = new IPTCModel();
@@ -51,7 +49,7 @@ namespace PicDB
 
         private void Search(object sender, RoutedEventArgs e)
         {
-            Console.WriteLine($"np {namePart}");
+            Console.WriteLine($"np {NamePart}");
             Console.WriteLine("photographer: " +
                 $"id {PhotographerPart.ID} " +
                 $"fn {PhotographerPart.FirstName ?? "null"} " +
@@ -73,7 +71,7 @@ namespace PicDB
                 $"ma {EXIFPart.Make ?? "null"} ");
             
             var searchedPictures = BL.GetPictures(
-                namePart, 
+                NamePart, 
                 PhotographerPart.PhotographerModel, 
                 IPTCPart.IPTCModel, 
                 EXIFPart.EXIFModel);

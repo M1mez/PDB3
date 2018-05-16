@@ -26,7 +26,7 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <TextBox Grid.Row="0" Text="{Binding namePart}"
+            <TextBox Grid.Row="0" Text="{Binding NamePart}"
                      VerticalAlignment="Center" materialDesign:HintAssist.Hint="  Search"/>
 
             <StackPanel Grid.Row="1" Orientation="Vertical" TextBlock.Foreground="{DynamicResource MaterialDesignBody}" >

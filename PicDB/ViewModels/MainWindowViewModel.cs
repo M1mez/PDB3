@@ -11,6 +11,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
+using BIF.SWE2.Interfaces.Models;
 using PicDB.Annotations;
 
 namespace PicDB.ViewModels
@@ -34,15 +35,20 @@ namespace PicDB.ViewModels
         {
             get => _currentPicture;
             set {
-                if (_currentPicture == value) return;
+                //if (_currentPicture == value) return;
                 _currentPicture = value;
                 OnPropertyChanged();
             }
         }
 
-        public IPictureListViewModel List { get
+        private IPictureListViewModel _list = null;
+        public IPictureListViewModel List
+        {
+            get => _list ?? (_list = new PictureListViewModel(Bl.GetDirPicModels()));
+            set
             {
-                return new PictureListViewModel(Bl.GetDirPicModels());
+                _list = value;
+                OnPropertyChanged();
             }
         }
 

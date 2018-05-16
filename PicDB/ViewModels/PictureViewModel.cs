@@ -20,39 +20,34 @@ namespace PicDB.ViewModels
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) =>
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-
-        public DataAccessLayer _dal = new DataAccessLayer();
-        public PictureViewModel()
+        
+        //ctor
+        public PictureViewModel() { }
+        public PictureViewModel(IPictureModel mdl)
         {
+            PictureModel = mdl ?? new PictureModel();
         }
 
-        public PictureViewModel(IPictureModel mdl) {
-            if (mdl != null)
+        //model
+        public readonly IPictureModel PictureModel;
+        public int ID => PictureModel.ID;
+        public string FileName => PictureModel.FileName;
+        public string FilePath => Path.Combine(Constants.PicPath, FileName);
+        public string DisplayName => $"{FileName} (by {IPTC?.ByLine})";
+        public IIPTCViewModel IPTC => new IPTCViewModel(PictureModel.IPTC);
+        public IEXIFViewModel EXIF => new EXIFViewModel(PictureModel.EXIF);
+        private IPhotographerViewModel _photographer;
+        public IPhotographerViewModel Photographer
+        {
+            get => _photographer;
+            set
             {
-                ID = mdl.ID;
-                FileName = mdl.FileName;
-                FilePath = Path.Combine(Constants.PicPath, mdl.FileName);
-                IPTC = new IPTCViewModel(mdl.IPTC);
-                EXIF = new EXIFViewModel(mdl.EXIF);
-                Camera = new CameraViewModel(mdl.Camera);
-                DisplayName = String.Format("{0} (by {1})", FileName, IPTC?.ByLine);
+                if (_photographer == value) return;
+                _photographer = value;
+                OnPropertyChanged();
             }
         }
 
-        public int ID { get; }
-
-        public string FileName { get; }
-
-        public string FilePath { get; }
-
-        public string DisplayName { get; }
-
-        public IIPTCViewModel IPTC { get; }
-
-        public IEXIFViewModel EXIF { get; }
-
-        public IPhotographerViewModel Photographer { get; }
-
-        public ICameraViewModel Camera { get; }
+        public ICameraViewModel Camera => new CameraViewModel(PictureModel.Camera);
     }
 }

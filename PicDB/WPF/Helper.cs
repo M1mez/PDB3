@@ -19,8 +19,7 @@ namespace Helper
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            decimal decVal = 0;
-            decimal.TryParse((string)value, out decVal);
+            decimal.TryParse((string)value, out decimal decVal);
             return decVal;
         }
     }
@@ -37,8 +36,7 @@ namespace Helper
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            int intVal = 0;
-            int.TryParse((string)value, out intVal);
+            int.TryParse((string)value, out int intVal);
             return intVal;
         }
     }

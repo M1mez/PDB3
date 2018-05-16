@@ -26,7 +26,7 @@ namespace PicDB.ViewModels
             List = newList;
         }
 
-        public IPictureViewModel CurrentPicture { get; }
+        public IPictureViewModel CurrentPicture { get; set; }
 
         private IEnumerable<IPictureViewModel> _list;
         public IEnumerable<IPictureViewModel> List {
@@ -38,7 +38,7 @@ namespace PicDB.ViewModels
             }
         }
 
-        public IEnumerable<IPictureModel> modelList {
+        public IEnumerable<IPictureModel> ModelList {
             set
             {
                 List = value.Select(mdl => new PictureViewModel(mdl)).Cast<IPictureViewModel>().ToList();
