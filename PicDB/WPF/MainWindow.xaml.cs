@@ -12,7 +12,11 @@ using PicDB.ViewModels;
 using PicDB.Classes;
 using PicDB.Models;
 using System.Collections.Generic;
+using System.Linq;
 using BIF.SWE2.Interfaces.Models;
+using System.IO;
+using System.Windows.Data;
+using Helper;
 
 namespace PicDB
 {
@@ -22,36 +26,39 @@ namespace PicDB
     public partial class MainWindow : Window
     {
         MainWindowViewModel mwvmdl = new MainWindowViewModel();
-        public PhotographerListViewModel PhotographerList;
+        public PhotographerListViewModel PhotographerList { get; set; } = new PhotographerListViewModel();
         private BusinessLayer BL;
 
         public MainWindow()
         {
             BL = mwvmdl.Bl;
+            UpdatePhotographerList();
             UpdatePictureList(BL.GetPictures());
-            this.DataContext = mwvmdl;
-            ActualizePhotographerList();
+            
             Resources.Add("NamePart", NamePart);
+            this.DataContext = mwvmdl;
 
             InitializeComponent();
+        }
+
+        private void ClickOnGalleryThumbnail(object sender, RoutedEventArgs e)
+        {
+            /*var photographer = mwvmdl.CurrentPicture.Photographer;
+            PhotographerList.CurrentPhotographer = photographer;*/
         }
 
         private void OpenNewPhotographerWindow(object sender, RoutedEventArgs e)
         {
             PhotographerWindow pw = new PhotographerWindow(this, BL);
-            /*{
-                ShowInTaskbar = false,
-                Owner = Application.Current.MainWindow
-            };*/
-            pw.Show();
+            pw.ShowDialog();
         }
 
         private void OpenNewSearchWindow(object sender, RoutedEventArgs e)
         {
-            AdvancedSearchWindow sw = new AdvancedSearchWindow(this, BL);
-            sw.Show();
+            AdvancedSearchWindow sw = new AdvancedSearchWindow(this, BL) { Owner = Application.Current.MainWindow };
+            sw.ShowDialog();
         }
-        
+
         public string NamePart
         {
             get => (string)GetValue(NamePartProperty);
@@ -67,25 +74,56 @@ namespace PicDB
             UpdatePictureList(simpleSearchedList);
         }
 
-        public void ActualizePhotographerList()
+
+        public void UpdatePhotographerList()
         {
-            PhotographerList = new PhotographerListViewModel(BL.GetPhotographers());
+            PhotographerList.Update(BL.GetPhotographers());
+        }
+
+        private void AssignPictureToPhotographer(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                int currentPicID = mwvmdl.CurrentPicture.ID;
+                BL.AssignPictureToPhotographer(currentPicID, PhotographerList.CurrentPhotographer.ID);
+
+                ((PictureViewModel) mwvmdl.CurrentPicture).Photographer = PhotographerList.CurrentPhotographer;
+                int index = mwvmdl.List.List.ToList().FindIndex(pic => pic.ID == currentPicID);
+                ((PictureViewModel) mwvmdl.List.List.ElementAt(index)).Photographer = PhotographerList.CurrentPhotographer;
+            }
+            catch (Exception ex)
+            {
+                MessageBoxEx.Show(ex.Message, "Save IPTC", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void WriteIPTC(object sender, RoutedEventArgs e)
         {
-            var iptcVm = (IPTCViewModel) mwvmdl.CurrentPicture.IPTC;
-            mwvmdl.Bl.WriteIPTC(mwvmdl.CurrentPicture.FileName, iptcVm.IPTCModel);
+            try
+            {
+                var iptcVm = (IPTCViewModel)mwvmdl.CurrentPicture.IPTC;
+                mwvmdl.Bl.WriteIPTC(mwvmdl.CurrentPicture.FileName, iptcVm.IPTCModel);
+            }
+            catch (Exception ex)
+            {
+                MessageBoxEx.Show(ex.Message, "Save IPTC", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         public void UpdatePictureList(IEnumerable<IPictureModel> newList)
         {
             mwvmdl.List = new PictureListViewModel(newList);
-            foreach (var pictureModel in newList)
+            ClickOnGalleryThumbnail(null, null);
+            Console.WriteLine(newList.Aggregate("", (x, y) => x + y.FileName + " ").Trim());
+            foreach (var pic in mwvmdl.List.List)
             {
-                Console.WriteLine(pictureModel.FileName);
+                ((PictureViewModel)pic).Photographer = PhotographerList.List.ToList()
+                    .Find(ph => ph.ID == ((PictureModel)((PictureViewModel)pic).PictureModel).PG_ID);
             }
+
         }
+
+
 
         private void Quit(object sender, RoutedEventArgs e) { Close(); }
     }

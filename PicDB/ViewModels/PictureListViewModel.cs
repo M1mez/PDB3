@@ -3,9 +3,11 @@ using BIF.SWE2.Interfaces.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Windows.Media.Imaging;
 using PicDB.Annotations;
 
 namespace PicDB.ViewModels
@@ -26,9 +28,10 @@ namespace PicDB.ViewModels
             List = newList;
         }
 
-        public IPictureViewModel CurrentPicture { get; set; }
+        public IPictureViewModel CurrentPicture => List.ElementAt(CurrentIndex);
 
         private IEnumerable<IPictureViewModel> _list;
+
         public IEnumerable<IPictureViewModel> List {
             get => _list;
             set
@@ -38,20 +41,25 @@ namespace PicDB.ViewModels
             }
         }
 
-        public IEnumerable<IPictureModel> ModelList {
-            set
-            {
-                List = value.Select(mdl => new PictureViewModel(mdl)).Cast<IPictureViewModel>().ToList();
-            }
-        }
-
+        public List<BitmapImage> BitmapList =>
+            List.ToList().Select(pic => FileInformation.LoadBitmapImage(pic.FilePath)).ToList();
+            
         public IEnumerable<IPictureViewModel> PrevPictures { get; }
 
         public IEnumerable<IPictureViewModel> NextPictures { get; }
 
-        public int Count { get; }
+        public int Count => List.Count();
 
-        public int CurrentIndex { get; }
+        private int _currentIndex;
+        public int CurrentIndex
+        {
+            get => _currentIndex;
+            set
+            {
+                _currentIndex = value;
+                OnPropertyChanged();
+            }
+        }
 
         public string CurrentPictureAsString { get; }
     }

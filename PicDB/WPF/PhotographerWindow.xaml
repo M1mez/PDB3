@@ -1,4 +1,5 @@
 ﻿<Window 
+    WindowStartupLocation="CenterOwner"
     x:Class="PicDB.PhotographerWindow"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -15,8 +16,15 @@
     Background="{DynamicResource MaterialDesignPaper}"
     FontFamily="{DynamicResource MaterialDesignFont}" 
     ResizeMode="NoResize"
-    Width="320" Height="170.889"
-    >
+    Width="320" Height="170.889">
+
+    <Window.Resources>
+        <Style TargetType="DatePickerTextBox">
+            <Setter Property="IsReadOnly" Value="True"></Setter>
+            <Setter Property="Focusable" Value="False"></Setter>
+        </Style>
+    </Window.Resources>
+
     <StackPanel Name="Insert">
         <Grid>
             <Grid.ColumnDefinitions>
@@ -41,10 +49,10 @@
                      Grid.Column="1" Grid.Row="1"/>
 
             <Label Grid.Row="2" Grid.Column="0">Birth Day</Label>
-            <DatePicker Name="_BirthDay" 
+            <DatePicker Name="_BirthDay" Focusable="False"
                         Grid.Column="1" Grid.Row="2"/>
 
-            <Label Grid.Row="3" Grid.Column="0">Notes</Label>
+                <Label Grid.Row="3" Grid.Column="0">Notes</Label>
             <TextBox Name="_Notes" TextWrapping="Wrap" AcceptsReturn="True" AcceptsTab="True" SpellCheck.IsEnabled="True" 
                      Grid.Column="1" Grid.Row="3"/>
 

@@ -395,6 +395,21 @@ namespace PicDB.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to UPDATE IPTC 
+        ///SET IPTC.Keywords = @Keywords,
+        ///	IPTC.ByLine = @ByLine,
+        ///	IPTC.CopyrightNotice = @CopyrightNotice,
+        ///	IPTC.Headline = @Headline,
+        ///	IPTC.Caption = @Caption
+        ///WHERE IPTC.IPTC_FK_Pic_ID = @Pic_ID;.
+        /// </summary>
+        public static string Update_IPTC {
+            get {
+                return ResourceManager.GetString("Update_IPTC", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to UPDATE Pictures
         ///SET Pictures.FK_Cam_ID = @Cam_ID
         ///WHERE Pictures.Pic_ID = @Pic_ID;.

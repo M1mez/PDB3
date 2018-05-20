@@ -314,4 +314,13 @@ WHERE Pictures.Pic_ID = @Pic_ID;</value>
   <data name="_SearchIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SearchIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Update_IPTC" xml:space="preserve">
+    <value>UPDATE IPTC 
+SET IPTC.Keywords = @Keywords,
+	IPTC.ByLine = @ByLine,
+	IPTC.CopyrightNotice = @CopyrightNotice,
+	IPTC.Headline = @Headline,
+	IPTC.Caption = @Caption
+WHERE IPTC.IPTC_FK_Pic_ID = @Pic_ID;</value>
+  </data>
 </root>

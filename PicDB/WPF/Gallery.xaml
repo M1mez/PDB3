@@ -4,27 +4,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:PicDB"
-             xmlns:vmdl="clr-namespace:PicDB.ViewModels" 
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    
+             xmlns:vmdl="clr-namespace:PicDB.ViewModels" >
 
-    <ListBox Name="ImgGallery"
-             ItemsSource="{Binding List.List}"
-             ScrollViewer.HorizontalScrollBarVisibility="Auto"
-             ScrollViewer.VerticalScrollBarVisibility="Disabled"
-             SelectedItem="{Binding CurrentPicture}"
-    >
-        <ListBox.ItemsPanel>
-            <ItemsPanelTemplate>
-                <VirtualizingStackPanel Orientation="Horizontal"/>
-            </ItemsPanelTemplate>
-        </ListBox.ItemsPanel>
-        <ListBox.ItemTemplate>
-            <DataTemplate>
-                <Image Source="{Binding FilePath}"  Stretch="UniformToFill"></Image>
-            </DataTemplate>
-        </ListBox.ItemTemplate>
-    </ListBox>
+
+    
 </UserControl>
 

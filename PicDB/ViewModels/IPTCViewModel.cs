@@ -34,7 +34,7 @@ namespace PicDB.ViewModels
             get => IPTCModel.Keywords;
             set
             {
-                if (IPTCModel.Keywords == value) return;
+                //if (IPTCModel.Keywords == value) return;
                 IPTCModel.Keywords = value;
                 OnPropertyChanged();
             }
@@ -44,7 +44,7 @@ namespace PicDB.ViewModels
             get => IPTCModel.ByLine;
             set
             {
-                if (IPTCModel.ByLine == value) return;
+                //if (IPTCModel.ByLine == value) return;
                 IPTCModel.ByLine = value;
                 OnPropertyChanged();
             }
@@ -54,7 +54,7 @@ namespace PicDB.ViewModels
             get => IPTCModel.CopyrightNotice;
             set
             {
-                if (IPTCModel.CopyrightNotice == value) return;
+                //if (IPTCModel.CopyrightNotice == value) return;
                 IPTCModel.CopyrightNotice = value;
                 OnPropertyChanged();
             }
@@ -64,7 +64,7 @@ namespace PicDB.ViewModels
             get => IPTCModel.Headline;
             set
             {
-                if (IPTCModel.Headline == value) return;
+                //if (IPTCModel.Headline == value) return;
                 IPTCModel.Headline = value;
                 OnPropertyChanged();
             }
@@ -74,7 +74,7 @@ namespace PicDB.ViewModels
             get => IPTCModel.Caption;
             set
             {
-                if (IPTCModel.Caption == value) return;
+                //if (IPTCModel.Caption == value) return;
                 IPTCModel.Caption = value;
                 OnPropertyChanged();
             }

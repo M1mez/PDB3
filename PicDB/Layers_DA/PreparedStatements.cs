@@ -120,6 +120,14 @@ namespace PicDB.Layers_DA
                 UpdatePicsPhotographer = NewComm(Resources.Update_Pictures_Photographer);
                 UpdatePicsPhotographer.Parameters.Add(new SqlParameter("@Pic_ID", SqlDbType.Int));
                 UpdatePicsPhotographer.Parameters.Add(new SqlParameter("@PG_ID", SqlDbType.Int));
+
+                UpdateIPTC = NewComm(Resources.Update_IPTC);
+                UpdateIPTC.Parameters.Add(new SqlParameter("@Pic_ID", SqlDbType.Int));
+                UpdateIPTC.Parameters.Add(new SqlParameter("@Keywords", SqlDbType.VarChar));
+                UpdateIPTC.Parameters.Add(new SqlParameter("@ByLine", SqlDbType.VarChar));
+                UpdateIPTC.Parameters.Add(new SqlParameter("@CopyrightNotice", SqlDbType.VarChar));
+                UpdateIPTC.Parameters.Add(new SqlParameter("@Headline", SqlDbType.VarChar));
+                UpdateIPTC.Parameters.Add(new SqlParameter("@Caption", SqlDbType.VarChar));
             }
 
             internal SqlCommand UpdatePicsEXIF;
@@ -144,6 +152,7 @@ namespace PicDB.Layers_DA
             internal SqlCommand DeletePictureFileName;
             internal SqlCommand DeletePhotographerId;
             internal SqlCommand DeletePictureId;
+            internal SqlCommand UpdateIPTC;
 
             internal static SqlCommand GetNextIdTableName
             {

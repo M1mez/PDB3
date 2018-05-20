@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Windows.Media.Imaging;
 using BIF.SWE2.Interfaces.Models;
+using BIF.SWE2.Interfaces.ViewModels;
+using MaterialDesignThemes.Wpf.Transitions;
 using PicDB.Models;
 
 namespace PicDB
@@ -103,11 +105,11 @@ namespace PicDB
                 var frame = decoder.Frames[0];
 
                 if (!(frame.Metadata is BitmapMetadata metadata)) return iptc;
-                iptc.Caption = (string)metadata.GetQuery("/app13/irb/8bimiptc/iptc/caption") ?? iptc.Caption;
-                iptc.Keywords = (string)metadata.GetQuery("/app13/irb/8bimiptc/iptc/keywords") ?? iptc.Keywords;
-                iptc.ByLine = (string)metadata.GetQuery("/app13/irb/8bimiptc/iptc/by-line") ?? iptc.ByLine;
+                iptc.Caption =         (string)metadata.GetQuery("/app13/irb/8bimiptc/iptc/caption") ?? iptc.Caption;
+                iptc.Keywords =        (string)metadata.GetQuery("/app13/irb/8bimiptc/iptc/keywords") ?? iptc.Keywords;
+                iptc.ByLine =          (string)metadata.GetQuery("/app13/irb/8bimiptc/iptc/by-line") ?? iptc.ByLine;
                 iptc.CopyrightNotice = (string)metadata.GetQuery("/app13/irb/8bimiptc/iptc/copyright notice") ?? iptc.CopyrightNotice;
-                iptc.Headline = (string)metadata.GetQuery("/app13/irb/8bimiptc/iptc/Headline") ?? iptc.Headline;
+                iptc.Headline =        (string)metadata.GetQuery("/app13/irb/8bimiptc/iptc/headline") ?? iptc.Headline;
                 fs.Close();
             }
             return iptc;
@@ -116,24 +118,47 @@ namespace PicDB
         // ReSharper disable once InconsistentNaming
         public static void WriteIPTC(string filename, IIPTCModel iptc)
         {
-            var filePath = Path.Combine(Constants.PicPath, filename);
+
+            Console.WriteLine($"{iptc.ByLine} {iptc.Caption} {iptc.CopyrightNotice} {iptc.Headline} {iptc.Keywords}");
+
+            string filePath = Path.Combine(Constants.PicPath, filename);
 
             using (Stream fs = new FileStream(filePath, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite))
             {
-                var decoder = new JpegBitmapDecoder(fs, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.Default);
-                var frame = decoder.Frames[0];
-                var writer = frame.CreateInPlaceBitmapMetadataWriter();
-                if (writer != null && writer.TrySave())
+                JpegBitmapDecoder decoder = new JpegBitmapDecoder(fs, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.Default);
+                BitmapFrame frame = decoder.Frames[0];
+                var metadata = frame.Metadata.Clone() as BitmapMetadata;
+                InPlaceBitmapMetadataWriter jpgInPlace = frame.CreateInPlaceBitmapMetadataWriter();
+                if (jpgInPlace != null )
                 {
-                    writer.SetQuery("/app13/irb/8bimiptc/iptc/caption", iptc.Caption);
-                    writer.SetQuery("/app13/irb/8bimiptc/iptc/keywords", iptc.Keywords);
-                    writer.SetQuery("/app13/irb/8bimiptc/iptc/by-line", iptc.ByLine);
-                    writer.SetQuery("/app13/irb/8bimiptc/iptc/copyright notice", iptc.CopyrightNotice);
-                    writer.SetQuery("/app13/irb/8bimiptc/iptc/headline", iptc.Headline);
-                    
+                    jpgInPlace.SetQuery(@"/app13/irb/8bimiptc/iptc/caption", iptc.Caption);
+                    jpgInPlace.SetQuery(@"/app13/irb/8bimiptc/iptc/keywords", iptc.Keywords);
+                    jpgInPlace.SetQuery(@"/app13/irb/8bimiptc/iptc/by-line", iptc.ByLine);
+                    jpgInPlace.SetQuery(@"/app13/irb/8bimiptc/iptc/copyright notice", iptc.CopyrightNotice);
+                    jpgInPlace.SetQuery(@"/app13/irb/8bimiptc/iptc/headline", iptc.Headline);
                 }
                 fs.Close();
             }
+        }
+
+        public static BitmapImage LoadBitmapImage(IPictureViewModel pic) => LoadBitmapImage(pic?.FilePath);
+        public static BitmapImage LoadBitmapImage(string fileName)
+        {
+            if (string.IsNullOrEmpty(fileName))
+            {
+                Console.WriteLine("was null");
+                return new BitmapImage();
+            }
+            var bitmapImage = new BitmapImage();
+            using (var stream = new FileStream(fileName, FileMode.Open))
+            {
+                bitmapImage.BeginInit();
+                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                bitmapImage.StreamSource = stream;
+                bitmapImage.EndInit();
+                //bitmapImage.Freeze(); // just in case you want to load the image in another thread
+            }
+                return bitmapImage;
         }
 
     }

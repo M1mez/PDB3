@@ -62,6 +62,9 @@ namespace PicDB.ViewModels
                 OnPropertyChanged();
             }
         }
+
+        public string FirstLastName => $"{FirstName} {LastName}";
+
         public DateTime? BirthDay
         {
             get => PhotographerModel.BirthDay;
@@ -72,14 +75,12 @@ namespace PicDB.ViewModels
                 OnPropertyChanged();
             }
         }
-
-        private string _dateString;
+        
         public string DateInString
         {
-            get => _dateString;
+            get => BirthDay?.ToShortDateString();
             set
             {
-                _dateString = value;
                 if (value == null) BirthDay = null;
                 else BirthDay = DateTime.Parse(value);
             }

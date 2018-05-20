@@ -20,17 +20,11 @@ namespace PicDB.Models
 
         private string _fileName;
         public int ID { get; set; }
-        public string FileName
-        {
-            get => _fileName;
-            set
-            {
-                _fileName = value;
-               // ID = Constants.GetRandomInt();
-            }
-        }
+        public string FileName { get; set; }
         public IIPTCModel IPTC { get; set; }
         public IEXIFModel EXIF { get; set; }
         public ICameraModel Camera { get; set; }
+
+        public int PG_ID { get; set; }
     }
 }

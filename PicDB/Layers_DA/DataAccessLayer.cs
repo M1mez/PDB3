@@ -528,6 +528,34 @@ namespace PicDB.Layers_DA
             }
         }
 
+        public void Update(IPTCModel iptc)
+        {
+            var output = $"Update IPTC model for picture with ID: {iptc.Pic_ID}";
+            if (iptc == null) throw new ArgumentNullException(nameof(iptc));
+            Console.WriteLine(output);
+            try
+            {
+                Conn.Open();
+                PS.UpdateIPTC.Parameters["@Pic_ID"].Value = iptc.Pic_ID;
+                PS.UpdateIPTC.Parameters["@Keywords"].Value = iptc.Keywords;
+                PS.UpdateIPTC.Parameters["@ByLine"].Value = iptc.ByLine;
+                PS.UpdateIPTC.Parameters["@CopyrightNotice"].Value = iptc.CopyrightNotice;
+                PS.UpdateIPTC.Parameters["@Headline"].Value = iptc.Headline;
+                PS.UpdateIPTC.Parameters["@Caption"].Value = iptc.Caption;
+                PS.UpdateIPTC.ExecuteNonQuery();
+                Conn.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw new Exception(output, e);
+            }
+            finally
+            {
+                Conn.Close();
+            }
+        }
+
         public void Save(IPTCModel iptc)
         {
             var output = $"Save IPTC model for picture with ID: {iptc.Pic_ID}";

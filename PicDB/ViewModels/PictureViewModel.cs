@@ -29,12 +29,23 @@ namespace PicDB.ViewModels
         }
 
         //model
-        public readonly IPictureModel PictureModel;
+        public IPictureModel PictureModel { get; set; }
         public int ID => PictureModel.ID;
         public string FileName => PictureModel.FileName;
-        public string FilePath => Path.Combine(Constants.PicPath, FileName);
+        public string FilePath
+        {
+            get => Path.Combine(Constants.PicPath, FileName);
+            set => throw new NotImplementedException();
+        }
+
         public string DisplayName => $"{FileName} (by {IPTC?.ByLine})";
-        public IIPTCViewModel IPTC => new IPTCViewModel(PictureModel.IPTC);
+        private IIPTCViewModel _iptc;
+        public IIPTCViewModel IPTC
+        {
+            get => _iptc ?? (_iptc = new IPTCViewModel(PictureModel.IPTC));
+            set => _iptc = value;
+        }
+
         public IEXIFViewModel EXIF => new EXIFViewModel(PictureModel.EXIF);
         private IPhotographerViewModel _photographer;
         public IPhotographerViewModel Photographer

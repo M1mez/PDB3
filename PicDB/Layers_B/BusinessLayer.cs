@@ -29,7 +29,6 @@ namespace PicDB.Classes
         {
             try
             {
-
                 _dal.DeletePhotographer(ID);
             }
             catch (Exception e)
@@ -56,13 +55,13 @@ namespace PicDB.Classes
         public IEXIFModel ExtractEXIF(string filename) => FileInformation.ExtractEXIF(filename);
 
         public IIPTCModel ExtractIPTC(string filename) => FileInformation.ExtractIPTC(filename);
-        
+
         public void WriteIPTC(string filename, IIPTCModel iptc)
         {
             try
             {
-                FileInformation.WriteIPTC(filename, iptc);
-                _dal.Save((IPTCModel)iptc);
+                //FileInformation.WriteIPTC(filename, iptc);
+                _dal.Update((IPTCModel)iptc);
             }
             catch (Exception e)
             {
@@ -179,6 +178,19 @@ namespace PicDB.Classes
             }
         }
 
+        public void AssignPictureToPhotographer(int Pic_ID, int PH_ID)
+        {
+            try
+            {
+                _dal.UpdatePicsPhotographer(Pic_ID, PH_ID);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
+
         public void Save(PhotographerViewModel phVM) => Save(phVM.PhotographerModel);
         public void Save(IPhotographerModel photographer)
         {
@@ -210,10 +222,6 @@ namespace PicDB.Classes
 
                 var toSave = new List<string>();
                 var toDelete = new List<string>();
-                var exifList = new List<EXIFModel>();
-                var iptcList = new List<IPTCModel>();
-                EXIFModel currexif;
-                IPTCModel curriptc;
 
                 var dbPics = GetPictures().ToList();
                 var dbPicNames = dbPics.Select(x => x.FileName).ToList();
@@ -226,47 +234,38 @@ namespace PicDB.Classes
                 _dal.Save(toSave);
                 _dal.DeletePictures(toDelete);
 
-                /*DAL.Save(new CameraModel()
-                {
-                    BoughtOn = new DateTime(1999,5,1),
-                    ISOLimitAcceptable = (decimal) 1/16,
-                    ISOLimitGood = (decimal) 1/70,
-                    Make = "LAL",
-                    Notes = "MEH",
-                    Producer = "Mama+Papa"
-                });
-
-                DAL.Save(new PhotographerModel()
-                {
-                    BirthDay = new DateTime(1989, 9, 2),
-                    FirstName = "Johannes",
-                    LastName = "Fessler",
-                    Notes = "WHAT"
-                });*/
-
-                foreach (var pic in GetPictures().ToList())
-                {
-                    var filename = pic.FileName;
-                    currexif = (EXIFModel) ExtractEXIF(filename);
-                    currexif.Pic_ID = pic.ID;
-                    exifList.Add(currexif);
-                    curriptc = (IPTCModel) ExtractIPTC(filename);
-                    curriptc.Pic_ID = pic.ID;
-                    iptcList.Add(curriptc);
-
-                   // DAL.UpdatePicsCamera(pic.ID, DAL.GetCameras().ToList()[0].ID);
-                   // DAL.UpdatePicsPhotographer(pic.ID, DAL.GetPhotographers().ToList()[0].ID);
-                }
-
-                exifList.ForEach(_dal.Save);
-                iptcList.ForEach(_dal.Save);
+                UpdateExifIptcByPictureList();
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
                 throw new Exception("Sync", e);
             }
-           
+        }
+
+        private void UpdateExifIptcByPictureList()
+        {
+            var exifList = new List<EXIFModel>();
+            //var iptcList = new List<IPTCModel>();
+            EXIFModel currexif;
+            //IPTCModel curriptc;
+
+            foreach (var pic in GetPictures().ToList())
+            {
+                var filename = pic.FileName;
+                currexif = (EXIFModel)ExtractEXIF(filename);
+                currexif.Pic_ID = pic.ID;
+                exifList.Add(currexif);
+                //curriptc = (IPTCModel)ExtractIPTC(filename);
+                //curriptc.Pic_ID = pic.ID;
+                //iptcList.Add(curriptc);
+
+                // DAL.UpdatePicsCamera(pic.ID, DAL.GetCameras().ToList()[0].ID);
+                // DAL.UpdatePicsPhotographer(pic.ID, DAL.GetPhotographers().ToList()[0].ID);
+            }
+
+            exifList.ForEach(_dal.Save);
+            //iptcList.ForEach(_dal.Save);
         }
     }
 }

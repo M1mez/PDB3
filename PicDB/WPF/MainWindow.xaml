@@ -5,6 +5,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:vmdl="clr-namespace:PicDB.ViewModels"
     xmlns:wpfns="clr-namespace:PicDB.WPF"
+    xmlns:converter="clr-namespace:Helper"
+    xmlns:local="clr-namespace:PicDB"
     x:Name="main"
     
     TextElement.Foreground="{DynamicResource MaterialDesignBody}"
@@ -17,8 +19,25 @@
     FontFamily="{DynamicResource MaterialDesignFont}" 
     MinWidth="640" 
     MinHeight="520"
-    Width="640" Height="520"
-    >
+    Width="640" Height="520">
+
+    <Window.Resources>
+        <converter:PicToBitmapImageConverter x:Key="PicToBitmapImageConverter"/>
+        <Style TargetType="TextBox">
+            <Setter Property="Foreground" Value="{DynamicResource MaterialDesignPaper}"/>
+            <Setter Property="Background" Value="{DynamicResource MaterialDesignBody}"/>
+            <Setter Property="VerticalAlignment" Value="Center"></Setter>
+            <Setter Property="TextWrapping" Value="Wrap"></Setter>
+        </Style>
+        <Style TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        <Style TargetType="ListBox">
+            <Setter Property="Background" Value="{DynamicResource MaterialDesignPaper}"/>
+            <Setter Property="Foreground" Value="{DynamicResource MaterialDesignBody}"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+    </Window.Resources>
 
     <Grid>
 
@@ -26,15 +45,30 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="60"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="60"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="100"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="50*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="15*"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="50*" MinWidth="150"/>
+            <ColumnDefinition Width="5"/>
+            <ColumnDefinition Width="Auto" MinWidth="190" MaxWidth="350"/>
         </Grid.ColumnDefinitions>
 
+        <!--GridSplitter Horizontal-->
+        <GridSplitter Height="5"  ShowsPreview="False"
+                      HorizontalContentAlignment="Stretch" VerticalAlignment="Bottom"
+                      Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3"
+                      Panel.ZIndex="9999" Background="White" Margin="0"/>
+        <!--GridSplitter Vertical-->
+        <GridSplitter Width="5" ShowsPreview="False"
+                      HorizontalAlignment="Center"
+                      Grid.Column="1" Grid.Row="3" Grid.RowSpan="2"
+                      Panel.ZIndex="9999" Margin="0"/>
+
         <!--Main Menu-->
-        <materialDesign:ColorZone Mode="PrimaryDark" Padding="10" Grid.Row="0">
+        <materialDesign:ColorZone Mode="PrimaryDark" Padding="10" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3">
             <DockPanel>
                 <Menu IsMainMenu="True" Background="{DynamicResource PrimaryHueMidBrush}">
                     <Menu.ItemsPanel>
@@ -90,10 +124,10 @@
             </DockPanel>
         </materialDesign:ColorZone>
 
-        <!--<Separator Grid.Row="1"></Separator>-->
+        <!--<Separator Grid.Row="1" Grid.ColumnSpan="2"></Separator>-->
 
         <!--Search Bar-->
-        <materialDesign:ColorZone Mode="PrimaryDark" Padding="10,0,0,10" Grid.Row="2">
+        <materialDesign:ColorZone Mode="PrimaryDark" Padding="10,0,0,10" Grid.Row="2" Grid.Column="0"  Grid.ColumnSpan="3">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -115,10 +149,240 @@
             </Grid>
         </materialDesign:ColorZone>
 
-        <Image Grid.Row="3" Source="{Binding CurrentPicture.FilePath, Mode=OneWay}"></Image>
-        
+        <Image DataContext="{Binding CurrentPicture, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Source="{Binding FilePath, Converter={StaticResource PicToBitmapImageConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+               HorizontalAlignment="Center" VerticalAlignment="Center"
+               Grid.Row="3" Grid.Column="0">
+        </Image>
+
+        <!--Info Part-->
+        <StackPanel ScrollViewer.VerticalScrollBarVisibility="Auto" Orientation="Vertical" TextBlock.Foreground="{DynamicResource MaterialDesignBody}"
+                    Grid.Row="3" Grid.Column="2" Width="Auto">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <TabControl Background="{DynamicResource MaterialDesignPaper}" Margin="0,0,0,0" BorderBrush="{DynamicResource PrimaryHueMidBrush}" BorderThickness="2">
+
+                    <!--IPTC-->
+                    <TabItem Header="IPTC" Name="info_IPTC" DataContext="{Binding CurrentPicture}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="10*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="10*"/>
+                                <RowDefinition Height="10*"/>
+                                <RowDefinition Height="10*"/>
+                                <RowDefinition Height="10*"/>
+                                <RowDefinition Height="10*"/>
+                                <RowDefinition Height="10*"/>
+                            </Grid.RowDefinitions>
+                            <Label Grid.Column="0" Grid.Row="0">Keywords</Label>
+                            <TextBox Text="{Binding IPTC.Keywords, Mode=TwoWay}" TextWrapping="Wrap" 
+                                 Grid.Column="1" Grid.Row="0"/>
+
+                            <Label Grid.Column="0" Grid.Row="1">ByLine</Label>
+                            <TextBox Text="{Binding IPTC.ByLine, Mode=TwoWay}" TextWrapping="Wrap" 
+                                 Grid.Column="1" Grid.Row="1"/>
+
+                            <Label Grid.Column="0" Grid.Row="2">Copyright Notice</Label>
+                            <TextBox Text="{Binding IPTC.CopyrightNotice, Mode=TwoWay}" TextWrapping="Wrap"
+                                 Grid.Column="1" Grid.Row="2"/>
+
+                            <Label Grid.Column="0" Grid.Row="3">Headline</Label>
+                            <TextBox Text="{Binding IPTC.Headline, Mode=TwoWay}" TextWrapping="Wrap"
+                                 Grid.Column="1" Grid.Row="3"/>
+
+                            <Label Grid.Column="0" Grid.Row="4">Caption</Label>
+                            <TextBox Text="{Binding IPTC.Caption, Mode=TwoWay}" TextWrapping="Wrap" 
+                                 Grid.Column="1" Grid.Row="4"/>
+                            <Button Height="Auto"  VerticalAlignment="Bottom" Click="WriteIPTC"
+                                Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="5" >Save</Button>
+                        </Grid>
+                    </TabItem>
+
+                    <!--EXIF-->
+                    <TabItem Header="EXIF" Name="info_EXIF" DataContext="{Binding CurrentPicture}">
+                        <StackPanel Name="Insert">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="7*"/>
+                                    <ColumnDefinition Width="10*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="10*"/>
+                                    <RowDefinition Height="10*"/>
+                                    <RowDefinition Height="10*"/>
+                                    <RowDefinition Height="10*"/>
+                                    <RowDefinition Height="10*"/>
+                                    <RowDefinition Height="10*"/>
+                                </Grid.RowDefinitions>
+
+                                <Label Grid.Column="0" Grid.Row="0">Make</Label>
+                                <TextBlock Name ="_Make" Text="{Binding EXIF.Make, Mode=OneWay}" TextWrapping="Wrap" 
+                                    Grid.Column="1" Grid.Row="0"/>
+
+                                <Label Grid.Column="0" Grid.Row="1">FNumber</Label>
+                                <TextBlock Name ="_FNumber" Text="{Binding EXIF.FNumber, Mode=OneWay}" TextWrapping="Wrap" 
+                                    Grid.Column="1" Grid.Row="1"/>
+
+                                <Label Grid.Column="0" Grid.Row="2">ExposureTime</Label>
+                                <TextBlock Name ="_ExposureTime" Text="{Binding EXIF.ExposureTime, Mode=OneWay}" TextWrapping="Wrap" 
+                                    Grid.Column="1" Grid.Row="2"/>
+
+                                <Label Grid.Column="0" Grid.Row="3">ISOValue</Label>
+                                <TextBlock Name="_ISOValue" Text="{Binding EXIF.ISOValue, Mode=OneWay}" TextWrapping="Wrap"
+                                    Grid.Column="1" Grid.Row="3"/>
+
+                                <Label Grid.Column="0" Grid.Row="4">Flash</Label>
+                                <CheckBox Grid.Column="1" Grid.Row="4" HorizontalAlignment="Center" 
+                                          IsHitTestVisible="False" IsChecked="{Binding EXIF.Flash, Mode=OneWay}"/>
+
+                                <Label Grid.Column="0" Grid.Row="5">ExposureProgram</Label>
+                                <TextBlock Grid.Column="1" Grid.Row="5" Text="{Binding EXIF.ExposureProgram}"/>
+
+                            </Grid>
+                        </StackPanel>
+                    </TabItem>
+
+                    <!--Photographer-->
+                    <TabItem Header="Photographer" Name="info_Photographer">
+                        <StackPanel>
+                            <Grid DataContext="{Binding CurrentPicture, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="200*"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="10*"/>
+                                    <RowDefinition Height="10*"/>
+                                    <RowDefinition Height="10*"/>
+                                    <RowDefinition Height="10*"/>
+                                    <RowDefinition Height="10*"/>
+                                    <RowDefinition Height="10*"/>
+                                </Grid.RowDefinitions>
+
+                                <Label Grid.Column="0" Grid.Row="0">First Name</Label>
+                                <TextBlock Text="{Binding Photographer.FirstName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                         Grid.Column="1" Grid.Row="0"/>
+
+                                <Label Grid.Column="0" Grid.Row="1">Last Name</Label>
+                                <TextBlock Text="{Binding Photographer.LastName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                                         Grid.Column="1" Grid.Row="1"/>
+
+                                <Label Grid.Column="0" Grid.Row="2">Birth Day</Label>
+                                <TextBlock Text="{Binding Photographer.DateInString, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                         Grid.Column="1" Grid.Row="2"/>
+
+                                <Label Grid.Column="0" Grid.Row="3">Notes</Label>
+                                <TextBlock Text="{Binding Photographer.Notes, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                         Grid.Column="1" Grid.Row="3"/>
+
+                            </Grid>
+
+
+                            <Button Style="{DynamicResource MaterialDesignToolButton}" 
+                                    Click="AssignPictureToPhotographer" 
+                                    Foreground="{DynamicResource MaterialDesignBody}"
+                                    Height="20">
+                                <materialDesign:PackIcon Kind="ArrowUpBold"></materialDesign:PackIcon>
+                            </Button>
+                            <TextBlock Height="Auto" VerticalAlignment="Bottom" HorizontalAlignment="Center"
+                                    Foreground="{DynamicResource MaterialDesignBody}"
+                                    Margin="0,5,0,0" FontSize="10">Assign this Photographer</TextBlock>
+                            <ComboBox Name="dropdown_Photographer"  HorizontalAlignment="Center" 
+                                      DataContext="{Binding ElementName=main, Path=PhotographerList, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                      materialDesign:HintAssist.Hint="Photographers"
+                                      ItemsSource="{Binding ObsList, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                      DisplayMemberPath="FirstLastName"
+                                      SelectedItem="{Binding CurrentPhotographer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      
+                                      Foreground="{DynamicResource PrimaryHueLightBrush}">
+                            </ComboBox>
+
+                            <Grid DataContext="{Binding ElementName=main, Path=PhotographerList}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="200*"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="10*"/>
+                                    <RowDefinition Height="10*"/>
+                                    <RowDefinition Height="10*"/>
+                                    <RowDefinition Height="10*"/>
+                                    <RowDefinition Height="10*"/>
+                                    <RowDefinition Height="10*"/>
+                                </Grid.RowDefinitions>
+
+                                <Label FontSize="10" Grid.Column="0" Grid.Row="0">First Name</Label>
+                                <TextBlock Text="{Binding CurrentPhotographer.FirstName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                           FontSize="10" Grid.Column="1" Grid.Row="0"/>
+
+                                <Label FontSize="10" Grid.Column="0" Grid.Row="1">Last Name</Label>
+                                <TextBlock Text="{Binding CurrentPhotographer.LastName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                                           FontSize="10" Grid.Column="1" Grid.Row="1"/>
+
+                                <Label FontSize="10" Grid.Column="0" Grid.Row="2">Birth Day</Label>
+                                <TextBlock Text="{Binding CurrentPhotographerBirthdayString, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                           FontSize="10" Grid.Column="1" Grid.Row="2"/>
+
+                                <Label FontSize="10" Grid.Column="0" Grid.Row="3">Notes</Label>
+                                <TextBlock Text="{Binding CurrentPhotographer.Notes, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                           FontSize="10" Grid.Column="1" Grid.Row="3"/>
+
+                            </Grid>
+
+                        </StackPanel>
+                    </TabItem>
+
+                </TabControl>
+            </Grid>
+        </StackPanel>
+
         <!--Gallery-->
-        <wpfns:Gallery Grid.Row="4"></wpfns:Gallery>
+        <ListBox Name="ImgGallery" Grid.Row="5" Grid.Column="0"  Grid.ColumnSpan="3" MinHeight="60"
+                 ItemsSource="{Binding List.List}"
+                 ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                 SelectedItem="{Binding CurrentPicture, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
+                 SelectionChanged="ClickOnGalleryThumbnail">
+            <ListBox.Style>
+                <Style TargetType="ListBox">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Path=Items.Count, RelativeSource={RelativeSource Self}}"  Value="0">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate>
+                                        <Border BorderThickness="1" BorderBrush="White"
+                                                Padding="10" Margin="10">
+                                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                       FontSize="30" FontWeight="Light" Foreground="{DynamicResource MaterialDesignLightBackground}">
+                                                No pictures found!
+                                            </TextBlock>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ListBox.Style>
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <VirtualizingStackPanel Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Image Stretch="UniformToFill" Source="{Binding FilePath, Converter={StaticResource PicToBitmapImageConverter}, Mode=OneWay}">
+                    </Image>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
 
     </Grid>
 </Window>

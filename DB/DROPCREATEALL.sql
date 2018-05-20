@@ -80,7 +80,7 @@ CREATE TABLE [dbo].[IPTC](
 	[CopyrightNotice] [varchar](128) NULL,
 	[Headline] [varchar](256) NULL,
 	[Caption] [varchar](2000) NULL,
-	[IPTC_FK_Pic_ID] [int] NOT NULL,
+	[IPTC_FK_Pic_ID] [int] NOT NULL UNIQUE,
 PRIMARY KEY CLUSTERED 
 (
 	[IPTC_ID] ASC
@@ -129,7 +129,7 @@ CREATE TABLE [dbo].[EXIF](
 	[ISOValue] [decimal](18, 0) NULL,
 	[Flash] [bit] NULL,
 	[ExposureProgram] [int] NULL,
-	[EXIF_FK_Pic_ID] [int] NULL,
+	[EXIF_FK_Pic_ID] [int] NOT NULL UNIQUE,
 PRIMARY KEY CLUSTERED 
 (
 	[EXIF_ID] ASC
@@ -162,22 +162,6 @@ PRIMARY KEY CLUSTERED
 ) ON [PRIMARY]
 GO
 
-ALTER TABLE [dbo].[IPTC]  WITH CHECK ADD FOREIGN KEY([IPTC_FK_Pic_ID])
-REFERENCES [dbo].[Pictures] ([Pic_ID])
-GO
-
-ALTER TABLE [dbo].[IPTC]  WITH CHECK ADD FOREIGN KEY([IPTC_FK_Pic_ID])
-REFERENCES [dbo].[Pictures] ([Pic_ID])
-GO
-
-ALTER TABLE [dbo].[EXIF]  WITH CHECK ADD FOREIGN KEY([EXIF_FK_Pic_ID])
-REFERENCES [dbo].[Pictures] ([Pic_ID])
-GO
-
-ALTER TABLE [dbo].[EXIF]  WITH CHECK ADD FOREIGN KEY([EXIF_FK_Pic_ID])
-REFERENCES [dbo].[Pictures] ([Pic_ID])
-GO
-
 ALTER TABLE [dbo].[Pictures]  WITH CHECK ADD FOREIGN KEY([FK_Cam_ID])
 REFERENCES [dbo].[Cameras] ([Cam_ID])
 GO
@@ -190,20 +174,8 @@ ALTER TABLE [dbo].[Pictures]  WITH CHECK ADD FOREIGN KEY([FK_EXIF_ID])
 REFERENCES [dbo].[EXIF] ([EXIF_ID])
 GO
 
-ALTER TABLE [dbo].[Pictures]  WITH CHECK ADD FOREIGN KEY([FK_EXIF_ID])
-REFERENCES [dbo].[EXIF] ([EXIF_ID])
-GO
-
 ALTER TABLE [dbo].[Pictures]  WITH CHECK ADD FOREIGN KEY([FK_IPTC_ID])
 REFERENCES [dbo].[IPTC] ([IPTC_ID])
-GO
-
-ALTER TABLE [dbo].[Pictures]  WITH CHECK ADD FOREIGN KEY([FK_IPTC_ID])
-REFERENCES [dbo].[IPTC] ([IPTC_ID])
-GO
-
-ALTER TABLE [dbo].[Pictures]  WITH CHECK ADD FOREIGN KEY([FK_PG_ID])
-REFERENCES [dbo].[Photographers] ([PG_ID])
 GO
 
 ALTER TABLE [dbo].[Pictures]  WITH CHECK ADD FOREIGN KEY([FK_PG_ID])

@@ -27,9 +27,13 @@ namespace PicDB.Layers_DA
             if (record["Headline"] != DBNull.Value) headline = (string)record["Headline"];
             string caption = null;
             if (record["Caption"] != DBNull.Value) caption = (string)record["Caption"];
+            int pic_ID = -1;
+            if (record["IPTC_FK_Pic_ID"] != DBNull.Value) pic_ID = (int)record["IPTC_FK_Pic_ID"];
+
 
             return new IPTCModel
             {
+                Pic_ID = pic_ID,
                 Keywords = keywords,
                 ByLine = byLine,
                 CopyrightNotice = copyrightNotice,
@@ -128,8 +132,9 @@ namespace PicDB.Layers_DA
 
             string fileName = null;
             if (record["FileName"] != DBNull.Value) fileName = (string) record["FileName"];
-            /*CameraModel camera = null;
-            if (record["FK_Cam_ID"] != DBNull.Value) camera = (record["FK_Cam_ID"] is int i) ? new CameraModel {ID = i} : null;*/
+            int pg_id = 0;
+            if (record["PG_ID"] != DBNull.Value) pg_id = (int)record["PG_ID"];
+
 
             return new PictureModel
             {
@@ -137,7 +142,8 @@ namespace PicDB.Layers_DA
                 FileName = fileName,
                 Camera = ParseCameraModel(record),
                 EXIF = ParseEXIFModel(record),
-                IPTC = ParseIPTCModel(record)
+                IPTC = ParseIPTCModel(record),
+                PG_ID = pg_id
             };
         }
     }

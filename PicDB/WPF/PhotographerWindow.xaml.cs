@@ -13,10 +13,19 @@ namespace PicDB
     {
         public PhotographerWindow(MainWindow sender, BusinessLayer BL)
         {
-            InitializeComponent();
+            Application curApp = Application.Current;
+            Window mainWindow = curApp.MainWindow;
+            if (mainWindow != null)
+            {
+                this.Left = mainWindow.Left + (mainWindow.ActualWidth - this.ActualWidth) / 2;
+                this.Top = mainWindow.Top + (mainWindow.ActualWidth - this.ActualHeight) / 2;
+            }
+
             this.SizeToContent = SizeToContent.Height;
             this.Sender = sender;
             this.BL = BL;
+
+            InitializeComponent();
         }
 
         private MainWindow Sender { get; }
@@ -46,7 +55,7 @@ namespace PicDB
                     throw;
                 } finally
                 {
-                    Sender.ActualizePhotographerList();
+                    Sender.UpdatePhotographerList();
                     Close();
                 }
             }
