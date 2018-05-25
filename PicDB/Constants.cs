@@ -44,7 +44,7 @@ namespace PicDB
                 if (StefanPC)
                     return @"C:\Users\Steffe\Desktop\FH\4.Semester\PDB3\";
                 if (StefanLAPTOP)
-                    return "PFADHALT"; //TODO
+                    return @"C:\Users\Stefan\Desktop\FH\4.Semester\PDB3\"; //TODO
 
                 else return Environment.CurrentDirectory;
             }
