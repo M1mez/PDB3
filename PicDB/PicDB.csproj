@@ -55,6 +55,10 @@
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>
+    </StartupObject>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="BIF-SWE2.Interfaces, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -142,8 +146,11 @@
     <Compile Include="WPF\IptcExifControl.xaml.cs">
       <DependentUpon>IptcExifControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WPF\PhotographerWindow.xaml.cs">
-      <DependentUpon>PhotographerWindow.xaml</DependentUpon>
+    <Compile Include="WPF\PhotographerWindow_Add.xaml.cs">
+      <DependentUpon>PhotographerWindow_Add.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WPF\PhotographerWindow_Edit.xaml.cs">
+      <DependentUpon>PhotographerWindow_Edit.xaml</DependentUpon>
     </Compile>
     <Compile Include="WPF\SearchBy_EXIF.xaml.cs">
       <DependentUpon>SearchBy_EXIF.xaml</DependentUpon>
@@ -179,7 +186,11 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="WPF\PhotographerWindow.xaml">
+    <Page Include="WPF\PhotographerWindow_Add.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="WPF\PhotographerWindow_Edit.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
