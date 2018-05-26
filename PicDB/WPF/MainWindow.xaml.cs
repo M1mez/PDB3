@@ -30,6 +30,7 @@ namespace PicDB
     {
         MainWindowViewModel mwvmdl = new MainWindowViewModel();
         public PhotographerListViewModel PhotographerList { get; set; } = new PhotographerListViewModel();
+        public CameraListViewModel CameraList { get; set; } = new CameraListViewModel();
         private BusinessLayer BL;
         private static log4net.ILog log => FileInformation.Logger;
 
@@ -104,6 +105,39 @@ namespace PicDB
         }
         #endregion
 
+        #region Camera
+        private void OpenNewCameraWindow(object sender, RoutedEventArgs e)
+        {
+            var menuItem = (MenuItem)sender;
+            Window cameraWindow = null;
+            if (menuItem.Name == "tabItem_AddCamera") cameraWindow = new CameraWindow_Add(this, BL);
+            else if (menuItem.Name == "tabItem_EditCamera")
+            {
+                if (CameraList.List.Count() == 0)
+                    MessageBox.Show("No Camera available to edit!", "Edit Camera", MessageBoxButton.OK,
+                        MessageBoxImage.Error);
+                else cameraWindow = new CameraWindow_Edit(this, BL);
+            }
+            cameraWindow?.ShowDialog();
+        }
+        private void AssignPictureToCamera(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                int currentPicID = mwvmdl.CurrentPicture.ID;
+                BL.AssignPictureToCamera(currentPicID, CameraList.CurrentCamera.ID);
+
+                ((PictureViewModel)mwvmdl.CurrentPicture).Camera = CameraList.CurrentCamera;
+                int index = mwvmdl.List.List.ToList().FindIndex(pic => pic.ID == currentPicID);
+                ((PictureViewModel)mwvmdl.List.List.ElementAt(index)).Camera = CameraList.CurrentCamera;
+            }
+            catch (Exception ex)
+            {
+                MessageBoxEx.Show(ex.Message, "Save IPTC", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+        #endregion
+
         private void WriteIPTC(object sender, RoutedEventArgs e)
         {
             try
@@ -131,6 +165,7 @@ namespace PicDB
 
         }
         public void UpdatePhotographerList() => PhotographerList.Update(BL.GetPhotographers());
+        public void UpdateCameraList() => CameraList.Update(BL.GetCameras());
 
         #region FileWatcher
         private void Watch()
@@ -144,7 +179,10 @@ namespace PicDB
             watcher.Renamed += OnRenamed;
             watcher.EnableRaisingEvents = true;
         }
-        private void OnRenamed(object sender, RenamedEventArgs e) => log.Debug($"File: {e.OldFullPath} renamed to {e.FullPath}");
+        private void OnRenamed(object sender, RenamedEventArgs e)
+        {
+            log.Debug($"File: {e.OldFullPath} renamed to {e.FullPath}");
+        }
         private void OnChanged(object sender, FileSystemEventArgs e)
         {
             BL.Sync();

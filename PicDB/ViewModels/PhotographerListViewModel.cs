@@ -28,22 +28,6 @@ namespace PicDB.ViewModels
             get => _list;
             set
             {
-                /*if (_list != null)
-                {
-                    //IEnumerable<IPhotographerViewModel> toRemove = _list.Except(value);
-                    IEnumerable<IPhotographerViewModel> toAdd = value.ToList().Where(phnew =>
-                        _list.All(phold => phnew.ID != phold.ID));
-                    IEnumerable<IPhotographerViewModel> toRemove = _list.ToList().Where(phleft =>
-                        value.All(phold => phleft.ID != phold.ID));
-                    Console.WriteLine($"toaddcount: {toAdd.Count()}");
-                    Console.WriteLine($"toremovecount: {toRemove.Count()}");
-
-                    foreach (var ph in toRemove) ObsList.Remove(ph);
-                    foreach (var ph in toAdd) ObsList.Add(ph);
-                    //var newObs = _list.Union()
-
-                }*/
-
                 _list = value;
                 OnPropertyChanged();
                 OnPropertyChanged("ObsList");
@@ -51,13 +35,8 @@ namespace PicDB.ViewModels
         }
 
         public ObservableCollection<IPhotographerViewModel> ObsList => new ObservableCollection<IPhotographerViewModel>(_list);
-
-        public PhotographerListViewModel() { }
-
-        public void Update(IEnumerable<IPhotographerModel> pList)
-        {
-            List = pList.Select(p => new PhotographerViewModel(p));
-        }
+        public void Update(IEnumerable<IPhotographerModel> pList) => List = pList.Select(p => new PhotographerViewModel(p));
+        
 
         public IPhotographerViewModel CurrentPhotographer
         {

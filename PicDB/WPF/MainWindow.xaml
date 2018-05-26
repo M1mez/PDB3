@@ -94,27 +94,33 @@
                             </MenuItem.Icon>
                         </MenuItem>
                     </MenuItem>
-                    
+
                     <MenuItem Header="_Edit"  VerticalAlignment="Center" HorizontalAlignment="Left">
-                        <MenuItem Name="tabItem_AddPhotographer" Header="Add Photographer" Click="OpenNewPhotographerWindow">
-                            <MenuItem.Icon>
-                                <materialDesign:PackIcon Kind="Account" />
-                            </MenuItem.Icon>
+                        <MenuItem Header="_Photographer" Icon="{materialDesign:PackIcon Kind=Account}"
+                                  VerticalAlignment="Center" HorizontalAlignment="Left">
+                            <MenuItem Name="tabItem_AddPhotographer" Header="Add" Click="OpenNewPhotographerWindow">
+                                <MenuItem.Icon>
+                                    <materialDesign:PackIcon Kind="PlusCircleOutline" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem Name="tabItem_EditPhotographer" Header="Edit" Click="OpenNewPhotographerWindow">
+                                <MenuItem.Icon>
+                                    <materialDesign:PackIcon Kind="Pencil" />
+                                </MenuItem.Icon>
+                            </MenuItem>
                         </MenuItem>
-                        <MenuItem Name="tabItem_EditPhotographer" Header="Edit Photographer" Click="OpenNewPhotographerWindow">
-                            <MenuItem.Icon>
-                                <materialDesign:PackIcon Kind="AccountEdit" />
-                            </MenuItem.Icon>
-                        </MenuItem>
-                        <MenuItem Header="_Copy" Command="Copy">
-                            <MenuItem.Icon>
-                                <materialDesign:PackIcon Kind="ContentCopy" />
-                            </MenuItem.Icon>
-                        </MenuItem>
-                        <MenuItem Header="_Paste" Command="Paste">
-                            <MenuItem.Icon>
-                                <materialDesign:PackIcon Kind="ContentPaste" />
-                            </MenuItem.Icon>
+                        <MenuItem Header="_Camera" Icon="{materialDesign:PackIcon Kind=Camera}"
+                                  VerticalAlignment="Center" HorizontalAlignment="Left">
+                            <MenuItem Name="tabItem_AddCamera" Header="Add" Click="OpenNewCameraWindow">
+                                <MenuItem.Icon>
+                                    <materialDesign:PackIcon Kind="PlusCircleOutline" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem Name="tabItem_EditCamera" Header="Edit" Click="OpenNewCameraWindow">
+                                <MenuItem.Icon>
+                                    <materialDesign:PackIcon Kind="Pencil" />
+                                </MenuItem.Icon>
+                            </MenuItem>
                         </MenuItem>
                     </MenuItem>
                     <MenuItem Header="_Options"  VerticalAlignment="Center" HorizontalAlignment="Left">

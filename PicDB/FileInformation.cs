@@ -25,7 +25,6 @@ namespace PicDB
 
 
         private static log4net.ILog _logger;
-
         public static ILog Logger => _logger ?? (_logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType));
 
         public static void PrintPdf(IPictureViewModel vmdl)
@@ -63,7 +62,6 @@ namespace PicDB
             finalOutput += ".pdf";
             pdf.SaveAs(finalOutput);
             Process.Start(finalOutput);
-            Console.WriteLine(pdfstring);
         }
 
         private static string FillTable(IIPTCViewModel vmdl)
@@ -249,7 +247,6 @@ namespace PicDB
         {
             if (string.IsNullOrEmpty(fileName))
             {
-                Console.WriteLine("was null");
                 return new BitmapImage();
             }
             var bitmapImage = new BitmapImage();
@@ -259,7 +256,7 @@ namespace PicDB
                 bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
                 bitmapImage.StreamSource = stream;
                 bitmapImage.EndInit();
-                bitmapImage.Freeze(); // just in case you want to load the image in another thread
+                //bitmapImage.Freeze(); // just in case you want to load the image in another thread
             }
                 return bitmapImage;
         }

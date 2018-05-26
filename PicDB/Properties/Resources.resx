@@ -199,8 +199,8 @@ WHERE Pic_ID = @ID;</value>
 VALUES (@FirstName, @LastName, @BirthDay, @Notes)</value>
   </data>
   <data name="Save_Picture" xml:space="preserve">
-    <value>INSERT INTO Pictures (FileName, FK_Cam_ID) 
-VALUES (@FileName, @Cam_ID);</value>
+    <value>INSERT INTO Pictures (FileName) 
+VALUES (@FileName);</value>
   </data>
   <data name="Get_Search_Pictures" xml:space="preserve">
     <value>SELECT *
@@ -214,15 +214,15 @@ VALUES (@FileName, @Cam_ID);</value>
 	
 		AND (@PG_PG_ID IS NULL OR @PG_PG_ID = PG.PG_ID)
 		AND (@PG_Birthday IS NULL OR @PG_Birthday = PG.BirthDay)
-		AND (@PG_FirstName IS NULL OR @PG_FirstName = PG.FirstName)
-		AND (@PG_LastName IS NULL OR @PG_LastName = PG.LastName)
+		AND (@PG_FirstName IS NULL OR PG.FirstName LIKE '%' + @PG_FirstName + '%')
+		AND (@PG_LastName IS NULL OR PG.LastName LIKE '%' + @PG_LastName + '%')
 		AND (@PG_Notes IS NULL OR PG.Notes_PG LIKE '%' + @PG_Notes + '%' )
 	
 		AND (@IPTC_Keywords IS NULL OR IPTC.Keywords LIKE '%' + @IPTC_Keywords + '%' )
-		AND (@IPTC_ByLine IS NULL OR @IPTC_ByLine = IPTC.ByLine)
-		AND (@IPTC_CopyrightNotice IS NULL OR @IPTC_CopyrightNotice = IPTC.CopyrightNotice)
-		AND (@IPTC_Headline IS NULL OR @IPTC_Headline = IPTC.Headline)
-		AND (@IPTC_Caption IS NULL OR @IPTC_Caption = IPTC.Caption)
+		AND (@IPTC_ByLine IS NULL OR IPTC.ByLine LIKE '%' + @IPTC_ByLine + '%')
+		AND (@IPTC_CopyrightNotice IS NULL OR IPTC.CopyrightNotice LIKE '%' + @IPTC_CopyrightNotice + '%')
+		AND (@IPTC_Headline IS NULL OR IPTC.Headline LIKE '%' + @IPTC_Headline + '%')
+		AND (@IPTC_Caption IS NULL OR IPTC.Caption LIKE '%' + @IPTC_Caption + '%')
 
 		AND (@EXIF_Make IS NULL OR @EXIF_Make = EXIF.Make_EXIF)
 		AND (@EXIF_FNumber IS NULL OR @EXIF_FNumber = EXIF.FNumber)
@@ -282,14 +282,8 @@ WHEN NOT MATCHED
       VALUES (@Keywords, @ByLine, @CopyrightNotice, @Headline, @Caption, @FK_Pic_ID);</value>
   </data>
   <data name="Save_Camera" xml:space="preserve">
-    <value>IF (@Cam_ID IS NULL) BEGIN
-INSERT INTO Cameras (Producer, Make_Cam, BoughtOn, Notes_Cam, ISOLimitGood, ISOLimitAcceptable)
-VALUES (@Producer, @Make, @BoughtOn, @Notes, @ISOLimitGood, @ISOLimitAcceptable);
-END ELSE BEGIN
-UPDATE Cameras
-SET Producer = @Producer, Make_Cam = @Make, BoughtOn = @BoughtOn, Notes_Cam = @Notes, ISOLimitGood = @ISOLimitGood, ISOLimitAcceptable = @ISOLimitAcceptable
-WHERE Cameras.Cam_ID = @Cam_ID;
-END</value>
+    <value>INSERT INTO Cameras (Producer, Make_Cam, BoughtOn, Notes_Cam, ISOLimitGood, ISOLimitAcceptable)
+VALUES (@Producer, @Make, @BoughtOn, @Notes, @ISOLimitGood, @ISOLimitAcceptable);</value>
   </data>
   <data name="Update_Pictures_Camera" xml:space="preserve">
     <value>UPDATE Pictures
@@ -478,5 +472,15 @@ text-align: center;
                   &lt;td&gt;Photographer_Notes&lt;/td&gt;
                &lt;/tr&gt;
             &lt;/table&gt;</value>
+  </data>
+  <data name="Update_Camera" xml:space="preserve">
+    <value>UPDATE Cameras
+SET Producer = @Producer, 
+	Make_Cam = @Make, 
+	BoughtOn = @BoughtOn, 
+	Notes_Cam = @Notes, 
+	ISOLimitGood = @ISOLimitGood, 
+	ISOLimitAcceptable = @ISOLimitAcceptable
+WHERE Cameras.Cam_ID = @Cam_ID;</value>
   </data>
 </root>

@@ -13,7 +13,7 @@ using PicDB.Models;
 
 namespace PicDB.ViewModels
 {
-    class CameraViewModel : ICameraViewModel, INotifyPropertyChanged
+    public class CameraViewModel : ICameraViewModel, INotifyPropertyChanged
     {
         //notify
         public event PropertyChangedEventHandler PropertyChanged;

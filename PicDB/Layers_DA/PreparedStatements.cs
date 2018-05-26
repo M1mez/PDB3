@@ -44,12 +44,7 @@ namespace PicDB.Layers_DA
 
                 GetAllPictures = NewComm(Resources.GetAll_Pictures);
 
-                SavePicture = NewComm(Resources.Save_Picture);
-                SavePicture.Parameters.Add("@Pic_ID", SqlDbType.Int);
-                SavePicture.Parameters.Add("@FileName", SqlDbType.VarChar);
-                //SavePicture.Parameters.Add("@PG_ID", SqlDbType.Int);
-                SavePicture.Parameters.Add("@Cam_ID", SqlDbType.Int);
-
+                #region Photographer
                 SavePhotographer = NewComm(Resources.Save_Photographer);
                 SavePhotographer.Parameters.Add("@FirstName", SqlDbType.VarChar);
                 SavePhotographer.Parameters.Add("@LastName", SqlDbType.VarChar);
@@ -66,7 +61,23 @@ namespace PicDB.Layers_DA
                 AddPictureToPhotographer = NewComm(Resources.Add_Picture_To_Photographer);
                 AddPictureToPhotographer.Parameters.Add("@Pic_ID", SqlDbType.Int);
                 AddPictureToPhotographer.Parameters.Add("@PG_ID", SqlDbType.Int);
+                #endregion
 
+                #region Camera 
+                UpdateCamera = NewComm(Resources.Update_Camera);
+                UpdateCamera.Parameters.Add(new SqlParameter("@Producer", SqlDbType.VarChar));
+                UpdateCamera.Parameters.Add(new SqlParameter("@Make", SqlDbType.VarChar));
+                UpdateCamera.Parameters.Add(new SqlParameter("@BoughtOn", SqlDbType.DateTime));
+                UpdateCamera.Parameters.Add(new SqlParameter("@Notes", SqlDbType.VarChar));
+                UpdateCamera.Parameters.Add(new SqlParameter("@ISOLimitGood", SqlDbType.Decimal));
+                UpdateCamera.Parameters.Add(new SqlParameter("@ISOLimitAcceptable", SqlDbType.Decimal));
+
+                UpdatePicsCamera = NewComm(Resources.Update_Pictures_Camera);
+                UpdatePicsCamera.Parameters.Add(new SqlParameter("@Pic_ID", SqlDbType.Int));
+                UpdatePicsCamera.Parameters.Add(new SqlParameter("@Cam_ID", SqlDbType.Int));
+                #endregion
+
+                #region Pictures
                 GetSearchPictures = NewComm(Resources.Get_Search_Pictures);
                 GetSearchPictures.Parameters.Add(new SqlParameter("@namePart", SqlDbType.VarChar));
                 GetSearchPictures.Parameters.Add(new SqlParameter("@PG_PG_ID", SqlDbType.Int));
@@ -86,6 +97,13 @@ namespace PicDB.Layers_DA
                 GetSearchPictures.Parameters.Add(new SqlParameter("@EXIF_Flash", SqlDbType.Bit));
                 GetSearchPictures.Parameters.Add(new SqlParameter("@EXIF_ExposureProgram", SqlDbType.Int));
 
+                SavePicture = NewComm(Resources.Save_Picture);
+                SavePicture.Parameters.Add("@Pic_ID", SqlDbType.Int);
+                SavePicture.Parameters.Add("@FileName", SqlDbType.VarChar);
+                //SavePicture.Parameters.Add("@PG_ID", SqlDbType.Int);
+                //SavePicture.Parameters.Add("@Cam_ID", SqlDbType.Int);
+                #endregion
+
                 SaveExif = NewComm(Resources.Save_Exif);
                 SaveExif.Parameters.Add(new SqlParameter("@Make", SqlDbType.VarChar));
                 SaveExif.Parameters.Add(new SqlParameter("@FNumber", SqlDbType.Decimal));
@@ -104,7 +122,6 @@ namespace PicDB.Layers_DA
                 SaveIptc.Parameters.Add(new SqlParameter("@FK_Pic_ID", SqlDbType.Int));
 
                 SaveCamera = NewComm(Resources.Save_Camera);
-                SaveCamera.Parameters.Add(new SqlParameter("@Cam_ID", SqlDbType.Int));
                 SaveCamera.Parameters.Add(new SqlParameter("@Producer", SqlDbType.VarChar));
                 SaveCamera.Parameters.Add(new SqlParameter("@Make", SqlDbType.VarChar));
                 SaveCamera.Parameters.Add(new SqlParameter("@BoughtOn", SqlDbType.DateTime));
@@ -112,9 +129,6 @@ namespace PicDB.Layers_DA
                 SaveCamera.Parameters.Add(new SqlParameter("@ISOLimitGood", SqlDbType.Decimal));
                 SaveCamera.Parameters.Add(new SqlParameter("@ISOLimitAcceptable", SqlDbType.Decimal));
 
-                UpdatePicsCamera = NewComm(Resources.Update_Pictures_Camera);
-                UpdatePicsCamera.Parameters.Add(new SqlParameter("@Pic_ID", SqlDbType.Int));
-                UpdatePicsCamera.Parameters.Add(new SqlParameter("@Cam_ID", SqlDbType.Int));
 
                 UpdatePicsEXIF = NewComm(Resources.Update_Pictures_EXIF);
                 UpdatePicsEXIF.Parameters.Add(new SqlParameter("@Pic_ID", SqlDbType.Int));
@@ -161,6 +175,7 @@ namespace PicDB.Layers_DA
             internal SqlCommand DeletePictureId;
             internal SqlCommand UpdateIPTC;
             internal SqlCommand UpdatePhotographer;
+            internal SqlCommand UpdateCamera;
 
             internal static SqlCommand GetNextIdTableName
             {

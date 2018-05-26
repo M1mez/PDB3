@@ -19,53 +19,11 @@ namespace PicDB.Layers_DA
         private static SqlConnection Conn = new SqlConnection() { ConnectionString = Constants.ConnString };
         private readonly PreparedStatements PS;
         private static log4net.ILog log => FileInformation.Logger;
-
         private List<string> _dirPics = null;
-
-        /// <summary>
-        /// Get a List of Names of current Files in Picture Folder
-        /// </summary>
-        public List<string> DirPics
-        {
-            get
-            {
-                if (_dirPics == null) RefreshGallery();
-                return _dirPics;
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public void RefreshGallery() => _dirPics = Directory.GetFiles(Constants.PicPath, "*.jpg").Select(Path.GetFileName).ToList();
-
+        
         public DataAccessLayer() => PS = new PreparedStatements();
-
-        public virtual void DeletePhotographer(int ID)
-        {
-            var output = $"Delete Photographer with ID {ID}";
-            log.Info(output);
-            try
-            {
-                log.Debug(ID);
-                if (ID<=0) log.Warn("ID <= 0");
-
-                Conn.Open();
-                PS.DeletePhotographerId.Parameters["@ID"].Value = ID;
-                PS.DeletePhotographerId.ExecuteNonQuery();
-                Conn.Close();
-            }
-            catch (Exception e)
-            {
-                log.Error(e);
-                throw new Exception(output, e);
-            }
-            finally
-            {
-                Conn.Close();
-            }
-        }
-
+        
+        #region Picture
         public virtual void DeletePicture(int ID)
         {
             var output = $"Delete Picture with ID: {ID}";
@@ -89,7 +47,6 @@ namespace PicDB.Layers_DA
                 Conn.Close();
             }
         }
-
         public void DeletePicture(string fileName)
         {
             var output = $"DeletePicture with FileName: {fileName}";
@@ -112,124 +69,10 @@ namespace PicDB.Layers_DA
                 Conn.Close();
             }
         }
-
         public void DeletePictures(List<string> delList)
         {
             delList.ForEach(DeletePicture);
         }
-
-        private static KeyValuePair<string, string> KeyVal(string key, string val) =>
-            new KeyValuePair<string, string>(key, val);
-
-        public virtual ICameraModel GetCamera(int ID)
-        {
-            var output = $"Get Camera with ID: {ID}";
-            Console.WriteLine(output);
-            try
-            {
-                Conn.Open();
-                PS.GetOneCameraId.Parameters["@ID"].Value = ID;
-                CameraModel camera;
-                using (var reader = PS.GetOneCameraId.ExecuteReader())
-                {
-                    reader.Read();
-                    camera = DTOParser.ParseCameraModel(RecordToDictionary(reader));
-                }
-                Conn.Close();
-                return camera;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                throw new Exception(output, e);
-            }
-            finally
-            {
-                Conn.Close();
-            }
-        }
-
-        public virtual IEnumerable<ICameraModel> GetCameras()
-        {
-            var output = "Get all cameras";
-            Console.WriteLine(output);
-            var cameras = new List<ICameraModel>();
-            try
-            {
-                Conn.Open();
-                using (var reader = PS.GetAllCameras.ExecuteReader())
-                {
-                    while (reader.Read()) cameras.Add(DTOParser.ParseCameraModel(RecordToDictionary(reader)));
-                }
-                Conn.Close();
-                return cameras;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                throw new Exception(output, e);
-            }
-            finally
-            {
-                Conn.Close();
-            }
-        }
-
-        public virtual IPhotographerModel GetPhotographer(int ID)
-        {
-            var output = $"Get Photographer with ID: {ID}";
-            Console.WriteLine(output);
-            try
-            {
-                Conn.Open();
-                PS.GetOnePhotographerId.Parameters["@ID"].Value = ID;
-                PhotographerModel photographer;
-                using (var reader = PS.GetOnePhotographerId.ExecuteReader())
-                {
-                    reader.Read();
-                    photographer = DTOParser.ParsePhotographerModel(RecordToDictionary(reader));
-                }
-                Conn.Close();
-                return photographer;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                throw new Exception(output, e);
-            }
-            finally
-            {
-                Conn.Close();
-            }
-        }
-
-        public virtual IEnumerable<IPhotographerModel> GetPhotographers()
-        {
-            var output = "Get all photographers";
-            Console.WriteLine(output);
-            var photographers = new List<IPhotographerModel>();
-            try
-            {
-                Conn.Open();
-                using (var reader = PS.GetAllPhotographers.ExecuteReader())
-                {
-                    while (reader.Read())
-                        photographers.Add(DTOParser.ParsePhotographerModel(RecordToDictionary(reader)));
-                }
-                Conn.Close();
-                return photographers;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                throw new Exception(output, e);
-            }
-            finally
-            {
-                Conn.Close();
-            }
-        }
-
         public virtual IPictureModel GetPicture(int ID)
         {
             var output = $"Get picture with ID: {ID}";
@@ -257,7 +100,6 @@ namespace PicDB.Layers_DA
                 Conn.Close();
             }
         }
-
         public virtual IEnumerable<IPictureModel> GetPictures()
         {
             var output = "Get all pictures";
@@ -284,7 +126,6 @@ namespace PicDB.Layers_DA
                 Conn.Close();
             }
         }
-
         public virtual IEnumerable<IPictureModel> GetPictures(string namePart, IPhotographerModel photographerParts, IIPTCModel iptcParts, IEXIFModel exifParts)
         {
             var output = "Search Pictures";
@@ -298,7 +139,7 @@ namespace PicDB.Layers_DA
                 // Photographer
                 if (photographerParts?.ID == 0 || photographerParts?.ID == null)
                     PS.GetSearchPictures.Parameters["@PG_PG_ID"].Value = DBNull.Value;
-                else PS.GetSearchPictures.Parameters["@PG_PG_ID"].Value = (object) photographerParts.ID;
+                else PS.GetSearchPictures.Parameters["@PG_PG_ID"].Value = (object)photographerParts.ID;
                 PS.GetSearchPictures.Parameters["@PG_Birthday"].Value = (object)photographerParts?.BirthDay ?? DBNull.Value;
                 PS.GetSearchPictures.Parameters["@PG_FirstName"].Value = (object)photographerParts?.FirstName ?? DBNull.Value;
                 PS.GetSearchPictures.Parameters["@PG_LastName"].Value = (object)photographerParts?.LastName ?? DBNull.Value;
@@ -371,7 +212,6 @@ namespace PicDB.Layers_DA
                 Conn.Close();
             }
         }
-
         public virtual void Save(IPictureModel picture)
         {
             var output = $"Save picture with ID: {picture.ID}";
@@ -382,7 +222,7 @@ namespace PicDB.Layers_DA
                 Conn.Open();
                 PS.SavePicture.Parameters["@Pic_ID"].Value = picture.ID;
                 PS.SavePicture.Parameters["@FileName"].Value = picture.FileName;
-                PS.SavePicture.Parameters["@Cam_ID"].Value = (object)picture.Camera?.ID ?? DBNull.Value;
+                //PS.SavePicture.Parameters["@Cam_ID"].Value = (object)picture.Camera?.ID ?? DBNull.Value;
                 PS.SavePicture.ExecuteNonQuery();
                 Conn.Close();
             }
@@ -396,7 +236,13 @@ namespace PicDB.Layers_DA
                 Conn.Close();
             }
         }
+        public void Save(List<string> picList)
+        {
+            picList.ForEach(fileName => Save(new PictureModel() { FileName = fileName }));
+        }
+        #endregion
 
+        #region Photographer
         public virtual void Save(IPhotographerModel photographer)
         {
             var output = $"Save photographer {photographer.LastName} {photographer.FirstName}, born on {photographer.BirthDay}";
@@ -423,7 +269,348 @@ namespace PicDB.Layers_DA
                 Conn.Close();
             }
         }
+        public void Update(IPhotographerModel photographer)
+        {
+            var output = $"Update photographer with ID \"{photographer.ID}\": {photographer.LastName} {photographer.FirstName}, born on {photographer.BirthDay}";
+            if (photographer == null) throw new ArgumentNullException(nameof(photographer));
+            Console.WriteLine(output);
+            try
+            {
+                Conn.Open();
+                PS.UpdatePhotographer.Parameters["@PG_ID"].Value = photographer.ID;
+                PS.UpdatePhotographer.Parameters["@FirstName"].Value = photographer.FirstName;
+                PS.UpdatePhotographer.Parameters["@LastName"].Value = photographer.LastName;
+                PS.UpdatePhotographer.Parameters["@BirthDay"].Value =
+                    photographer.BirthDay != null ? (object)photographer.BirthDay : DBNull.Value;
+                PS.UpdatePhotographer.Parameters["@Notes"].Value = photographer.Notes;
+                PS.UpdatePhotographer.ExecuteNonQuery();
+                Conn.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw new Exception(output, e);
+            }
+            finally
+            {
+                Conn.Close();
+            }
+        }
+        public void UpdatePicsPhotographer(int pic_ID, int pg_ID)
+        {
+            var output = $"Update picture {pic_ID} with photographer {pg_ID}";
+            Console.WriteLine(output);
+            try
+            {
+                Conn.Open();
+                PS.UpdatePicsPhotographer.Parameters["@Pic_ID"].Value = pic_ID;
+                PS.UpdatePicsPhotographer.Parameters["@PG_ID"].Value = pg_ID;
+                PS.UpdatePicsPhotographer.ExecuteNonQuery();
+                Conn.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw new Exception(output, e);
+            }
+            finally
+            {
+                Conn.Close();
+            }
+        }
+        public virtual IPhotographerModel GetPhotographer(int ID)
+        {
+            var output = $"Get Photographer with ID: {ID}";
+            Console.WriteLine(output);
+            try
+            {
+                Conn.Open();
+                PS.GetOnePhotographerId.Parameters["@ID"].Value = ID;
+                PhotographerModel photographer;
+                using (var reader = PS.GetOnePhotographerId.ExecuteReader())
+                {
+                    reader.Read();
+                    photographer = DTOParser.ParsePhotographerModel(RecordToDictionary(reader));
+                }
+                Conn.Close();
+                return photographer;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw new Exception(output, e);
+            }
+            finally
+            {
+                Conn.Close();
+            }
+        }
+        public virtual IEnumerable<IPhotographerModel> GetPhotographers()
+        {
+            var output = "Get all photographers";
+            Console.WriteLine(output);
+            var photographers = new List<IPhotographerModel>();
+            try
+            {
+                Conn.Open();
+                using (var reader = PS.GetAllPhotographers.ExecuteReader())
+                {
+                    while (reader.Read())
+                        photographers.Add(DTOParser.ParsePhotographerModel(RecordToDictionary(reader)));
+                }
+                Conn.Close();
+                return photographers;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw new Exception(output, e);
+            }
+            finally
+            {
+                Conn.Close();
+            }
+        }
+        public virtual void DeletePhotographer(int ID)
+        {
+            var output = $"Delete Photographer with ID {ID}";
+            log.Info(output);
+            try
+            {
+                log.Debug(ID);
+                if (ID <= 0) log.Warn("ID <= 0");
 
+                Conn.Open();
+                PS.DeletePhotographerId.Parameters["@ID"].Value = ID;
+                PS.DeletePhotographerId.ExecuteNonQuery();
+                Conn.Close();
+            }
+            catch (Exception e)
+            {
+                log.Error(e);
+                throw new Exception(output, e);
+            }
+            finally
+            {
+                Conn.Close();
+            }
+        }
+        #endregion
+
+        #region Camera
+        public void Save(ICameraModel camera)
+        {
+            var output = $"Save camera {camera.Producer} {camera.Make}, bought on {camera.BoughtOn}";
+            if (camera == null) throw new ArgumentNullException(nameof(camera));
+            Console.WriteLine(output);
+            try
+            {
+                Conn.Open();
+                //PS.SaveCamera.Parameters["@Cam_ID"].Value = camera.ID <= 0 ? DBNull.Value : (object)camera.ID;
+                PS.SaveCamera.Parameters["@Producer"].Value = camera.Producer;
+                PS.SaveCamera.Parameters["@Make"].Value = camera.Make;
+                PS.SaveCamera.Parameters["@BoughtOn"].Value =
+                    camera.BoughtOn!= null ? (object)camera.BoughtOn : DBNull.Value;
+                PS.SaveCamera.Parameters["@Notes"].Value = camera.Notes;
+                PS.SaveCamera.Parameters["@ISOLimitGood"].Value = camera.ISOLimitGood;
+                PS.SaveCamera.Parameters["@ISOLimitAcceptable"].Value = camera.ISOLimitAcceptable;
+                PS.SaveCamera.ExecuteNonQuery();
+                Conn.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw new Exception(output, e);
+            }
+            finally
+            {
+                Conn.Close();
+            }
+        }
+        public void Update(ICameraModel camera)
+        {
+            var output = $"Update camera with ID \"{camera.ID}\": {camera.Producer} {camera.Make}, bought on {camera.BoughtOn}";
+            if (camera == null) throw new ArgumentNullException(nameof(camera));
+            Console.WriteLine(output);
+            try
+            {
+                Conn.Open();
+                PS.UpdateCamera.Parameters["@Producer"].Value = camera.Producer;
+                PS.UpdateCamera.Parameters["@Make"].Value = camera.Make;
+                PS.UpdateCamera.Parameters["@BoughtOn"].Value =
+                    camera.BoughtOn != null ? (object)camera.BoughtOn : DBNull.Value;
+                PS.UpdateCamera.Parameters["@Notes"].Value = camera.Notes;
+                PS.UpdateCamera.Parameters["@ISOLimitGood"].Value = camera.ISOLimitGood;
+                PS.UpdateCamera.Parameters["@ISOLimitAcceptable"].Value = camera.ISOLimitAcceptable;
+                PS.UpdateCamera.ExecuteNonQuery();
+                Conn.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw new Exception(output, e);
+            }
+            finally
+            {
+                Conn.Close();
+            }
+        }
+        public void UpdatePicsCamera(int pic_ID, int cam_ID)
+        {
+            var output = $"Update picture {pic_ID} with camera {cam_ID}";
+            Console.WriteLine(output);
+            try
+            {
+                Conn.Open();
+                PS.UpdatePicsCamera.Parameters["@Pic_ID"].Value = pic_ID;
+                PS.UpdatePicsCamera.Parameters["@Cam_ID"].Value = cam_ID;
+                PS.UpdatePicsCamera.ExecuteNonQuery();
+                Conn.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw new Exception(output, e);
+            }
+            finally
+            {
+                Conn.Close();
+            }
+        }
+        public virtual ICameraModel GetCamera(int ID)
+        {
+            var output = $"Get Camera with ID: {ID}";
+            Console.WriteLine(output);
+            try
+            {
+                Conn.Open();
+                PS.GetOneCameraId.Parameters["@ID"].Value = ID;
+                CameraModel camera;
+                using (var reader = PS.GetOneCameraId.ExecuteReader())
+                {
+                    reader.Read();
+                    camera = DTOParser.ParseCameraModel(RecordToDictionary(reader));
+                }
+                Conn.Close();
+                return camera;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw new Exception(output, e);
+            }
+            finally
+            {
+                Conn.Close();
+            }
+        }
+        public virtual IEnumerable<ICameraModel> GetCameras()
+        {
+            var output = "Get all cameras";
+            Console.WriteLine(output);
+            var cameras = new List<ICameraModel>();
+            try
+            {
+                Conn.Open();
+                using (var reader = PS.GetAllCameras.ExecuteReader())
+                {
+                    while (reader.Read()) cameras.Add(DTOParser.ParseCameraModel(RecordToDictionary(reader)));
+                }
+                Conn.Close();
+                return cameras;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw new Exception(output, e);
+            }
+            finally
+            {
+                Conn.Close();
+            }
+        }
+        #endregion
+
+        #region IPTC
+        public void Update(IPTCModel iptc)
+        {
+            var output = $"Update IPTC model for picture with ID: {iptc.Pic_ID}";
+            if (iptc == null) throw new ArgumentNullException(nameof(iptc));
+            Console.WriteLine(output);
+            try
+            {
+                Conn.Open();
+                PS.UpdateIPTC.Parameters["@Pic_ID"].Value = iptc.Pic_ID;
+                PS.UpdateIPTC.Parameters["@Keywords"].Value = iptc.Keywords;
+                PS.UpdateIPTC.Parameters["@ByLine"].Value = iptc.ByLine;
+                PS.UpdateIPTC.Parameters["@CopyrightNotice"].Value = iptc.CopyrightNotice;
+                PS.UpdateIPTC.Parameters["@Headline"].Value = iptc.Headline;
+                PS.UpdateIPTC.Parameters["@Caption"].Value = iptc.Caption;
+                PS.UpdateIPTC.ExecuteNonQuery();
+                Conn.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw new Exception(output, e);
+            }
+            finally
+            {
+                Conn.Close();
+            }
+        }
+        public void Save(IPTCModel iptc)
+        {
+            var output = $"Save IPTC model for picture with ID: {iptc.Pic_ID}";
+            if (iptc == null) throw new ArgumentNullException(nameof(iptc));
+            Console.WriteLine(output);
+            try
+            {
+                Conn.Open();
+                PS.SaveIptc.Parameters["@Keywords"].Value = iptc.Keywords;
+                PS.SaveIptc.Parameters["@ByLine"].Value = iptc.ByLine;
+                PS.SaveIptc.Parameters["@CopyrightNotice"].Value = iptc.CopyrightNotice;
+                PS.SaveIptc.Parameters["@Headline"].Value = iptc.Headline;
+                PS.SaveIptc.Parameters["@Caption"].Value = iptc.Caption;
+                PS.SaveIptc.Parameters["@FK_Pic_ID"].Value = iptc.Pic_ID;
+                PS.SaveIptc.ExecuteNonQuery();
+                Conn.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw new Exception(output, e);
+            }
+            finally
+            {
+                Conn.Close();
+            }
+        }
+        public void UpdatePicsIPTC(int pic_ID, int iptc_ID)
+        {
+            var output = $"Update picture {pic_ID} with iptc {iptc_ID}";
+            Console.WriteLine(output);
+            try
+            {
+                Conn.Open();
+                PS.UpdatePicsIPTC.Parameters["@Pic_ID"].Value = pic_ID;
+                PS.UpdatePicsIPTC.Parameters["@IPTC_ID"].Value = iptc_ID;
+                PS.UpdatePicsIPTC.ExecuteNonQuery();
+                Conn.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw new Exception(output, e);
+            }
+            finally
+            {
+                Conn.Close();
+            }
+        }
+        #endregion
+
+        #region EXIF
         public void Save(EXIFModel exif)
         {
             var output = $"Save EXIF model for picture with ID: {exif.Pic_ID}";
@@ -452,274 +639,20 @@ namespace PicDB.Layers_DA
                 Conn.Close();
             }
         }
+        #endregion
 
-        public void UpdatePicsCamera(int pic_ID, int cam_ID)
+        /// <summary>
+        /// Get a List of Names of current Files in Picture Folder
+        /// </summary>
+        public List<string> DirPics
         {
-            var output = $"Update picture {pic_ID} with camera {cam_ID}";
-            Console.WriteLine(output);
-            try
+            get
             {
-                Conn.Open();
-                PS.UpdatePicsCamera.Parameters["@Pic_ID"].Value = pic_ID;
-                PS.UpdatePicsCamera.Parameters["@Cam_ID"].Value = cam_ID;
-                PS.UpdatePicsCamera.ExecuteNonQuery();
-                Conn.Close();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                throw new Exception(output, e);
-            }
-            finally
-            {
-                Conn.Close();
+                if (_dirPics == null) RefreshGallery();
+                return _dirPics;
             }
         }
-
-        public void UpdatePicsEXIF(int pic_ID, int exif_ID)
-        {
-            var output = $"Update picture {pic_ID} with exif {exif_ID}";
-            Console.WriteLine(output);
-            try
-            {
-                Conn.Open();
-                PS.UpdatePicsEXIF.Parameters["@Pic_ID"].Value = pic_ID;
-                PS.UpdatePicsEXIF.Parameters["@EXIF_ID"].Value = exif_ID;
-                PS.UpdatePicsEXIF.ExecuteNonQuery();
-                Conn.Close();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                throw new Exception(output, e);
-            }
-            finally
-            {
-                Conn.Close();
-            }
-        }
-
-        public void UpdatePicsIPTC(int pic_ID, int iptc_ID)
-        {
-            var output = $"Update picture {pic_ID} with iptc {iptc_ID}";
-            Console.WriteLine(output);
-            try
-            {
-                Conn.Open();
-                PS.UpdatePicsIPTC.Parameters["@Pic_ID"].Value = pic_ID;
-                PS.UpdatePicsIPTC.Parameters["@IPTC_ID"].Value = iptc_ID;
-                PS.UpdatePicsIPTC.ExecuteNonQuery();
-                Conn.Close();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                throw new Exception(output, e);
-            }
-            finally
-            {
-                Conn.Close();
-            }
-        }
-
-        public void UpdatePicsPhotographer(int pic_ID, int pg_ID)
-        {
-            var output = $"Update picture {pic_ID} with photographer {pg_ID}";
-            Console.WriteLine(output);
-            try
-            {
-                Conn.Open();
-                PS.UpdatePicsPhotographer.Parameters["@Pic_ID"].Value = pic_ID;
-                PS.UpdatePicsPhotographer.Parameters["@PG_ID"].Value = pg_ID;
-                PS.UpdatePicsPhotographer.ExecuteNonQuery();
-                Conn.Close();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                throw new Exception(output, e);
-            }
-            finally
-            {
-                Conn.Close();
-            }
-        }
-
-        public void Update(IPhotographerModel photographer)
-        {
-            var output = $"Update photographer with ID \"{photographer.ID}\": {photographer.LastName} {photographer.FirstName}, born on {photographer.BirthDay}";
-            if (photographer == null) throw new ArgumentNullException(nameof(photographer));
-            Console.WriteLine(output);
-            try
-            {
-                Conn.Open();
-                PS.UpdatePhotographer.Parameters["@PG_ID"].Value = photographer.ID;
-                PS.UpdatePhotographer.Parameters["@FirstName"].Value = photographer.FirstName;
-                PS.UpdatePhotographer.Parameters["@LastName"].Value = photographer.LastName;
-                PS.UpdatePhotographer.Parameters["@BirthDay"].Value =
-                    photographer.BirthDay != null ? (object)photographer.BirthDay : DBNull.Value;
-                PS.UpdatePhotographer.Parameters["@Notes"].Value = photographer.Notes;
-                PS.UpdatePhotographer.ExecuteNonQuery();
-                Conn.Close();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                throw new Exception(output, e);
-            }
-            finally
-            {
-                Conn.Close();
-            }
-        }
-
-        public void Update(IPTCModel iptc)
-        {
-            var output = $"Update IPTC model for picture with ID: {iptc.Pic_ID}";
-            if (iptc == null) throw new ArgumentNullException(nameof(iptc));
-            Console.WriteLine(output);
-            try
-            {
-                Conn.Open();
-                PS.UpdateIPTC.Parameters["@Pic_ID"].Value = iptc.Pic_ID;
-                PS.UpdateIPTC.Parameters["@Keywords"].Value = iptc.Keywords;
-                PS.UpdateIPTC.Parameters["@ByLine"].Value = iptc.ByLine;
-                PS.UpdateIPTC.Parameters["@CopyrightNotice"].Value = iptc.CopyrightNotice;
-                PS.UpdateIPTC.Parameters["@Headline"].Value = iptc.Headline;
-                PS.UpdateIPTC.Parameters["@Caption"].Value = iptc.Caption;
-                PS.UpdateIPTC.ExecuteNonQuery();
-                Conn.Close();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                throw new Exception(output, e);
-            }
-            finally
-            {
-                Conn.Close();
-            }
-        }
-
-        public void Save(IPTCModel iptc)
-        {
-            var output = $"Save IPTC model for picture with ID: {iptc.Pic_ID}";
-            if (iptc == null) throw new ArgumentNullException(nameof(iptc));
-            Console.WriteLine(output);
-            try
-            {
-                Conn.Open();
-                PS.SaveIptc.Parameters["@Keywords"].Value = iptc.Keywords;
-                PS.SaveIptc.Parameters["@ByLine"].Value = iptc.ByLine;
-                PS.SaveIptc.Parameters["@CopyrightNotice"].Value = iptc.CopyrightNotice;
-                PS.SaveIptc.Parameters["@Headline"].Value = iptc.Headline;
-                PS.SaveIptc.Parameters["@Caption"].Value = iptc.Caption;
-                PS.SaveIptc.Parameters["@FK_Pic_ID"].Value = iptc.Pic_ID;
-                PS.SaveIptc.ExecuteNonQuery();
-                Conn.Close();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                throw new Exception(output, e);
-            }
-            finally
-            {
-                Conn.Close();
-            }
-        }
-
-        public virtual void AddPictureToPhotographer(int Pic_ID, int PG_ID)
-        {
-            var output = $"Add picture ID {Pic_ID} to photographer ID {PG_ID}";
-            Console.WriteLine(output);
-            try
-            {
-                Conn.Open();
-                PS.AddPictureToPhotographer.Parameters["@Pic_ID"].Value = Pic_ID;
-                PS.AddPictureToPhotographer.Parameters["@PG_ID"].Value = PG_ID;
-                PS.SavePhotographer.ExecuteNonQuery();
-                Conn.Close();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                throw new Exception(output, e);
-            }
-            finally
-            {
-                Conn.Close();
-            }
-        }
-
-        public void Save(List<string> picList)
-        {
-            picList.ForEach(fileName => Save(new PictureModel() { FileName = fileName }));
-        }
-
-        public void Save(ICameraModel camera)
-        {
-            var output = camera.ID <= 0 ? "Save new Camera" : $"Save Camera model for ID: {camera.ID}";
-            if (camera == null) throw new ArgumentNullException(nameof(camera));
-            Console.WriteLine(output);
-            try
-            {
-                Conn.Open();
-                PS.SaveCamera.Parameters["@Cam_ID"].Value = camera.ID <= 0 ? DBNull.Value : (object)camera.ID;
-                PS.SaveCamera.Parameters["@Producer"].Value = camera.Producer;
-                PS.SaveCamera.Parameters["@Make"].Value = camera.Make;
-                PS.SaveCamera.Parameters["@BoughtOn"].Value = camera.BoughtOn;
-                PS.SaveCamera.Parameters["@Notes"].Value = camera.Notes;
-                PS.SaveCamera.Parameters["@ISOLimitGood"].Value = camera.ISOLimitGood;
-                PS.SaveCamera.Parameters["@ISOLimitAcceptable"].Value = camera.ISOLimitAcceptable;
-                PS.SaveCamera.ExecuteNonQuery();
-                Conn.Close();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                throw new Exception(output, e);
-            }
-            finally
-            {
-                Conn.Close();
-            }
-        }
-
-        /* private static int _serialId = 1;
-         /// <summary>
-         /// Get the ID which would be assigned next by the DB.
-         /// If the method is called statically by an UnitTest, return 1, then 2...
-         /// </summary>
-         /// <param name="tableName"></param>
-         /// <returns></returns>
-         public virtual int GetNextId(string tableName)
-         {
-             //if (!connOpen) Conn.ConnectionString = Constants.ConnString;
-             var uspName = "usp_getNextID";
-             try
-             {
-                 Console.WriteLine("Calling usp: {0} for table: {1}", uspName, tableName);
-                 var nextId = -2;
-                 var cmd = PreparedStatements.GetNextIdTableName;
-                 cmd.Parameters["@TableName"].Value = tableName;
-
-                 //if (!connOpen) Conn.Open();
-                 nextId = Convert.ToInt32(cmd.ExecuteScalar());
-                 //if (!connOpen) Conn.Close();
-                 return nextId;
-             }
-             catch (Exception e)
-             {
-                 Console.WriteLine("Caught in usp_getNextID: " + e.Message);
-                 throw;
-             }
-             finally
-             {
-                 Conn.Close();
-             }
-         }*/
-
+        public void RefreshGallery() => _dirPics = Directory.GetFiles(Constants.PicPath, "*.jpg").Select(Path.GetFileName).ToList();
         private static Dictionary<string, object> RecordToDictionary(IDataRecord record)
         {
             return Enumerable.Range(0, record.FieldCount)

@@ -192,11 +192,26 @@ namespace PicDB.Classes
             }
         }
 
-        public void AssignPictureToPhotographer(int Pic_ID, int PH_ID)
+        #region Camera
+        public void Save(CameraViewModel cVm) => Save(cVm.CameraModel);
+        public void Save(ICameraModel camera)
         {
             try
             {
-                _dal.UpdatePicsPhotographer(Pic_ID, PH_ID);
+                _dal.Save(camera);
+            }
+            catch (Exception e)
+            {
+                log.Error(e);
+                Console.WriteLine(e.Message);
+                throw;
+            }
+        }
+        public void AssignPictureToCamera(int Pic_ID, int Cam_ID)
+        {
+            try
+            {
+                _dal.UpdatePicsCamera(Pic_ID, Cam_ID);
             }
             catch (Exception e)
             {
@@ -205,7 +220,9 @@ namespace PicDB.Classes
                 throw;
             }
         }
+        #endregion
 
+        #region Photographer
         public void Save(PhotographerViewModel phVM) => Save(phVM.PhotographerModel);
         public void Save(IPhotographerModel photographer)
         {
@@ -220,6 +237,20 @@ namespace PicDB.Classes
                 throw;
             }
         }
+        public void AssignPictureToPhotographer(int Pic_ID, int PH_ID)
+        {
+            try
+            {
+                _dal.UpdatePicsPhotographer(Pic_ID, PH_ID);
+            }
+            catch (Exception e)
+            {
+                log.Error(e);
+                Console.WriteLine(e);
+                throw;
+            }
+        }
+        #endregion
 
         public void Update(IPhotographerModel photographer)
         {
@@ -298,5 +329,6 @@ namespace PicDB.Classes
             exifList.ForEach(_dal.Save);
             //iptcList.ForEach(_dal.Save);
         }
+
     }
 }

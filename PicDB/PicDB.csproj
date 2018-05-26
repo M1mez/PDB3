@@ -124,6 +124,9 @@
     <Compile Include="WPF\AdvancedSearchWindow.xaml.cs">
       <DependentUpon>AdvancedSearchWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WPF\CameraWindow_Edit.xaml.cs">
+      <DependentUpon>CameraWindow_Edit.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WPF\Gallery.xaml.cs">
       <DependentUpon>Gallery.xaml</DependentUpon>
     </Compile>
@@ -146,6 +149,9 @@
     <Compile Include="WPF\IptcExifControl.xaml.cs">
       <DependentUpon>IptcExifControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WPF\CameraWindow_Add.xaml.cs">
+      <DependentUpon>CameraWindow_Add.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WPF\PhotographerWindow_Add.xaml.cs">
       <DependentUpon>PhotographerWindow_Add.xaml</DependentUpon>
     </Compile>
@@ -163,6 +169,10 @@
     </Compile>
     <Compile Include="WPF\Helper.cs" />
     <Page Include="WPF\AdvancedSearchWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="WPF\CameraWindow_Edit.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -186,6 +196,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="WPF\CameraWindow_Add.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="WPF\PhotographerWindow_Add.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
