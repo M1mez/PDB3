@@ -67,6 +67,7 @@ namespace PicDB
 
         //private static string _workingDirectory;
 
+        public static string PdfPath => Path.Combine(DeployPath, "PDF");
         public static string PicPath => Path.Combine(DeployPath, "Pictures");
         public static string IcoPath => Path.Combine(DeployPath, "Icons");
     }

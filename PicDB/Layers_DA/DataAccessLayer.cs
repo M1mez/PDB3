@@ -18,7 +18,7 @@ namespace PicDB.Layers_DA
         //TODO: Konfigurationsfile
         private static SqlConnection Conn = new SqlConnection() { ConnectionString = Constants.ConnString };
         private readonly PreparedStatements PS;
-        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static log4net.ILog log => FileInformation.Logger;
 
         private List<string> _dirPics = null;
 

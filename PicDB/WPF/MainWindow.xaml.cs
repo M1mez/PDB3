@@ -15,9 +15,11 @@ using System.Collections.Generic;
 using System.Linq;
 using BIF.SWE2.Interfaces.Models;
 using System.IO;
+using System.Text;
 using System.Windows.Data;
 using Helper;
 using IronPdf;
+using PicDB.Properties;
 
 namespace PicDB
 {
@@ -29,6 +31,7 @@ namespace PicDB
         MainWindowViewModel mwvmdl = new MainWindowViewModel();
         public PhotographerListViewModel PhotographerList { get; set; } = new PhotographerListViewModel();
         private BusinessLayer BL;
+        private static log4net.ILog log => FileInformation.Logger;
 
         public MainWindow()
         {
@@ -44,9 +47,34 @@ namespace PicDB
             InitializeComponent();
         }
 
+        
+
+        #region Search
+        private void OpenNewSearchWindow(object sender, RoutedEventArgs e)
+        {
+            var searchWindow = new AdvancedSearchWindow(this, BL) {Owner = Application.Current.MainWindow};
+            searchWindow.ShowDialog();
+        }
+        private void SimpleSearch(object sender, RoutedEventArgs e)
+        {
+            UpdatePictureList(BL.GetPictures(NamePart, null, null, null));
+        }
+        #endregion
+
+        #region Property NamePart
+        public string NamePart
+        {
+            get => (string)GetValue(NamePartProperty);
+            set => SetValue(NamePartProperty, value);
+        }
+        public static readonly DependencyProperty NamePartProperty = DependencyProperty
+            .Register("NamePart", typeof(string), typeof(MainWindow), new PropertyMetadata(""));
+        #endregion
+
+        #region Photographer
         private void OpenNewPhotographerWindow(object sender, RoutedEventArgs e)
         {
-            var menuItem = (MenuItem) sender;
+            var menuItem = (MenuItem)sender;
             Window photographerWindow = null;
             if (menuItem.Name == "tabItem_AddPhotographer") photographerWindow = new PhotographerWindow_Add(this, BL);
             else if (menuItem.Name == "tabItem_EditPhotographer")
@@ -58,34 +86,6 @@ namespace PicDB
             }
             photographerWindow?.ShowDialog();
         }
-
-        private void OpenNewSearchWindow(object sender, RoutedEventArgs e)
-        {
-            AdvancedSearchWindow sw = new AdvancedSearchWindow(this, BL) { Owner = Application.Current.MainWindow };
-            sw.ShowDialog();
-        }
-
-        public string NamePart
-        {
-            get => (string)GetValue(NamePartProperty);
-            set => SetValue(NamePartProperty, value);
-        }
-        public static readonly DependencyProperty NamePartProperty = DependencyProperty
-            .Register("NamePart", typeof(string), typeof(MainWindow), new PropertyMetadata(""));
-
-
-        private void SimpleSearch(object sender, RoutedEventArgs e)
-        {
-            var simpleSearchedList = BL.GetPictures(NamePart, null, null, null);
-            UpdatePictureList(simpleSearchedList);
-        }
-
-
-        public void UpdatePhotographerList()
-        {
-            PhotographerList.Update(BL.GetPhotographers());
-        }
-
         private void AssignPictureToPhotographer(object sender, RoutedEventArgs e)
         {
             try
@@ -102,6 +102,7 @@ namespace PicDB
                 MessageBoxEx.Show(ex.Message, "Save IPTC", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+        #endregion
 
         private void WriteIPTC(object sender, RoutedEventArgs e)
         {
@@ -119,15 +120,19 @@ namespace PicDB
         public void UpdatePictureList(IEnumerable<IPictureModel> newList = null)
         {
             if (newList == null) newList = BL.GetPictures();
-            mwvmdl.List = new PictureListViewModel(newList);
-            Console.WriteLine(newList.Aggregate("", (x, y) => x + y.FileName + " ").Trim());
-            foreach (var pic in mwvmdl.List.List)
+            var newPictureListViewModel = new PictureListViewModel(newList);
+            foreach (var pic in newPictureListViewModel.List)
             {
                 ((PictureViewModel)pic).Photographer = PhotographerList.List.ToList()
                     .Find(ph => ph.ID == ((PictureModel)((PictureViewModel)pic).PictureModel).PG_ID);
             }
 
+            mwvmdl.List = newPictureListViewModel;
+
         }
+        public void UpdatePhotographerList() => PhotographerList.Update(BL.GetPhotographers());
+
+        #region FileWatcher
         private void Watch()
         {
             FileSystemWatcher watcher = new FileSystemWatcher();
@@ -139,124 +144,16 @@ namespace PicDB
             watcher.Renamed += OnRenamed;
             watcher.EnableRaisingEvents = true;
         }
-
-        private void OnRenamed(object sender, FileSystemEventArgs e)
-        {
-            Console.WriteLine("bildernamen geändert");
-        }
-
+        private void OnRenamed(object sender, RenamedEventArgs e) => log.Debug($"File: {e.OldFullPath} renamed to {e.FullPath}");
         private void OnChanged(object sender, FileSystemEventArgs e)
         {
             BL.Sync();
             UpdatePictureList();
-            
-            Console.WriteLine("gallery update");
+            log.Debug($"File: {e.FullPath} {e.ChangeType}");
         }
+        #endregion
 
-        private void PrintPdf(object sender, RoutedEventArgs e)
-        {
-            var renderer = new HtmlToPdf();
-            renderer.PrintOptions.PaperSize = PdfPrintOptions.PdfPaperSize.A4;
-            renderer.PrintOptions.PaperOrientation = PdfPrintOptions.PdfPaperOrientation.Portrait;
-
-            var PDF = renderer.RenderHtmlAsPdf(
-                $"<h1>{mwvmdl.CurrentPicture.FileName}</h1>" +
-                $"</br>" +
-                $"<img src='{mwvmdl.CurrentPicture.FilePath}' height='500' width='500'/>" +
-                $"</br>" +
-                $"</br>" +
-                $"<h2> Photographer </h2>" +
-                $"<table>" +
-                $"<tr>" +
-                $"<th>FirstName</th>" +
-                $"<td></td>" +
-                $"<td>{mwvmdl.CurrentPicture.Photographer.FirstName}</td>" +
-                $"</tr>" +
-                $"<tr>" +
-                $"<th>LastName</th>" +
-                $"<td></td>" +
-                $"<td>{mwvmdl.CurrentPicture.Photographer.LastName}</td>" +
-                $"</tr>" +
-                $"<tr>" +
-                $"<th>BirthDay</th>" +
-                $"<td></td>" +
-                $"<td>{mwvmdl.CurrentPicture.Photographer.BirthDay}</td>" +
-                $"</tr>" +
-                $"</table>" +
-                $"</br>" +
-                $"</br>" +
-                $"<h2>IPTC</h2>" +
-                $"<table>" +
-                $"<tr>" +
-                $"<th>Keywords</th>" +
-                $"<td></td>" +
-                $"<td>{mwvmdl.CurrentPicture.IPTC.Keywords}</td>" +
-                $"</tr>" +
-                $"<tr>" +
-                $"<th>ByLine</th>" +
-                $"<td></td>" +
-                $"<td>{mwvmdl.CurrentPicture.IPTC.ByLine}</td>" +
-                $"</tr>" +
-                $"<tr>" +
-                $"<th>CopyrightNotice</th>" +
-                $"<td></td>" +
-                $"<td>{mwvmdl.CurrentPicture.IPTC.CopyrightNotice}</td>" +
-                $"</tr>" +
-                $"<tr>" +
-                $"<th>Headline</th>" +
-                $"<td></td>" +
-                $"<td>{mwvmdl.CurrentPicture.IPTC.Headline}</td>" +
-                $"</tr>" +
-                $"<tr>" +
-                $"<th>Caption</th>" +
-                $"<td></td>" +
-                $"<td>{mwvmdl.CurrentPicture.IPTC.Caption}</td>" +
-                $"</tr>" +
-                $"</table>" +
-                $"</br>" +
-                $"</br>" +
-                $"<h2>EXIF</h2>" +
-                $"<table>" +
-                $"<tr>" +
-                $"<th>Make</th>" +
-                $"<td></td>" +
-                $"<td>{mwvmdl.CurrentPicture.EXIF.Make}</td>" +
-                $"</tr>" +
-                $"<tr>" +
-                $"<th>FNumber</th>" +
-                $"<td></td>" +
-                $"<td>{mwvmdl.CurrentPicture.EXIF.FNumber}</td>" +
-                $"</tr>" +
-                $"<tr>" +
-                $"<th>ExposureTime</th>" +
-                $"<td></td>" +
-                $"<td>{mwvmdl.CurrentPicture.EXIF.ExposureTime}</td>" +
-                $"</tr>" +
-                $"<tr>" +
-                $"<th>ISOValue</th>" +
-                $"<td></td>" +
-                $"<td>{mwvmdl.CurrentPicture.EXIF.ISOValue}</td>" +
-                $"</tr>" +
-                $"<tr>" +
-                $"<th>Flash</th>" +
-                $"<td></td>" +
-                $"<td>{mwvmdl.CurrentPicture.EXIF.Flash}</td>" +
-                $"</tr>" +
-                $"<tr>" +
-                $"<th>ExposureProgram</th>" +
-                $"<td></td>" +
-                $"<td>{mwvmdl.CurrentPicture.EXIF.ExposureProgram}</td>" +
-                $"</tr>" +
-                $"</table>"
-
-
-
-                );
-            var output = $"{mwvmdl.CurrentPicture.FileName.Substring(0, mwvmdl.CurrentPicture.FileName.LastIndexOf('.'))}.pdf";
-            PDF.SaveAs(output);
-
-            Process.Start(output);
-        }
+        private void PrintPdf(object sender, RoutedEventArgs e) => FileInformation.PrintPdf(mwvmdl.CurrentPicture);
 
 
         private void Quit(object sender, RoutedEventArgs e) { Close(); }

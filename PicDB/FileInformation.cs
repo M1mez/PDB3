@@ -1,13 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Windows;
 using System.Windows.Media.Imaging;
 using BIF.SWE2.Interfaces.Models;
 using BIF.SWE2.Interfaces.ViewModels;
+using IronPdf;
+using log4net;
 using MaterialDesignThemes.Wpf.Transitions;
 using PicDB.Models;
 
@@ -17,7 +22,101 @@ namespace PicDB
     {
 
         //TODO: Bericht erstellen Liste Tags mit jeweils Anzahl Bilder
-        //TODO: Bild drucken mit IPTC, EXIF Informationen (wenn vorhanden, auch Photograph)
+
+
+        private static log4net.ILog _logger;
+
+        public static ILog Logger => _logger ?? (_logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType));
+
+        public static void PrintPdf(IPictureViewModel vmdl)
+        {
+            if (vmdl == null) return;
+
+            var renderer = new HtmlToPdf
+            {
+                PrintOptions =
+                {
+                    PaperSize = PdfPrintOptions.PdfPaperSize.A4,
+                    PaperOrientation = PdfPrintOptions.PdfPaperOrientation.Portrait
+                }
+            };
+
+            var pdfstring = new StringBuilder(Properties.Resources.html_picture)
+                .Replace("{0}", vmdl.FileName)
+                .Replace("{1}", vmdl.FilePath)
+                .Replace("{2}", FillTable(vmdl.Photographer))
+                .Replace("{3}", FillTable(vmdl.Camera))
+                .Replace("{4}", FillTable(vmdl.IPTC))
+                .Replace("{5}", FillTable(vmdl.EXIF))
+                .ToString();
+
+            PdfDocument pdf = renderer.RenderHtmlAsPdf(pdfstring);
+            string output = Path.Combine(Constants.PdfPath, Path.GetFileNameWithoutExtension(vmdl.FileName));
+            string finalOutput = output;
+
+            int fileNameCounter = 0;
+            while (File.Exists(finalOutput + ".pdf"))
+            {
+                fileNameCounter++;
+                finalOutput = $"{output}_{fileNameCounter}";
+            }
+            finalOutput += ".pdf";
+            pdf.SaveAs(finalOutput);
+            Process.Start(finalOutput);
+            Console.WriteLine(pdfstring);
+        }
+
+        private static string FillTable(IIPTCViewModel vmdl)
+        {
+            if (vmdl == null) return "Not available";
+            StringBuilder table = new StringBuilder(Properties.Resources.table_IPTC)
+                .Replace("IPTC_Keywords", vmdl.Keywords)
+                .Replace("IPTC_ByLine", vmdl.ByLine)
+                .Replace("IPTC_CopyrightNotice", vmdl.CopyrightNotice)
+                .Replace("IPTC_Headline", vmdl.Headline)
+                .Replace("IPTC_Caption", vmdl.Caption);
+
+            return table.ToString();
+        }
+        private static string FillTable(IEXIFViewModel vmdl)
+        {
+            if (vmdl == null) return "Not available";
+            StringBuilder table = new StringBuilder(Properties.Resources.table_EXIF)
+                .Replace("EXIF_Make", vmdl.Make)
+                .Replace("EXIF_FNumber", vmdl.FNumber.ToString(CultureInfo.InvariantCulture))
+                .Replace("EXIF_ExposureTime", vmdl.ExposureTime.ToString(CultureInfo.InvariantCulture))
+                .Replace("EXIF_ISOValue", vmdl.ISOValue.ToString(CultureInfo.InvariantCulture))
+                .Replace("EXIF_Flash", vmdl.Flash ? "Yes" : "No")
+                .Replace("EXIF_ExposureProgram", vmdl.ExposureProgram);
+
+            return table.ToString();
+        }
+
+        private static string FillTable(IPhotographerViewModel vmdl)
+        {
+            if (vmdl == null) return "Not available";
+            StringBuilder table = new StringBuilder(Properties.Resources.table_Photographer)
+                .Replace("Photographer_FirstName", vmdl.FirstName)
+                .Replace("Photographer_LastName", vmdl.LastName)
+                .Replace("Photographer_BirthDay", vmdl.BirthDay == null ? "" : vmdl.BirthDay?.ToShortDateString())
+                .Replace("Photographer_Notes", vmdl.Notes);
+
+            return table.ToString();
+        }
+
+        private static string FillTable(ICameraViewModel vmdl)
+        {
+            if (vmdl == null) return "Not available";
+            //StringBuilder table = new StringBuilder(Properties.Resources.table_EXIF)
+            //    .Replace("EXIF_Make", vmdl.Make)
+            //    .Replace("EXIF_FNumber", vmdl.FNumber.ToString(CultureInfo.InvariantCulture))
+            //    .Replace("EXIF_ExposureTime", vmdl.ExposureTime.ToString(CultureInfo.InvariantCulture))
+            //    .Replace("EXIF_ISOValue", vmdl.ISOValue.ToString(CultureInfo.InvariantCulture))
+            //    .Replace("EXIF_Flash", vmdl.Flash ? "Yes" : "No")
+            //    .Replace("EXIF_ExposureProgram", vmdl.ExposureProgram);
+
+            return ""; //table.ToString();
+        }
 
         // ReSharper disable once InconsistentNaming
         public static IEXIFModel ExtractEXIF(string filename)

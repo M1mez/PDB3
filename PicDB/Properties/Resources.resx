@@ -331,4 +331,152 @@ SET Photographers.FirstName = @FirstName,
 	Photographers.Notes_PG = @Notes
 WHERE Photographers.PG_ID = @PG_ID;</value>
   </data>
+  <data name="html_picture" xml:space="preserve">
+    <value>&lt;html&gt;
+   &lt;style&gt;
+      td {
+      width: 11em; 
+      border: 1px solid #000000;
+      word-wrap: break-word;
+      }
+      th {
+      text-align: left;
+      padding-right: 20px;
+      }
+      td {
+      padding: 20px;
+      }
+      td td {
+      padding: 5px;
+      }
+      table {
+      padding: 20px 20px 20px 20px;
+align:center;
+      }
+      .centered {
+      display: block;
+text-align: center;
+      margin-left: auto;
+      margin-right: auto;
+      }
+   &lt;/style&gt;
+   &lt;body&gt;
+      &lt;h1 class="centered"&gt;{0}&lt;/h1&gt;
+      &lt;/br&gt;&lt;img src='{1}' height='200'  class="centered"/&gt;&lt;/br&gt;&lt;/br&gt;
+      &lt;table&gt;
+      &lt;tr&gt;
+         &lt;td&gt;
+            &lt;h2&gt;Photographer&lt;/h2&gt;
+			{2}
+         &lt;/td&gt;
+         &lt;td&gt;
+            &lt;h2&gt;Camera&lt;/h2&gt;
+			{3}
+         &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+         &lt;td&gt;
+            &lt;h2&gt;IPTC&lt;/h2&gt;
+			{4}
+         &lt;/td&gt;
+         &lt;td&gt;
+            &lt;h2&gt;EXIF&lt;/h2&gt;
+			{5}
+         &lt;/td&gt;
+      &lt;/tr&gt;
+   &lt;/body&gt;
+&lt;/html&gt;</value>
+  </data>
+  <data name="table_Camera" xml:space="preserve">
+    <value>&lt;table&gt;
+               &lt;tr&gt;
+                  &lt;th&gt;FirstName&lt;/th&gt;
+                  &lt;td&gt;Photographer_FirstName&lt;/td&gt;
+               &lt;/tr&gt;
+               &lt;tr&gt;
+                  &lt;th&gt;LastName&lt;/th&gt;
+                  &lt;td&gt;Photographer_LastName&lt;/td&gt;
+               &lt;/tr&gt;
+               &lt;tr&gt;
+                  &lt;th&gt;BirthDay&lt;/th&gt;
+                  &lt;td&gt;Photographer_BirthDay&lt;/td&gt;
+               &lt;/tr&gt;
+               &lt;tr&gt;
+                  &lt;th&gt;Notes&lt;/th&gt;
+                  &lt;td&gt;Photographer_Notes&lt;/td&gt;
+               &lt;/tr&gt;
+            &lt;/table&gt;</value>
+  </data>
+  <data name="table_EXIF" xml:space="preserve">
+    <value>&lt;table&gt;
+            &lt;tr&gt;
+               &lt;th&gt;Make&lt;/th&gt;
+               &lt;td&gt;EXIF_Make&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+               &lt;th&gt;FNumber&lt;/th&gt;
+               &lt;td&gt;EXIF_FNumber&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+               &lt;th&gt;ExposureTime&lt;/th&gt;
+               &lt;td&gt;EXIF_ExposureTime&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+               &lt;th&gt;ISOValue&lt;/th&gt;
+               &lt;td&gt;EXIF_ISOValue&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+               &lt;th&gt;Flash&lt;/th&gt;
+               &lt;td&gt;EXIF_Flash&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+               &lt;th&gt;ExposureProgram&lt;/th&gt;
+               &lt;td&gt;EXIF_ExposureProgram&lt;/td&gt;
+            &lt;/tr&gt;
+         &lt;/table&gt;</value>
+  </data>
+  <data name="table_IPTC" xml:space="preserve">
+    <value>&lt;table&gt;
+            &lt;tr&gt;
+               &lt;th&gt;Keywords&lt;/th&gt;
+               &lt;td&gt;IPTC_Keywords&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+               &lt;th&gt;ByLine&lt;/th&gt;
+               &lt;td&gt;IPTC_ByLine&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+               &lt;th&gt;CopyrightNotice&lt;/th&gt;
+               &lt;td&gt;IPTC_CopyrightNotice&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+               &lt;th&gt;Headline&lt;/th&gt;
+               &lt;td&gt;IPTC_Headline&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+               &lt;th&gt;Caption&lt;/th&gt;
+               &lt;td&gt;IPTC_Caption&lt;/td&gt;
+            &lt;/tr&gt;
+         &lt;/table&gt;</value>
+  </data>
+  <data name="table_Photographer" xml:space="preserve">
+    <value>&lt;table&gt;
+               &lt;tr&gt;
+                  &lt;th&gt;FirstName&lt;/th&gt;
+                  &lt;td&gt;Photographer_FirstName&lt;/td&gt;
+               &lt;/tr&gt;
+               &lt;tr&gt;
+                  &lt;th&gt;LastName&lt;/th&gt;
+                  &lt;td&gt;Photographer_LastName&lt;/td&gt;
+               &lt;/tr&gt;
+               &lt;tr&gt;
+                  &lt;th&gt;BirthDay&lt;/th&gt;
+                  &lt;td&gt;Photographer_BirthDay&lt;/td&gt;
+               &lt;/tr&gt;
+               &lt;tr&gt;
+                  &lt;th&gt;Notes&lt;/th&gt;
+                  &lt;td&gt;Photographer_Notes&lt;/td&gt;
+               &lt;/tr&gt;
+            &lt;/table&gt;</value>
+  </data>
 </root>

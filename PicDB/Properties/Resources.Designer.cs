@@ -309,6 +309,43 @@ namespace PicDB.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &lt;html&gt;
+        ///   &lt;style&gt;
+        ///      td {
+        ///      width: 11em; 
+        ///      border: 1px solid #000000;
+        ///      word-wrap: break-word;
+        ///      }
+        ///      th {
+        ///      text-align: left;
+        ///      padding-right: 20px;
+        ///      }
+        ///      td {
+        ///      padding: 20px;
+        ///      }
+        ///      td td {
+        ///      padding: 5px;
+        ///      }
+        ///      table {
+        ///      padding: 20px 20px 20px 20px;
+        ///align:center;
+        ///      }
+        ///      .centered {
+        ///      display: block;
+        ///text-align: center;
+        ///      margin-left: auto;
+        ///      margin-right: auto;
+        ///      }
+        ///   &lt;/style&gt;
+        ///   &lt;body&gt;        /// [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string html_picture {
+            get {
+                return ResourceManager.GetString("html_picture", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to IF (@Cam_ID IS NULL) BEGIN
         ///INSERT INTO Cameras (Producer, Make_Cam, BoughtOn, Notes_Cam, ISOLimitGood, ISOLimitAcceptable)
         ///VALUES (@Producer, @Make, @BoughtOn, @Notes, @ISOLimitGood, @ISOLimitAcceptable);
@@ -391,6 +428,112 @@ namespace PicDB.Properties {
         public static string Save_Picture {
             get {
                 return ResourceManager.GetString("Save_Picture", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;table&gt;
+        ///               &lt;tr&gt;
+        ///                  &lt;th&gt;FirstName&lt;/th&gt;
+        ///                  &lt;td&gt;Photographer_FirstName&lt;/td&gt;
+        ///               &lt;/tr&gt;
+        ///               &lt;tr&gt;
+        ///                  &lt;th&gt;LastName&lt;/th&gt;
+        ///                  &lt;td&gt;Photographer_LastName&lt;/td&gt;
+        ///               &lt;/tr&gt;
+        ///               &lt;tr&gt;
+        ///                  &lt;th&gt;BirthDay&lt;/th&gt;
+        ///                  &lt;td&gt;Photographer_BirthDay&lt;/td&gt;
+        ///               &lt;/tr&gt;
+        ///               &lt;tr&gt;
+        ///                  &lt;th&gt;Notes&lt;/th&gt;
+        ///                  &lt;td&gt;Photographer_Notes&lt;/td&gt;
+        ///          [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string table_Camera {
+            get {
+                return ResourceManager.GetString("table_Camera", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;table&gt;
+        ///            &lt;tr&gt;
+        ///               &lt;th&gt;Make&lt;/th&gt;
+        ///               &lt;td&gt;EXIF_Make&lt;/td&gt;
+        ///            &lt;/tr&gt;
+        ///            &lt;tr&gt;
+        ///               &lt;th&gt;FNumber&lt;/th&gt;
+        ///               &lt;td&gt;EXIF_FNumber&lt;/td&gt;
+        ///            &lt;/tr&gt;
+        ///            &lt;tr&gt;
+        ///               &lt;th&gt;ExposureTime&lt;/th&gt;
+        ///               &lt;td&gt;EXIF_ExposureTime&lt;/td&gt;
+        ///            &lt;/tr&gt;
+        ///            &lt;tr&gt;
+        ///               &lt;th&gt;ISOValue&lt;/th&gt;
+        ///               &lt;td&gt;EXIF_ISOValue&lt;/td&gt;
+        ///            &lt;/tr&gt;
+        ///            &lt;tr&gt;
+        ///               &lt;th&gt;Flash&lt;/th&gt;
+        ///               &lt; [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string table_EXIF {
+            get {
+                return ResourceManager.GetString("table_EXIF", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;table&gt;
+        ///            &lt;tr&gt;
+        ///               &lt;th&gt;Keywords&lt;/th&gt;
+        ///               &lt;td&gt;IPTC_Keywords&lt;/td&gt;
+        ///            &lt;/tr&gt;
+        ///            &lt;tr&gt;
+        ///               &lt;th&gt;ByLine&lt;/th&gt;
+        ///               &lt;td&gt;IPTC_ByLine&lt;/td&gt;
+        ///            &lt;/tr&gt;
+        ///            &lt;tr&gt;
+        ///               &lt;th&gt;CopyrightNotice&lt;/th&gt;
+        ///               &lt;td&gt;IPTC_CopyrightNotice&lt;/td&gt;
+        ///            &lt;/tr&gt;
+        ///            &lt;tr&gt;
+        ///               &lt;th&gt;Headline&lt;/th&gt;
+        ///               &lt;td&gt;IPTC_Headline&lt;/td&gt;
+        ///            &lt;/tr&gt;
+        ///            &lt;tr&gt;
+        ///               &lt;th&gt;Caption&lt;/th&gt;
+        ///   [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string table_IPTC {
+            get {
+                return ResourceManager.GetString("table_IPTC", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;table&gt;
+        ///               &lt;tr&gt;
+        ///                  &lt;th&gt;FirstName&lt;/th&gt;
+        ///                  &lt;td&gt;Photographer_FirstName&lt;/td&gt;
+        ///               &lt;/tr&gt;
+        ///               &lt;tr&gt;
+        ///                  &lt;th&gt;LastName&lt;/th&gt;
+        ///                  &lt;td&gt;Photographer_LastName&lt;/td&gt;
+        ///               &lt;/tr&gt;
+        ///               &lt;tr&gt;
+        ///                  &lt;th&gt;BirthDay&lt;/th&gt;
+        ///                  &lt;td&gt;Photographer_BirthDay&lt;/td&gt;
+        ///               &lt;/tr&gt;
+        ///               &lt;tr&gt;
+        ///                  &lt;th&gt;Notes&lt;/th&gt;
+        ///                  &lt;td&gt;Photographer_Notes&lt;/td&gt;
+        ///          [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string table_Photographer {
+            get {
+                return ResourceManager.GetString("table_Photographer", resourceCulture);
             }
         }
         
