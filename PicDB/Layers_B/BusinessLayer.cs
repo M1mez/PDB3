@@ -17,6 +17,9 @@ namespace PicDB.Classes
 {
     public class BusinessLayer : IBusinessLayer
     {
+        private static readonly log4net.ILog log =
+            log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         public BusinessLayer(bool isUnitTest = false)
         {
             _dal = isUnitTest ? new MockDataAccessLayer() : new DataAccessLayer();
@@ -33,6 +36,7 @@ namespace PicDB.Classes
             }
             catch (Exception e)
             {
+                log.Error(e);
                 Console.WriteLine(e);
                 throw;
             }
@@ -47,6 +51,7 @@ namespace PicDB.Classes
             }
             catch (Exception e)
             {
+                log.Error(e);
                 Console.WriteLine(e);
                 throw;
             }
@@ -65,6 +70,7 @@ namespace PicDB.Classes
             }
             catch (Exception e)
             {
+                log.Error(e);
                 Console.WriteLine(e);
                 throw;
             }
@@ -79,6 +85,7 @@ namespace PicDB.Classes
             }
             catch (Exception e)
             {
+                log.Error(e);
                 Console.WriteLine(e);
                 throw;
             }
@@ -92,6 +99,7 @@ namespace PicDB.Classes
             }
             catch (Exception e)
             {
+                log.Error(e);
                 Console.WriteLine(e);
                 throw;
             }
@@ -106,6 +114,7 @@ namespace PicDB.Classes
             }
             catch (Exception e)
             {
+                log.Error(e);
                 Console.WriteLine(e);
                 throw;
             }
@@ -120,6 +129,7 @@ namespace PicDB.Classes
             }
             catch (Exception e)
             {
+                log.Error(e);
                 Console.WriteLine(e);
                 throw;
             }
@@ -134,6 +144,7 @@ namespace PicDB.Classes
             }
             catch (Exception e)
             {
+                log.Error(e);
                 Console.WriteLine(e);
                 throw;
             }
@@ -147,6 +158,7 @@ namespace PicDB.Classes
             }
             catch (Exception e)
             {
+                log.Error(e);
                 Console.WriteLine(e);
                 throw;
             }
@@ -160,6 +172,7 @@ namespace PicDB.Classes
             }
             catch (Exception e)
             {
+                log.Error(e);
                 Console.WriteLine(e);
                 throw;
             }
@@ -173,6 +186,7 @@ namespace PicDB.Classes
             }
             catch (Exception e)
             {
+                log.Error(e);
                 Console.WriteLine(e);
                 throw;
             }
@@ -186,6 +200,7 @@ namespace PicDB.Classes
             }
             catch (Exception e)
             {
+                log.Error(e);
                 Console.WriteLine(e);
                 throw;
             }
@@ -200,6 +215,7 @@ namespace PicDB.Classes
             }
             catch (Exception e)
             {
+                log.Error(e);
                 Console.WriteLine(e.Message);
                 throw;
             }
@@ -251,7 +267,9 @@ namespace PicDB.Classes
             }
             catch (Exception e)
             {
+                log.Error(e);
                 Console.WriteLine(e.Message);
+                
                 throw new Exception("Sync", e);
             }
         }

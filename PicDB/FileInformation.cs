@@ -160,7 +160,7 @@ namespace PicDB
                 bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
                 bitmapImage.StreamSource = stream;
                 bitmapImage.EndInit();
-                //bitmapImage.Freeze(); // just in case you want to load the image in another thread
+                bitmapImage.Freeze(); // just in case you want to load the image in another thread
             }
                 return bitmapImage;
         }

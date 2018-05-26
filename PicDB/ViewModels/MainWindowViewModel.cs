@@ -27,7 +27,7 @@ namespace PicDB.ViewModels
         public BusinessLayer Bl = new BusinessLayer(Constants.IsUnitTest);
         public MainWindowViewModel()
         {
-            Bl.Sync();
+            
         }
 
         private IPictureViewModel _currentPicture;
@@ -50,10 +50,10 @@ namespace PicDB.ViewModels
                 _list = value;
                 if (_list.Count > 0) CurrentPicture = _list.List.First();
                 OnPropertyChanged();
+                OnPropertyChanged("_list");
             }
         }
 
         public ISearchViewModel Search { get; } = new SearchViewModel();
-
     }
 }

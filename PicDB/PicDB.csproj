@@ -63,6 +63,9 @@
     <Reference Include="Dragablz, Version=0.0.3.203, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dragablz.0.0.3.203\lib\net45\Dragablz.dll</HintPath>
     </Reference>
+    <Reference Include="IronPdf, Version=4.4.8.19103, Culture=neutral, PublicKeyToken=94e1c31412563c75, processorArchitecture=MSIL">
+      <HintPath>..\packages\IronPdf.4.4.8\lib\net40\IronPdf.dll</HintPath>
+    </Reference>
     <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
     </Reference>
@@ -73,7 +76,7 @@
       <HintPath>..\packages\MaterialDesignThemes.2.4.0.1044\lib\net45\MaterialDesignThemes.Wpf.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
-      <HintPath>..\..\SWE2\SWE2-CS\packages\NUnit.3.6.1\lib\net40\nunit.framework.dll</HintPath>
+      <HintPath>..\packages\NUnit.3.6.1\lib\net40\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="ShowMeTheXAML, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ShowMeTheXAML.1.0.10\lib\net45\ShowMeTheXAML.dll</HintPath>
@@ -81,6 +84,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -116,6 +120,9 @@
     <Compile Include="WPF\AdvancedSearchWindow.xaml.cs">
       <DependentUpon>AdvancedSearchWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WPF\Gallery.xaml.cs">
+      <DependentUpon>Gallery.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Uebungen\UEB3.cs" />
     <Compile Include="Uebungen\UEB4.cs" />
     <Compile Include="Uebungen\UEB5.cs" />
@@ -132,17 +139,11 @@
     <Compile Include="ViewModels\PictureListViewModel.cs" />
     <Compile Include="ViewModels\PictureViewModel.cs" />
     <Compile Include="ViewModels\SearchViewModel.cs" />
-    <Compile Include="WPF\Gallery.xaml.cs">
-      <DependentUpon>Gallery.xaml</DependentUpon>
-    </Compile>
     <Compile Include="WPF\IptcExifControl.xaml.cs">
       <DependentUpon>IptcExifControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WPF\PhotographerWindow_Edit.xaml.cs">
-      <DependentUpon>PhotographerWindow_Edit.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="WPF\PhotographerWindow_Add.xaml.cs">
-      <DependentUpon>PhotographerWindow_Add.xaml</DependentUpon>
+    <Compile Include="WPF\PhotographerWindow.xaml.cs">
+      <DependentUpon>PhotographerWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="WPF\SearchBy_EXIF.xaml.cs">
       <DependentUpon>SearchBy_EXIF.xaml</DependentUpon>
@@ -178,11 +179,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="WPF\PhotographerWindow_Edit.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="WPF\PhotographerWindow_Add.xaml">
+    <Page Include="WPF\PhotographerWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -218,9 +215,6 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="app.config" />
-    <None Include="log4net.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="my.runsettings" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
