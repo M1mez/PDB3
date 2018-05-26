@@ -63,6 +63,9 @@
     <Reference Include="Dragablz, Version=0.0.3.203, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dragablz.0.0.3.203\lib\net45\Dragablz.dll</HintPath>
     </Reference>
+    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="MaterialDesignColors, Version=1.1.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MaterialDesignColors.1.1.2\lib\net45\MaterialDesignColors.dll</HintPath>
     </Reference>
@@ -113,9 +116,6 @@
     <Compile Include="WPF\AdvancedSearchWindow.xaml.cs">
       <DependentUpon>AdvancedSearchWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WPF\Gallery.xaml.cs">
-      <DependentUpon>Gallery.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Uebungen\UEB3.cs" />
     <Compile Include="Uebungen\UEB4.cs" />
     <Compile Include="Uebungen\UEB5.cs" />
@@ -132,11 +132,17 @@
     <Compile Include="ViewModels\PictureListViewModel.cs" />
     <Compile Include="ViewModels\PictureViewModel.cs" />
     <Compile Include="ViewModels\SearchViewModel.cs" />
+    <Compile Include="WPF\Gallery.xaml.cs">
+      <DependentUpon>Gallery.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WPF\IptcExifControl.xaml.cs">
       <DependentUpon>IptcExifControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WPF\PhotographerWindow.xaml.cs">
-      <DependentUpon>PhotographerWindow.xaml</DependentUpon>
+    <Compile Include="WPF\PhotographerWindow_Edit.xaml.cs">
+      <DependentUpon>PhotographerWindow_Edit.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WPF\PhotographerWindow_Add.xaml.cs">
+      <DependentUpon>PhotographerWindow_Add.xaml</DependentUpon>
     </Compile>
     <Compile Include="WPF\SearchBy_EXIF.xaml.cs">
       <DependentUpon>SearchBy_EXIF.xaml</DependentUpon>
@@ -172,7 +178,11 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="WPF\PhotographerWindow.xaml">
+    <Page Include="WPF\PhotographerWindow_Edit.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="WPF\PhotographerWindow_Add.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -208,6 +218,9 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="app.config" />
+    <None Include="log4net.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="my.runsettings" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

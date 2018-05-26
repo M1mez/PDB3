@@ -9,9 +9,9 @@ using System.Windows.Input;
 
 namespace PicDB
 {
-    public partial class PhotographerWindow : Window
+    public partial class PhotographerWindow_Add : Window
     {
-        public PhotographerWindow(MainWindow sender, BusinessLayer BL)
+        public PhotographerWindow_Add(MainWindow sender, BusinessLayer BL)
         {
             Application curApp = Application.Current;
             Window mainWindow = curApp.MainWindow;

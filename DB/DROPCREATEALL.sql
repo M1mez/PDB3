@@ -166,20 +166,12 @@ ALTER TABLE [dbo].[Pictures]  WITH CHECK ADD FOREIGN KEY([FK_Cam_ID])
 REFERENCES [dbo].[Cameras] ([Cam_ID])
 GO
 
-ALTER TABLE [dbo].[Pictures]  WITH CHECK ADD FOREIGN KEY([FK_Cam_ID])
-REFERENCES [dbo].[Cameras] ([Cam_ID])
-GO
-
 ALTER TABLE [dbo].[Pictures]  WITH CHECK ADD FOREIGN KEY([FK_EXIF_ID])
 REFERENCES [dbo].[EXIF] ([EXIF_ID])
 GO
 
 ALTER TABLE [dbo].[Pictures]  WITH CHECK ADD FOREIGN KEY([FK_IPTC_ID])
 REFERENCES [dbo].[IPTC] ([IPTC_ID])
-GO
-
-ALTER TABLE [dbo].[Pictures]  WITH CHECK ADD FOREIGN KEY([FK_PG_ID])
-REFERENCES [dbo].[Photographers] ([PG_ID])
 GO
 
 /****** Object:  Trigger [dbo].[t_UpdatePictureEXIF]    Script Date: 01/04/2018 20:09:25 ******/
@@ -284,4 +276,32 @@ GO
 ALTER TABLE [dbo].[Pictures] ENABLE TRIGGER [t_DeletedPicture]
 GO
 
+/****** Object:  Trigger [dbo].[t_DeletedPicture]    Script Date: 01/04/2018 20:09:25 ******/
+SET ANSI_NULLS ON
+GO
 
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TRIGGER [dbo].[t_DeletedPhotographer] ON [dbo].[Photographers]
+AFTER DELETE
+AS
+BEGIN
+	DECLARE @PG_ID INT;
+	DECLARE deleteCursor CURSOR FOR
+	SELECT PG_ID FROM deleted as DEL
+
+	OPEN deleteCursor
+	FETCH NEXT FROM deleteCursor INTO @PG_ID;
+	WHILE @@FETCH_STATUS = 0
+		BEGIN
+			UPDATE Pictures SET Pictures.FK_PG_ID = NULL WHERE Pictures.FK_PG_ID = @PG_ID;
+			FETCH NEXT FROM deleteCursor INTO @PG_ID;
+		END
+	CLOSE deleteCursor;
+	DEALLOCATE deleteCursor;
+END 
+GO
+
+ALTER TABLE [dbo].[Pictures] ENABLE TRIGGER [t_DeletedPicture]
+GO

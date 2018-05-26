@@ -205,6 +205,19 @@ namespace PicDB.Classes
             }
         }
 
+        public void Update(IPhotographerModel photographer)
+        {
+            try
+            {
+                _dal.Update(photographer);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
+
         public List<PictureModel> GetDirPicModels()
         {
             return _dal.GetPictures().Cast<PictureModel>().ToList();

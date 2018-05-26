@@ -171,7 +171,7 @@ namespace PicDB.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DELETE FROM Photographer WHERE PG_ID = @ID;.
+        ///   Looks up a localized string similar to DELETE FROM Photographers WHERE PG_ID = @ID;.
         /// </summary>
         public static string DeletePhotographer_ID {
             get {
@@ -406,6 +406,20 @@ namespace PicDB.Properties {
         public static string Update_IPTC {
             get {
                 return ResourceManager.GetString("Update_IPTC", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to UPDATE Photographers 
+        ///SET Photographers.FirstName = @FirstName,
+        ///	Photographers.LastName = @LastName,
+        ///	Photographers.BirthDay = @Birthday,
+        ///	Photographers.Notes_PG = @Notes
+        ///WHERE Photographers.PG_ID = @PG_ID;.
+        /// </summary>
+        public static string Update_Photographer {
+            get {
+                return ResourceManager.GetString("Update_Photographer", resourceCulture);
             }
         }
         

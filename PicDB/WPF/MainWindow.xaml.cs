@@ -41,16 +41,19 @@ namespace PicDB
             InitializeComponent();
         }
 
-        private void ClickOnGalleryThumbnail(object sender, RoutedEventArgs e)
-        {
-            /*var photographer = mwvmdl.CurrentPicture.Photographer;
-            PhotographerList.CurrentPhotographer = photographer;*/
-        }
-
         private void OpenNewPhotographerWindow(object sender, RoutedEventArgs e)
         {
-            PhotographerWindow pw = new PhotographerWindow(this, BL);
-            pw.ShowDialog();
+            var menuItem = (MenuItem) sender;
+            Window photographerWindow = null;
+            if (menuItem.Name == "tabItem_AddPhotographer") photographerWindow = new PhotographerWindow_Add(this, BL);
+            else if (menuItem.Name == "tabItem_EditPhotographer")
+            {
+                if (PhotographerList.List.Count() == 0)
+                    MessageBox.Show("No Photographer available to edit!", "Edit Photographer", MessageBoxButton.OK,
+                        MessageBoxImage.Error);
+                else photographerWindow = new PhotographerWindow_Edit(this, BL);
+            }
+            photographerWindow?.ShowDialog();
         }
 
         private void OpenNewSearchWindow(object sender, RoutedEventArgs e)
@@ -110,10 +113,10 @@ namespace PicDB
             }
         }
 
-        public void UpdatePictureList(IEnumerable<IPictureModel> newList)
+        public void UpdatePictureList(IEnumerable<IPictureModel> newList = null)
         {
+            if (newList == null) newList = BL.GetPictures();
             mwvmdl.List = new PictureListViewModel(newList);
-            ClickOnGalleryThumbnail(null, null);
             Console.WriteLine(newList.Aggregate("", (x, y) => x + y.FileName + " ").Trim());
             foreach (var pic in mwvmdl.List.List)
             {

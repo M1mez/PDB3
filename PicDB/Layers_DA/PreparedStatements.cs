@@ -56,6 +56,13 @@ namespace PicDB.Layers_DA
                 SavePhotographer.Parameters.Add("@BirthDay", SqlDbType.DateTime);
                 SavePhotographer.Parameters.Add("@Notes", SqlDbType.VarChar);
 
+                UpdatePhotographer = NewComm(Resources.Update_Photographer);
+                UpdatePhotographer.Parameters.Add("@PG_ID", SqlDbType.Int);
+                UpdatePhotographer.Parameters.Add("@FirstName", SqlDbType.VarChar);
+                UpdatePhotographer.Parameters.Add("@LastName", SqlDbType.VarChar);
+                UpdatePhotographer.Parameters.Add("@BirthDay", SqlDbType.DateTime);
+                UpdatePhotographer.Parameters.Add("@Notes", SqlDbType.VarChar);
+
                 AddPictureToPhotographer = NewComm(Resources.Add_Picture_To_Photographer);
                 AddPictureToPhotographer.Parameters.Add("@Pic_ID", SqlDbType.Int);
                 AddPictureToPhotographer.Parameters.Add("@PG_ID", SqlDbType.Int);
@@ -153,6 +160,7 @@ namespace PicDB.Layers_DA
             internal SqlCommand DeletePhotographerId;
             internal SqlCommand DeletePictureId;
             internal SqlCommand UpdateIPTC;
+            internal SqlCommand UpdatePhotographer;
 
             internal static SqlCommand GetNextIdTableName
             {

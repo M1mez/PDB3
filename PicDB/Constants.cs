@@ -10,14 +10,16 @@ namespace PicDB
 {
     public static class Constants
     {
+        //TODO: die hiers austauschen @ Stefan
+
         private static Random rnd = new Random();
         public static int GetRandomInt() => rnd.Next();
         private static bool JohannesPC => 
             (Environment.MachineName == "DESKTOP-DIN7DPC");
         private static bool StefanPC => 
-            (Environment.MachineName == "STEFFE-PC"); //TODO
+            (Environment.MachineName == "STEFFE-PC"); // HIER
         private static bool StefanLAPTOP => 
-            (Environment.MachineName == "STEFFE"); //TODO
+            (Environment.MachineName == "STEFFE"); // HIER
 
         public static string ConnString
         {
@@ -26,9 +28,9 @@ namespace PicDB
                 if (JohannesPC)
                     return @"Server=DESKTOP-DIN7DPC\SQLEXPRESS; Database=PicDB; Trusted_Connection=True;";
                 if (StefanPC)
-                    return @"Server=STEFFE-PC\SQLEXPRESS; Database=PicDB; Trusted_Connection=True;"; //TODO
+                    return @"Server=STEFFE-PC\SQLEXPRESS; Database=PicDB; Trusted_Connection=True;"; // HIER
                 if (StefanLAPTOP)
-                    return "irgendeinPfadhalt"; //TODO
+                    return "irgendeinPfadhalt"; // HIER
 
                 else return "";
             }
@@ -44,7 +46,7 @@ namespace PicDB
                 if (StefanPC)
                     return @"C:\Users\Steffe\Desktop\FH\4.Semester\PDB3\";
                 if (StefanLAPTOP)
-                    return "PFADHALT"; //TODO
+                    return "PFADHALT"; // HIER
 
                 else return Environment.CurrentDirectory;
             }

@@ -146,7 +146,7 @@
     <value>..\Resources\8LandscapeMode.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="DeletePhotographer_ID" xml:space="preserve">
-    <value>DELETE FROM Photographer WHERE PG_ID = @ID;</value>
+    <value>DELETE FROM Photographers WHERE PG_ID = @ID;</value>
   </data>
   <data name="Add_Picture_To_Photographer" xml:space="preserve">
     <value>INSERT INTO Pictures_Photographers (FK_Pic_ID, FK_PG_ID) 
@@ -322,5 +322,13 @@ SET IPTC.Keywords = @Keywords,
 	IPTC.Headline = @Headline,
 	IPTC.Caption = @Caption
 WHERE IPTC.IPTC_FK_Pic_ID = @Pic_ID;</value>
+  </data>
+  <data name="Update_Photographer" xml:space="preserve">
+    <value>UPDATE Photographers 
+SET Photographers.FirstName = @FirstName,
+	Photographers.LastName = @LastName,
+	Photographers.BirthDay = @Birthday,
+	Photographers.Notes_PG = @Notes
+WHERE Photographers.PG_ID = @PG_ID;</value>
   </data>
 </root>

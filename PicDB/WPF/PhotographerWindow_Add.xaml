@@ -1,6 +1,6 @@
 ﻿<Window 
     WindowStartupLocation="CenterOwner"
-    x:Class="PicDB.PhotographerWindow"
+    x:Class="PicDB.PhotographerWindow_Add"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -16,7 +16,7 @@
     Background="{DynamicResource MaterialDesignPaper}"
     FontFamily="{DynamicResource MaterialDesignFont}" 
     ResizeMode="NoResize"
-    Width="320" Height="170.889">
+    Width="320" Height="168.855">
 
     <Window.Resources>
         <Style TargetType="DatePickerTextBox">
@@ -49,16 +49,16 @@
                      Grid.Column="1" Grid.Row="1"/>
 
             <Label Grid.Row="2" Grid.Column="0">Birth Day</Label>
-            <DatePicker Name="_BirthDay" Focusable="False"
+            <DatePicker Name="_BirthDay" Focusable="False" Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
                         Grid.Column="1" Grid.Row="2"/>
 
                 <Label Grid.Row="3" Grid.Column="0">Notes</Label>
             <TextBox Name="_Notes" TextWrapping="Wrap" AcceptsReturn="True" AcceptsTab="True" SpellCheck.IsEnabled="True" 
                      Grid.Column="1" Grid.Row="3"/>
 
-            <Label Grid.Row="4"/>
-            <Button Grid.Row="5" Grid.ColumnSpan="2" Height="Auto"  Click="CreatePhotographer" VerticalAlignment="Top" >Submit</Button>
-            <Label Grid.Row="6" Height="5"/>
+            <Label Grid.Row="4" Grid.Column="0" />
+            <Button Grid.Row="5" Grid.ColumnSpan="2" Grid.Column="0" Height="Auto"  Click="CreatePhotographer" VerticalAlignment="Top" >Submit</Button>
+            <Label Grid.Row="6" Grid.Column="0" Height="5"/>
 
         </Grid>
     </StackPanel>

@@ -4,9 +4,51 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:PicDB"
-             xmlns:vmdl="clr-namespace:PicDB.ViewModels" >
+             xmlns:vmdl="clr-namespace:PicDB.ViewModels"
+             xmlns:helper="clr-namespace:Helper">
 
+    <UserControl.Resources>
+        <helper:PicToBitmapImageConverter x:Key="PicToBitmapImageConverter"/>
+    </UserControl.Resources>
 
-    
+    <ListBox Name="ImgGallery" Grid.Row="5" Grid.Column="0"  Grid.ColumnSpan="3" MinHeight="60"
+                 ItemsSource="{Binding List.List}"
+                 ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                 SelectedItem="{Binding CurrentPicture, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}">
+        <ListBox.Style>
+            <Style TargetType="ListBox">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding Path=Items.Count, RelativeSource={RelativeSource Self}}"  Value="0">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate>
+                                    <Border BorderThickness="1" BorderBrush="White"
+                                                Padding="10" Margin="10">
+                                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                       FontSize="30" FontWeight="Light" Foreground="{DynamicResource MaterialDesignLightBackground}">
+                                                No pictures found!
+                                        </TextBlock>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </ListBox.Style>
+        <ListBox.ItemsPanel>
+            <ItemsPanelTemplate>
+                <VirtualizingStackPanel Orientation="Horizontal"/>
+            </ItemsPanelTemplate>
+        </ListBox.ItemsPanel>
+        <ListBox.ItemTemplate>
+            <DataTemplate>
+                <Image Stretch="UniformToFill" Source="{Binding FilePath, Converter={StaticResource PicToBitmapImageConverter}, Mode=OneWay}">
+                </Image>
+            </DataTemplate>
+        </ListBox.ItemTemplate>
+    </ListBox>
+
 </UserControl>
 

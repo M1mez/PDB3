@@ -1,0 +1,89 @@
+﻿<Window 
+    WindowStartupLocation="CenterOwner"
+    x:Class="PicDB.PhotographerWindow_Edit"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vmdl="clr-namespace:PicDB.ViewModels"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    x:Name="main"
+    
+    TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+    TextElement.FontWeight="Regular"
+    TextElement.FontSize="13"
+    Title="Edit Photographer"
+    TextOptions.TextFormattingMode="Ideal"
+    TextOptions.TextRenderingMode="Auto"
+    Background="{DynamicResource MaterialDesignPaper}"
+    FontFamily="{DynamicResource MaterialDesignFont}" 
+    ResizeMode="NoResize"
+    Width="320" Height="196.229">
+
+    <Window.Resources>
+        <Style TargetType="DatePickerTextBox">
+            <Setter Property="IsReadOnly" Value="True"></Setter>
+            <Setter Property="Focusable" Value="False"></Setter>
+        </Style>
+    </Window.Resources>
+
+    <StackPanel DataContext="{Binding ElementName=main, Path=PhotographerList}">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="3*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="10*"/>
+                <RowDefinition Height="10*"/>
+                <RowDefinition Height="10*"/>
+                <RowDefinition Height="500*"/>
+                <RowDefinition Height="20*"/>
+                <RowDefinition Height="20*"/>
+                <RowDefinition Height="20*"/>
+                <RowDefinition Height="3*"/>
+            </Grid.RowDefinitions>
+            <Label Grid.Column="0" Grid.Row="0">First Name</Label>
+            <TextBox Name ="_FirstName" TextWrapping="Wrap" 
+                     Text="{Binding CurrentPhotographer.FirstName, UpdateSourceTrigger=PropertyChanged}" 
+                     Grid.Column="1" Grid.Row="0"/>
+
+            <Label Grid.Row="1" Grid.Column="0">Last Name</Label>
+            <TextBox Name ="_LastName" TextWrapping="Wrap" 
+                     Text="{Binding CurrentPhotographer.LastName, UpdateSourceTrigger=PropertyChanged}" 
+                     Grid.Column="1" Grid.Row="1"/>
+
+            <Label Grid.Row="2" Grid.Column="0">Birth Day</Label>
+            <DatePicker Name="_BirthDay" Focusable="False" 
+                        Text="{Binding CurrentPhotographer.BirthDay, UpdateSourceTrigger=PropertyChanged}"
+                        Grid.Column="1" Grid.Row="2"/>
+
+            <Label Grid.Row="3" Grid.Column="0">Notes</Label>
+            <TextBox Name="_Notes" TextWrapping="Wrap" AcceptsReturn="True" AcceptsTab="True" SpellCheck.IsEnabled="True" 
+                     Text="{Binding CurrentPhotographer.Notes, UpdateSourceTrigger=PropertyChanged}"
+                     Grid.Column="1" Grid.Row="3"/>
+
+            <ComboBox Name="Photographer"  HorizontalAlignment="Center"
+                      materialDesign:HintAssist.Hint="Photographers"
+                      ItemsSource="{Binding ObsList, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                      DisplayMemberPath="FirstLastName"
+                      SelectedItem="{Binding CurrentPhotographer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      Foreground="{DynamicResource PrimaryHueLightBrush}"
+                      Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2">
+            </ComboBox>
+
+            <Label Grid.Row="5" Grid.Column="0" />
+            <Grid Grid.Row="6" Grid.ColumnSpan="2" Grid.Column="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0" Height="Auto"  Click="EditPhotographer" VerticalAlignment="Top"
+                        Background="ForestGreen">Submit Changes</Button>
+                <Button Grid.Column="1" Height="Auto"  Click="DeletePhotographer" VerticalAlignment="Top" 
+                        Background="Red">Delete</Button>
+            </Grid>
+            <Label Grid.Row="7" Grid.Column="0" Height="5"/>
+
+        </Grid>
+    </StackPanel>
+</Window>

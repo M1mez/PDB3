@@ -21,30 +21,36 @@ namespace PicDB.ViewModels
 
         private IEnumerable<IPhotographerViewModel> _list;
         private IPhotographerViewModel _currentPhotographer;
+        private ObservableCollection<IPhotographerViewModel> _obsList;
 
         public IEnumerable<IPhotographerViewModel> List
         {
             get => _list;
             set
             {
-                if (_list != null)
+                /*if (_list != null)
                 {
                     //IEnumerable<IPhotographerViewModel> toRemove = _list.Except(value);
                     IEnumerable<IPhotographerViewModel> toAdd = value.ToList().Where(phnew =>
                         _list.All(phold => phnew.ID != phold.ID));
+                    IEnumerable<IPhotographerViewModel> toRemove = _list.ToList().Where(phleft =>
+                        value.All(phold => phleft.ID != phold.ID));
+                    Console.WriteLine($"toaddcount: {toAdd.Count()}");
+                    Console.WriteLine($"toremovecount: {toRemove.Count()}");
 
-                    //foreach (var ph in toRemove) ObsList.Remove(ph);
+                    foreach (var ph in toRemove) ObsList.Remove(ph);
                     foreach (var ph in toAdd) ObsList.Add(ph);
                     //var newObs = _list.Union()
 
-                } else ObsList = new ObservableCollection<IPhotographerViewModel>(value);
+                }*/
 
                 _list = value;
                 OnPropertyChanged();
+                OnPropertyChanged("ObsList");
             }
         }
-        
-        public ObservableCollection<IPhotographerViewModel> ObsList { get; set; }
+
+        public ObservableCollection<IPhotographerViewModel> ObsList => new ObservableCollection<IPhotographerViewModel>(_list);
 
         public PhotographerListViewModel() { }
 

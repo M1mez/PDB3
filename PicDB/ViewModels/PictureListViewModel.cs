@@ -58,6 +58,7 @@ namespace PicDB.ViewModels
             {
                 _currentIndex = value;
                 OnPropertyChanged();
+                OnPropertyChanged("CurrentPicture");
             }
         }
 

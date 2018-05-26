@@ -15,6 +15,10 @@ namespace PicDB
 {
     static class FileInformation
     {
+
+        //TODO: Bericht erstellen Liste Tags mit jeweils Anzahl Bilder
+        //TODO: Bild drucken mit IPTC, EXIF Informationen (wenn vorhanden, auch Photograph)
+
         // ReSharper disable once InconsistentNaming
         public static IEXIFModel ExtractEXIF(string filename)
         {

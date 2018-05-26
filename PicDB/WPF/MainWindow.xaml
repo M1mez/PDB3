@@ -89,10 +89,16 @@
                             </MenuItem.Icon>
                         </MenuItem>
                     </MenuItem>
+                    
                     <MenuItem Header="_Edit"  VerticalAlignment="Center" HorizontalAlignment="Left">
                         <MenuItem Name="tabItem_AddPhotographer" Header="Add Photographer" Click="OpenNewPhotographerWindow">
                             <MenuItem.Icon>
                                 <materialDesign:PackIcon Kind="Account" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Name="tabItem_EditPhotographer" Header="Edit Photographer" Click="OpenNewPhotographerWindow">
+                            <MenuItem.Icon>
+                                <materialDesign:PackIcon Kind="AccountEdit" />
                             </MenuItem.Icon>
                         </MenuItem>
                         <MenuItem Header="_Copy" Command="Copy">
@@ -149,7 +155,9 @@
             </Grid>
         </materialDesign:ColorZone>
 
-        <Image DataContext="{Binding CurrentPicture, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Source="{Binding FilePath, Converter={StaticResource PicToBitmapImageConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+        <!--TODO Bild von der Gallery übernehmen-->
+        <Image DataContext="{Binding CurrentPicture, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+               Source="{Binding FilePath, Converter={StaticResource PicToBitmapImageConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                HorizontalAlignment="Center" VerticalAlignment="Center"
                Grid.Row="3" Grid.Column="0">
         </Image>
@@ -344,45 +352,7 @@
         </StackPanel>
 
         <!--Gallery-->
-        <ListBox Name="ImgGallery" Grid.Row="5" Grid.Column="0"  Grid.ColumnSpan="3" MinHeight="60"
-                 ItemsSource="{Binding List.List}"
-                 ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                 SelectedItem="{Binding CurrentPicture, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
-                 SelectionChanged="ClickOnGalleryThumbnail">
-            <ListBox.Style>
-                <Style TargetType="ListBox">
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding Path=Items.Count, RelativeSource={RelativeSource Self}}"  Value="0">
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate>
-                                        <Border BorderThickness="1" BorderBrush="White"
-                                                Padding="10" Margin="10">
-                                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
-                                                       FontSize="30" FontWeight="Light" Foreground="{DynamicResource MaterialDesignLightBackground}">
-                                                No pictures found!
-                                            </TextBlock>
-                                        </Border>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </ListBox.Style>
-            <ListBox.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <VirtualizingStackPanel Orientation="Horizontal"/>
-                </ItemsPanelTemplate>
-            </ListBox.ItemsPanel>
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <Image Stretch="UniformToFill" Source="{Binding FilePath, Converter={StaticResource PicToBitmapImageConverter}, Mode=OneWay}">
-                    </Image>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+        <wpfns:Gallery Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3"></wpfns:Gallery>
 
     </Grid>
 </Window>

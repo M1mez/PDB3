@@ -15,28 +15,41 @@ namespace PicDB.Layers_DA
 {
     partial class DataAccessLayer : IDataAccessLayer
     {
+        //TODO: Konfigurationsfile
         private static SqlConnection Conn = new SqlConnection() { ConnectionString = Constants.ConnString };
         private readonly PreparedStatements PS;
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         private List<string> _dirPics = null;
+
+        /// <summary>
+        /// Get a List of Names of current Files in Picture Folder
+        /// </summary>
         public List<string> DirPics
         {
-            get { return _dirPics ?? (_dirPics = Directory.GetFiles(Constants.PicPath, "*.jpg").Select(Path.GetFileName).ToList()); }
+            get
+            {
+                if (_dirPics == null) RefreshGallery();
+                return _dirPics;
+            }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void RefreshGallery() => _dirPics = Directory.GetFiles(Constants.PicPath, "*.jpg").Select(Path.GetFileName).ToList();
 
-        public DataAccessLayer()
-        {
-            PS = new PreparedStatements();
-        }
+        public DataAccessLayer() => PS = new PreparedStatements();
 
         public virtual void DeletePhotographer(int ID)
         {
             var output = $"Delete Photographer with ID {ID}";
-            Console.WriteLine(output);
+            log.Info(output);
             try
             {
+                log.Debug(ID);
+                if (ID<=0) log.Warn("ID <= 0");
+
                 Conn.Open();
                 PS.DeletePhotographerId.Parameters["@ID"].Value = ID;
                 PS.DeletePhotographerId.ExecuteNonQuery();
@@ -44,6 +57,7 @@ namespace PicDB.Layers_DA
             }
             catch (Exception e)
             {
+                log.Error(e);
                 throw new Exception(output, e);
             }
             finally
@@ -55,9 +69,11 @@ namespace PicDB.Layers_DA
         public virtual void DeletePicture(int ID)
         {
             var output = $"Delete Picture with ID: {ID}";
-            Console.WriteLine(output);
+            log.Info(output);
             try
             {
+                log.Debug(ID);
+                if (ID <= 0) log.Warn("ID <= 0");
                 Conn.Open();
                 PS.DeletePictureId.Parameters["@ID"].Value = ID;
                 PS.DeletePictureId.ExecuteNonQuery();
@@ -65,6 +81,7 @@ namespace PicDB.Layers_DA
             }
             catch (Exception e)
             {
+                log.Error(e);
                 throw new Exception(output, e);
             }
             finally
@@ -515,6 +532,34 @@ namespace PicDB.Layers_DA
                 PS.UpdatePicsPhotographer.Parameters["@Pic_ID"].Value = pic_ID;
                 PS.UpdatePicsPhotographer.Parameters["@PG_ID"].Value = pg_ID;
                 PS.UpdatePicsPhotographer.ExecuteNonQuery();
+                Conn.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw new Exception(output, e);
+            }
+            finally
+            {
+                Conn.Close();
+            }
+        }
+
+        public void Update(IPhotographerModel photographer)
+        {
+            var output = $"Update photographer with ID \"{photographer.ID}\": {photographer.LastName} {photographer.FirstName}, born on {photographer.BirthDay}";
+            if (photographer == null) throw new ArgumentNullException(nameof(photographer));
+            Console.WriteLine(output);
+            try
+            {
+                Conn.Open();
+                PS.UpdatePhotographer.Parameters["@PG_ID"].Value = photographer.ID;
+                PS.UpdatePhotographer.Parameters["@FirstName"].Value = photographer.FirstName;
+                PS.UpdatePhotographer.Parameters["@LastName"].Value = photographer.LastName;
+                PS.UpdatePhotographer.Parameters["@BirthDay"].Value =
+                    photographer.BirthDay != null ? (object)photographer.BirthDay : DBNull.Value;
+                PS.UpdatePhotographer.Parameters["@Notes"].Value = photographer.Notes;
+                PS.UpdatePhotographer.ExecuteNonQuery();
                 Conn.Close();
             }
             catch (Exception e)
