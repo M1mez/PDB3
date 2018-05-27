@@ -30,15 +30,15 @@ namespace PicDB
             InitializeComponent();
         }
 
-        public PhotographerListViewModel PhotographerList => Sender.PhotographerList;
-
         private MainWindow Sender { get; }
         private BusinessLayer BL { get; }
+        public PhotographerListViewModel PhotographerList => Sender.PhotographerList;
 
         public void EditPhotographer(object sender, RoutedEventArgs e)
         {
             var mdl = new PhotographerModel
             {
+                ID = PhotographerList.CurrentPhotographer.ID,
                 FirstName = _FirstName.Text,
                 LastName = _LastName.Text,
                 BirthDay = _BirthDay.SelectedDate,

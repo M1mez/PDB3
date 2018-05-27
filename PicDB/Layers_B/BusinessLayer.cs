@@ -28,19 +28,6 @@ namespace PicDB.Classes
 
         private static DataAccessLayer _dal;
 
-        public void DeletePhotographer(int ID)
-        {
-            try
-            {
-                _dal.DeletePhotographer(ID);
-            }
-            catch (Exception e)
-            {
-                log.Error(e);
-                Console.WriteLine(e);
-                throw;
-            }
-        }
 
         public void DeletePicture(int ID)
         {
@@ -207,11 +194,36 @@ namespace PicDB.Classes
                 throw;
             }
         }
+        public void Update(ICameraModel camera)
+        {
+            try
+            {
+                _dal.Update(camera);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
         public void AssignPictureToCamera(int Pic_ID, int Cam_ID)
         {
             try
             {
                 _dal.UpdatePicsCamera(Pic_ID, Cam_ID);
+            }
+            catch (Exception e)
+            {
+                log.Error(e);
+                Console.WriteLine(e);
+                throw;
+            }
+        }
+        public void DeleteCamera(int ID)
+        {
+            try
+            {
+                _dal.DeleteCamera(ID);
             }
             catch (Exception e)
             {
@@ -242,6 +254,19 @@ namespace PicDB.Classes
             try
             {
                 _dal.UpdatePicsPhotographer(Pic_ID, PH_ID);
+            }
+            catch (Exception e)
+            {
+                log.Error(e);
+                Console.WriteLine(e);
+                throw;
+            }
+        }
+        public void DeletePhotographer(int ID)
+        {
+            try
+            {
+                _dal.DeletePhotographer(ID);
             }
             catch (Exception e)
             {
@@ -302,6 +327,20 @@ namespace PicDB.Classes
                 Console.WriteLine(e.Message);
                 
                 throw new Exception("Sync", e);
+            }
+        }
+
+        public void Save(IPTCModel iptc)
+        {
+            try
+            {
+                _dal.Save(iptc);
+            }
+            catch (Exception e)
+            {
+                log.Error(e);
+                Console.WriteLine(e.Message);
+                throw;
             }
         }
 

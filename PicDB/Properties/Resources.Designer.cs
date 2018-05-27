@@ -171,6 +171,15 @@ namespace PicDB.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to DELETE FROM Cameras WHERE Cam_ID = @ID;.
+        /// </summary>
+        public static string DeleteCamera_ID {
+            get {
+                return ResourceManager.GetString("DeleteCamera_ID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to DELETE FROM Photographers WHERE PG_ID = @ID;.
         /// </summary>
         public static string DeletePhotographer_ID {

@@ -102,6 +102,8 @@ namespace PicDB.ViewModels
 
         public int NumberOfPictures { get; }
 
+        public string ProducerMake => $"{Producer} {Make}";
+
         //validity check
         public bool IsValidProducer => (!string.IsNullOrEmpty(Producer));
         public bool IsValidMake => (!string.IsNullOrEmpty(Make));

@@ -11,6 +11,7 @@ namespace PicDB
 {
     public partial class PhotographerWindow_Add : Window
     {
+        //ctor
         public PhotographerWindow_Add(MainWindow sender, BusinessLayer BL)
         {
             Application curApp = Application.Current;

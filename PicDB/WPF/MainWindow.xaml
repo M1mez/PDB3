@@ -17,9 +17,9 @@
     TextOptions.TextRenderingMode="Auto"
     Background="{DynamicResource MaterialDesignPaper}"
     FontFamily="{DynamicResource MaterialDesignFont}" 
-    MinWidth="640" 
-    MinHeight="520"
-    Width="640" Height="520">
+    MinWidth="840" 
+    MinHeight="640"
+    Width="840" Height="640">
 
     <Window.Resources>
         <converter:PicToBitmapImageConverter x:Key="PicToBitmapImageConverter"/>
@@ -53,7 +53,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="50*" MinWidth="150"/>
             <ColumnDefinition Width="5"/>
-            <ColumnDefinition Width="Auto" MinWidth="190" MaxWidth="350"/>
+            <ColumnDefinition Width="Auto" MinWidth="230" MaxWidth="350"/>
         </Grid.ColumnDefinitions>
 
         <!--GridSplitter Horizontal-->
@@ -174,22 +174,265 @@
         </Image>
 
         <!--Info Part-->
-        <StackPanel ScrollViewer.VerticalScrollBarVisibility="Auto" Orientation="Vertical" TextBlock.Foreground="{DynamicResource MaterialDesignBody}"
-                    Grid.Row="3" Grid.Column="2" Width="Auto">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-                <TabControl Background="{DynamicResource MaterialDesignPaper}" Margin="0,0,0,0" BorderBrush="{DynamicResource PrimaryHueMidBrush}" BorderThickness="2">
+        <TabControl Grid.Row="3" Grid.Column="2" Width="Auto" Background="{DynamicResource MaterialDesignPaper}" Margin="0,0,0,0" BorderBrush="{DynamicResource PrimaryHueMidBrush}" BorderThickness="2">
 
-                    <!--IPTC-->
-                    <TabItem Header="IPTC" Name="info_IPTC" DataContext="{Binding CurrentPicture}">
-                        <Grid>
+            <!--IPTC-->
+            <TabItem Header="IPTC" Name="info_IPTC" DataContext="{Binding CurrentPicture}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="10*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Label Grid.Column="0" Grid.Row="0">ByLine</Label>
+                    <TextBox Text="{Binding IPTC.ByLine, Mode=TwoWay}" TextWrapping="Wrap" 
+                                 Grid.Column="1" Grid.Row="1"/>
+
+                    <Label Grid.Column="0" Grid.Row="1">Copyright Notice</Label>
+                    <TextBox Text="{Binding IPTC.CopyrightNotice, Mode=TwoWay}" TextWrapping="Wrap"
+                                 Grid.Column="1" Grid.Row="2"/>
+
+                    <Label Grid.Column="0" Grid.Row="2">Headline</Label>
+                    <TextBox Text="{Binding IPTC.Headline, Mode=TwoWay}" TextWrapping="Wrap"
+                                 Grid.Column="1" Grid.Row="3"/>
+
+                    <Label Grid.Column="0" Grid.Row="3">Caption</Label>
+                    <TextBox Text="{Binding IPTC.Caption, Mode=TwoWay}" TextWrapping="Wrap" 
+                                 Grid.Column="1" Grid.Row="4"/>
+
+                    <Label Grid.Column="0" Grid.Row="4">Keywords</Label>
+                    <TextBox Text="{Binding IPTC.Keywords, Mode=TwoWay}" TextWrapping="Wrap" 
+                             Grid.Column="1" Grid.Row="0"/>
+
+                    <Button Height="Auto"  VerticalAlignment="Bottom" Click="WriteIPTC"
+                                Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="5" >Save</Button>
+                </Grid>
+            </TabItem>
+
+            <!--EXIF-->
+            <TabItem Header="EXIF" Name="info_EXIF" DataContext="{Binding CurrentPicture}">
+                <StackPanel Name="Insert">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="7*"/>
+                            <ColumnDefinition Width="10*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="10*"/>
+                            <RowDefinition Height="10*"/>
+                            <RowDefinition Height="10*"/>
+                            <RowDefinition Height="10*"/>
+                            <RowDefinition Height="10*"/>
+                            <RowDefinition Height="10*"/>
+                        </Grid.RowDefinitions>
+
+                        <Label Grid.Column="0" Grid.Row="0">Make</Label>
+                        <TextBlock Text="{Binding EXIF.Make, Mode=OneWay}" 
+                                           TextWrapping="Wrap" 
+                                    Grid.Column="1" Grid.Row="0"/>
+
+                        <Label Grid.Column="0" Grid.Row="1">FNumber</Label>
+                        <TextBlock Text="{Binding EXIF.FNumber, Mode=OneWay}" 
+                                           TextWrapping="Wrap" 
+                                    Grid.Column="1" Grid.Row="1"/>
+
+                        <Label Grid.Column="0" Grid.Row="2">ExposureTime</Label>
+                        <TextBlock Text="{Binding EXIF.ExposureTime, Mode=OneWay}" 
+                                           TextWrapping="Wrap" 
+                                    Grid.Column="1" Grid.Row="2"/>
+
+                        <Label Grid.Column="0" Grid.Row="3">ISOValue</Label>
+                        <TextBlock Text="{Binding EXIF.ISOValue, Mode=OneWay}" 
+                                           TextWrapping="Wrap"
+                                    Grid.Column="1" Grid.Row="3"/>
+
+                        <Label Grid.Column="0" Grid.Row="4">Flash</Label>
+                        <CheckBox Grid.Column="1" Grid.Row="4" HorizontalAlignment="Center" 
+                                          IsHitTestVisible="False" IsChecked="{Binding EXIF.Flash, Mode=OneWay}"/>
+
+                        <Label Grid.Column="0" Grid.Row="5">ExposureProgram</Label>
+                        <TextBlock Grid.Column="1" Grid.Row="5" Text="{Binding EXIF.ExposureProgram}"/>
+
+                    </Grid>
+                </StackPanel>
+            </TabItem>
+
+            <!--Photographer-->
+            <TabItem Header="Photographer" Name="info_Photographer">
+                <StackPanel>
+                    <Grid DataContext="{Binding CurrentPicture, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="200*"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="10*"/>
+                            <RowDefinition Height="10*"/>
+                            <RowDefinition Height="10*"/>
+                            <RowDefinition Height="10*"/>
+                            <RowDefinition Height="10*"/>
+                            <RowDefinition Height="10*"/>
+                        </Grid.RowDefinitions>
+
+                        <Label Grid.Column="0" Grid.Row="0">First Name</Label>
+                        <TextBlock Text="{Binding Photographer.FirstName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                         Grid.Column="1" Grid.Row="0"/>
+
+                        <Label Grid.Column="0" Grid.Row="1">Last Name</Label>
+                        <TextBlock Text="{Binding Photographer.LastName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                                         Grid.Column="1" Grid.Row="1"/>
+
+                        <Label Grid.Column="0" Grid.Row="2">Birth Day</Label>
+                        <TextBlock Text="{Binding Photographer.DateInString, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                         Grid.Column="1" Grid.Row="2"/>
+
+                        <Label Grid.Column="0" Grid.Row="3">Notes</Label>
+                        <TextBlock Text="{Binding Photographer.Notes, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                         Grid.Column="1" Grid.Row="3"/>
+
+                    </Grid>
+
+
+                    <Button Style="{DynamicResource MaterialDesignToolButton}" 
+                                    Click="AssignPictureToPhotographer" 
+                                    Foreground="{DynamicResource MaterialDesignBody}"
+                                    Height="20">
+                        <materialDesign:PackIcon Kind="ArrowUpBold"></materialDesign:PackIcon>
+                    </Button>
+                    <TextBlock Height="Auto" VerticalAlignment="Bottom" HorizontalAlignment="Center"
+                                    Foreground="{DynamicResource MaterialDesignBody}"
+                                    Margin="0,5,0,0" FontSize="10">Assign this Photographer</TextBlock>
+                    <ComboBox Name="dropdown_Photographer"  HorizontalAlignment="Center" 
+                                      DataContext="{Binding ElementName=main, Path=PhotographerList, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                      materialDesign:HintAssist.Hint="Photographers"
+                                      ItemsSource="{Binding ObsList, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                      DisplayMemberPath="FirstLastName"
+                                      SelectedItem="{Binding CurrentPhotographer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      
+                                      Foreground="{DynamicResource PrimaryHueLightBrush}">
+                    </ComboBox>
+
+                    <Grid DataContext="{Binding ElementName=main, Path=PhotographerList}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="200*"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="10*"/>
+                            <RowDefinition Height="10*"/>
+                            <RowDefinition Height="10*"/>
+                            <RowDefinition Height="10*"/>
+                            <RowDefinition Height="10*"/>
+                            <RowDefinition Height="10*"/>
+                        </Grid.RowDefinitions>
+
+                        <Label FontSize="10" Grid.Column="0" Grid.Row="0">First Name</Label>
+                        <TextBlock Text="{Binding CurrentPhotographer.FirstName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                           FontSize="10" Grid.Column="1" Grid.Row="0"/>
+
+                        <Label FontSize="10" Grid.Column="0" Grid.Row="1">Last Name</Label>
+                        <TextBlock Text="{Binding CurrentPhotographer.LastName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                                           FontSize="10" Grid.Column="1" Grid.Row="1"/>
+
+                        <Label FontSize="10" Grid.Column="0" Grid.Row="2">Birth Day</Label>
+                        <TextBlock Text="{Binding CurrentPhotographerBirthdayString, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                           FontSize="10" Grid.Column="1" Grid.Row="2"/>
+
+                        <Label FontSize="10" Grid.Column="0" Grid.Row="3">Notes</Label>
+                        <TextBlock Text="{Binding CurrentPhotographer.Notes, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                           FontSize="10" Grid.Column="1" Grid.Row="3"/>
+
+                    </Grid>
+
+                </StackPanel>
+            </TabItem>
+
+            <!--Camera-->
+            <TabItem Header="Camera" Name="info_Camera" Grid.Row="2">
+                <StackPanel CanVerticallyScroll="True">
+                    <Grid DataContext="{Binding CurrentPicture, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="200*"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="10*"/>
+                            <RowDefinition Height="10*"/>
+                            <RowDefinition Height="10*"/>
+                            <RowDefinition Height="10*"/>
+                            <RowDefinition Height="10*"/>
+                            <RowDefinition Height="10*"/>
+                        </Grid.RowDefinitions>
+
+                        <Label Grid.Column="0" Grid.Row="0">Producer</Label>
+                        <TextBlock Text="{Binding Camera.Producer, UpdateSourceTrigger=PropertyChanged}" 
+                     TextWrapping="Wrap" 
+                     Grid.Column="1" Grid.Row="0"/>
+
+                        <Label Grid.Row="1" Grid.Column="0">Model</Label>
+                        <TextBlock Text="{Binding Camera.Make, UpdateSourceTrigger=PropertyChanged}"
+                     TextWrapping="Wrap" 
+                     Grid.Column="1" Grid.Row="1"/>
+
+                        <Label Grid.Row="2" Grid.Column="0">Buy date</Label>
+                        <DatePicker Text="{Binding Camera.BoughtOn, UpdateSourceTrigger=PropertyChanged}"
+                        Focusable="False" Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
+                        Grid.Column="1" Grid.Row="2"/>
+
+                        <Label Grid.Row="3" Grid.Column="0">Notes</Label>
+                        <TextBlock Text="{Binding Camera.Notes, UpdateSourceTrigger=PropertyChanged}"
+                     TextWrapping="Wrap"
+                     Grid.Column="1" Grid.Row="3"/>
+
+                        <Label Grid.Row="4" Grid.Column="0">ISO Limit Acceptable</Label>
+                        <TextBlock Text="{Binding Camera.ISOLimitAcceptable, UpdateSourceTrigger=PropertyChanged}"
+                     TextWrapping="Wrap"
+                     Grid.Column="1" Grid.Row="4"/>
+
+                        <Label Grid.Row="5" Grid.Column="0">ISO Limit Good</Label>
+                        <TextBlock Text="{Binding Camera.ISOLimitGood, UpdateSourceTrigger=PropertyChanged}"
+                     TextWrapping="Wrap"
+                     Grid.Column="1" Grid.Row="5"/>
+
+                    </Grid>
+
+                    <Button Style="{DynamicResource MaterialDesignToolButton}" 
+                                    Click="AssignPictureToCamera" 
+                                    Foreground="{DynamicResource MaterialDesignBody}"
+                                    Height="20">
+                        <materialDesign:PackIcon Kind="ArrowUpBold"></materialDesign:PackIcon>
+                    </Button>
+                    <TextBlock Height="Auto" VerticalAlignment="Bottom" HorizontalAlignment="Center"
+                                    Foreground="{DynamicResource MaterialDesignBody}"
+                                    Margin="0,5,0,0" FontSize="10">Assign this Camera</TextBlock>
+                    <ComboBox HorizontalAlignment="Center"
+                                      DataContext="{Binding ElementName=main, Path=CameraList, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                      materialDesign:HintAssist.Hint="Cameras"
+                                      ItemsSource="{Binding ObsList, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                      DisplayMemberPath="ProducerMake"
+                                      SelectedItem="{Binding CurrentCamera, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      Foreground="{DynamicResource PrimaryHueLightBrush}"
+                                      Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2">
+                    </ComboBox>
+
+                        <Grid DataContext="{Binding ElementName=main, Path=CameraList}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="10*"/>
-                            </Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="200*"/>
+                        </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="10*"/>
                                 <RowDefinition Height="10*"/>
@@ -198,169 +441,43 @@
                                 <RowDefinition Height="10*"/>
                                 <RowDefinition Height="10*"/>
                             </Grid.RowDefinitions>
-                            <Label Grid.Column="0" Grid.Row="0">Keywords</Label>
-                            <TextBox Text="{Binding IPTC.Keywords, Mode=TwoWay}" TextWrapping="Wrap" 
-                                 Grid.Column="1" Grid.Row="0"/>
 
-                            <Label Grid.Column="0" Grid.Row="1">ByLine</Label>
-                            <TextBox Text="{Binding IPTC.ByLine, Mode=TwoWay}" TextWrapping="Wrap" 
-                                 Grid.Column="1" Grid.Row="1"/>
+                        <Label FontSize="10" Grid.Column="0" Grid.Row="0">Producer</Label>
+                        <TextBlock FontSize="10" Text="{Binding CurrentCamera.Producer, UpdateSourceTrigger=PropertyChanged}" 
+                                           TextWrapping="Wrap" 
+                                           Grid.Column="1" Grid.Row="0"/>
 
-                            <Label Grid.Column="0" Grid.Row="2">Copyright Notice</Label>
-                            <TextBox Text="{Binding IPTC.CopyrightNotice, Mode=TwoWay}" TextWrapping="Wrap"
-                                 Grid.Column="1" Grid.Row="2"/>
+                        <Label FontSize="10" Grid.Row="1" Grid.Column="0">Model</Label>
+                        <TextBlock FontSize="10" Text="{Binding CurrentCamera.Make, UpdateSourceTrigger=PropertyChanged}"
+                                           TextWrapping="Wrap" 
+                                           Grid.Column="1" Grid.Row="1"/>
 
-                            <Label Grid.Column="0" Grid.Row="3">Headline</Label>
-                            <TextBox Text="{Binding IPTC.Headline, Mode=TwoWay}" TextWrapping="Wrap"
-                                 Grid.Column="1" Grid.Row="3"/>
+                        <Label FontSize="10" Grid.Row="2" Grid.Column="0">Buy date</Label>
+                        <DatePicker FontSize="10" Text="{Binding CurrentCamera.BoughtOn, UpdateSourceTrigger=PropertyChanged}"
+                                            Focusable="False" Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
+                                            Grid.Column="1" Grid.Row="2"/>
 
-                            <Label Grid.Column="0" Grid.Row="4">Caption</Label>
-                            <TextBox Text="{Binding IPTC.Caption, Mode=TwoWay}" TextWrapping="Wrap" 
-                                 Grid.Column="1" Grid.Row="4"/>
-                            <Button Height="Auto"  VerticalAlignment="Bottom" Click="WriteIPTC"
-                                Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="5" >Save</Button>
+                        <Label FontSize="10" Grid.Row="3" Grid.Column="0">Notes</Label>
+                        <TextBlock FontSize="10" Text="{Binding CurrentCamera.Notes, UpdateSourceTrigger=PropertyChanged}"
+                                           TextWrapping="Wrap"
+                                           Grid.Column="1" Grid.Row="3"/>
+
+                        <Label FontSize="10" Grid.Row="4" Grid.Column="0">ISO Limit Acceptable</Label>
+                        <TextBlock FontSize="10" Text="{Binding CurrentCamera.ISOLimitAcceptable, UpdateSourceTrigger=PropertyChanged}"
+                                           TextWrapping="Wrap"
+                                           Grid.Column="1" Grid.Row="4"/>
+
+                        <Label FontSize="10" Grid.Row="5" Grid.Column="0">ISO Limit Good</Label>
+                        <TextBlock FontSize="10" Text="{Binding CurrentCamera.ISOLimitGood, UpdateSourceTrigger=PropertyChanged}"
+                                           TextWrapping="Wrap"
+                                           Grid.Column="1" Grid.Row="5"/>
+
                         </Grid>
-                    </TabItem>
 
-                    <!--EXIF-->
-                    <TabItem Header="EXIF" Name="info_EXIF" DataContext="{Binding CurrentPicture}">
-                        <StackPanel Name="Insert">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="7*"/>
-                                    <ColumnDefinition Width="10*"/>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="10*"/>
-                                    <RowDefinition Height="10*"/>
-                                    <RowDefinition Height="10*"/>
-                                    <RowDefinition Height="10*"/>
-                                    <RowDefinition Height="10*"/>
-                                    <RowDefinition Height="10*"/>
-                                </Grid.RowDefinitions>
+                </StackPanel>
+            </TabItem>
 
-                                <Label Grid.Column="0" Grid.Row="0">Make</Label>
-                                <TextBlock Name ="_Make" Text="{Binding EXIF.Make, Mode=OneWay}" TextWrapping="Wrap" 
-                                    Grid.Column="1" Grid.Row="0"/>
-
-                                <Label Grid.Column="0" Grid.Row="1">FNumber</Label>
-                                <TextBlock Name ="_FNumber" Text="{Binding EXIF.FNumber, Mode=OneWay}" TextWrapping="Wrap" 
-                                    Grid.Column="1" Grid.Row="1"/>
-
-                                <Label Grid.Column="0" Grid.Row="2">ExposureTime</Label>
-                                <TextBlock Name ="_ExposureTime" Text="{Binding EXIF.ExposureTime, Mode=OneWay}" TextWrapping="Wrap" 
-                                    Grid.Column="1" Grid.Row="2"/>
-
-                                <Label Grid.Column="0" Grid.Row="3">ISOValue</Label>
-                                <TextBlock Name="_ISOValue" Text="{Binding EXIF.ISOValue, Mode=OneWay}" TextWrapping="Wrap"
-                                    Grid.Column="1" Grid.Row="3"/>
-
-                                <Label Grid.Column="0" Grid.Row="4">Flash</Label>
-                                <CheckBox Grid.Column="1" Grid.Row="4" HorizontalAlignment="Center" 
-                                          IsHitTestVisible="False" IsChecked="{Binding EXIF.Flash, Mode=OneWay}"/>
-
-                                <Label Grid.Column="0" Grid.Row="5">ExposureProgram</Label>
-                                <TextBlock Grid.Column="1" Grid.Row="5" Text="{Binding EXIF.ExposureProgram}"/>
-
-                            </Grid>
-                        </StackPanel>
-                    </TabItem>
-
-                    <!--Photographer-->
-                    <TabItem Header="Photographer" Name="info_Photographer">
-                        <StackPanel>
-                            <Grid DataContext="{Binding CurrentPicture, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="200*"/>
-                                    <ColumnDefinition Width="1*"/>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="10*"/>
-                                    <RowDefinition Height="10*"/>
-                                    <RowDefinition Height="10*"/>
-                                    <RowDefinition Height="10*"/>
-                                    <RowDefinition Height="10*"/>
-                                    <RowDefinition Height="10*"/>
-                                </Grid.RowDefinitions>
-
-                                <Label Grid.Column="0" Grid.Row="0">First Name</Label>
-                                <TextBlock Text="{Binding Photographer.FirstName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                         Grid.Column="1" Grid.Row="0"/>
-
-                                <Label Grid.Column="0" Grid.Row="1">Last Name</Label>
-                                <TextBlock Text="{Binding Photographer.LastName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
-                                         Grid.Column="1" Grid.Row="1"/>
-
-                                <Label Grid.Column="0" Grid.Row="2">Birth Day</Label>
-                                <TextBlock Text="{Binding Photographer.DateInString, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                         Grid.Column="1" Grid.Row="2"/>
-
-                                <Label Grid.Column="0" Grid.Row="3">Notes</Label>
-                                <TextBlock Text="{Binding Photographer.Notes, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                         Grid.Column="1" Grid.Row="3"/>
-
-                            </Grid>
-
-
-                            <Button Style="{DynamicResource MaterialDesignToolButton}" 
-                                    Click="AssignPictureToPhotographer" 
-                                    Foreground="{DynamicResource MaterialDesignBody}"
-                                    Height="20">
-                                <materialDesign:PackIcon Kind="ArrowUpBold"></materialDesign:PackIcon>
-                            </Button>
-                            <TextBlock Height="Auto" VerticalAlignment="Bottom" HorizontalAlignment="Center"
-                                    Foreground="{DynamicResource MaterialDesignBody}"
-                                    Margin="0,5,0,0" FontSize="10">Assign this Photographer</TextBlock>
-                            <ComboBox Name="dropdown_Photographer"  HorizontalAlignment="Center" 
-                                      DataContext="{Binding ElementName=main, Path=PhotographerList, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                      materialDesign:HintAssist.Hint="Photographers"
-                                      ItemsSource="{Binding ObsList, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                      DisplayMemberPath="FirstLastName"
-                                      SelectedItem="{Binding CurrentPhotographer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                      
-                                      Foreground="{DynamicResource PrimaryHueLightBrush}">
-                            </ComboBox>
-
-                            <Grid DataContext="{Binding ElementName=main, Path=PhotographerList}">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="200*"/>
-                                    <ColumnDefinition Width="1*"/>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="10*"/>
-                                    <RowDefinition Height="10*"/>
-                                    <RowDefinition Height="10*"/>
-                                    <RowDefinition Height="10*"/>
-                                    <RowDefinition Height="10*"/>
-                                    <RowDefinition Height="10*"/>
-                                </Grid.RowDefinitions>
-
-                                <Label FontSize="10" Grid.Column="0" Grid.Row="0">First Name</Label>
-                                <TextBlock Text="{Binding CurrentPhotographer.FirstName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                           FontSize="10" Grid.Column="1" Grid.Row="0"/>
-
-                                <Label FontSize="10" Grid.Column="0" Grid.Row="1">Last Name</Label>
-                                <TextBlock Text="{Binding CurrentPhotographer.LastName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
-                                           FontSize="10" Grid.Column="1" Grid.Row="1"/>
-
-                                <Label FontSize="10" Grid.Column="0" Grid.Row="2">Birth Day</Label>
-                                <TextBlock Text="{Binding CurrentPhotographerBirthdayString, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                           FontSize="10" Grid.Column="1" Grid.Row="2"/>
-
-                                <Label FontSize="10" Grid.Column="0" Grid.Row="3">Notes</Label>
-                                <TextBlock Text="{Binding CurrentPhotographer.Notes, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                           FontSize="10" Grid.Column="1" Grid.Row="3"/>
-
-                            </Grid>
-
-                        </StackPanel>
-                    </TabItem>
-
-                </TabControl>
-            </Grid>
-        </StackPanel>
+        </TabControl>
 
         <!--Gallery-->
         <wpfns:Gallery Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3"></wpfns:Gallery>

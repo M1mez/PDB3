@@ -32,6 +32,7 @@ namespace PicDB
 
         private MainWindow Sender { get; }
         private BusinessLayer BL { get; }
+        public CameraListViewModel CameraList => Sender.CameraList;
 
         private void TextBox_PreviewTextInputDecimal(object sender, TextCompositionEventArgs e)
         {
@@ -75,6 +76,73 @@ namespace PicDB
                 MessageBox.Show(vmdl.ValidationSummary, "Add Camera", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
+        }
+
+        public void EditCamera(object sender, RoutedEventArgs e)
+        {
+            var mdl = new CameraModel
+            {
+                ID = CameraList.CurrentCamera.ID,
+                Producer = _Producer.Text,
+                Make = _Make.Text,
+                BoughtOn = _BoughtOn.SelectedDate,
+                Notes = _Notes.Text,
+                ISOLimitAcceptable = Decimal.Parse(_ISOLimitAcceptable.Text),
+                ISOLimitGood = Decimal.Parse(_ISOLimitGood.Text)
+            };
+
+            var vmdl = new CameraViewModel(mdl);
+
+            if (!vmdl.IsValid)
+                MessageBoxEx.Show(vmdl.ValidationSummary, "Edit Camera", MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+            else
+                try
+                {
+                    BL.Update(mdl);
+                }
+                catch (System.Exception)
+                {
+                    //show error
+                    throw;
+                }
+                finally
+                {
+                    Sender.UpdateCameraList();
+                    Close();
+                }
+        }
+
+        public void DeleteCamera(object sender, RoutedEventArgs e)
+        {
+            if (CameraList.CurrentCamera != null)
+            {
+                MessageBoxResult messageBoxResult = MessageBoxEx.Show("Are you sure?", "Delete Confirmation", System.Windows.MessageBoxButton.YesNo);
+                if (messageBoxResult == MessageBoxResult.Yes)
+                {
+                    try
+                    {
+                        BL.DeleteCamera(CameraList.CurrentCamera.ID);
+                        Sender.UpdatePictureList();
+                        Sender.UpdateCameraList();
+                        CameraList.CurrentCamera = null;
+                    }
+                    catch (System.Exception)
+                    {
+                        //show error
+                        throw;
+                    }
+                    finally
+                    {
+                        Sender.UpdateCameraList();
+                        Close();
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("No Camera selected", "Delete Camera", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 }

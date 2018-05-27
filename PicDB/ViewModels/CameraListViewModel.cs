@@ -48,7 +48,6 @@ namespace PicDB.ViewModels
             get => _currentCamera;
             set
             {
-                if (_currentCamera == value) return;
                 _currentCamera = value;
                 OnPropertyChanged();
             }

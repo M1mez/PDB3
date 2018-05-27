@@ -16,9 +16,6 @@ namespace PicDB.Layers_DA
 
             internal PreparedStatements()
             {
-                DeletePhotographerId = NewComm(Resources.DeletePhotographer_ID);
-                DeletePhotographerId.Parameters.Add("@ID", SqlDbType.Int);
-
                 DeletePictureId = NewComm(Resources.DeletePicture_ID);
                 DeletePictureId.Parameters.Add("@ID", SqlDbType.Int);
 
@@ -61,10 +58,14 @@ namespace PicDB.Layers_DA
                 AddPictureToPhotographer = NewComm(Resources.Add_Picture_To_Photographer);
                 AddPictureToPhotographer.Parameters.Add("@Pic_ID", SqlDbType.Int);
                 AddPictureToPhotographer.Parameters.Add("@PG_ID", SqlDbType.Int);
+
+                DeletePhotographerId = NewComm(Resources.DeletePhotographer_ID);
+                DeletePhotographerId.Parameters.Add("@ID", SqlDbType.Int);
                 #endregion
 
                 #region Camera 
                 UpdateCamera = NewComm(Resources.Update_Camera);
+                UpdateCamera.Parameters.Add(new SqlParameter("@Cam_ID", SqlDbType.Int));
                 UpdateCamera.Parameters.Add(new SqlParameter("@Producer", SqlDbType.VarChar));
                 UpdateCamera.Parameters.Add(new SqlParameter("@Make", SqlDbType.VarChar));
                 UpdateCamera.Parameters.Add(new SqlParameter("@BoughtOn", SqlDbType.DateTime));
@@ -75,6 +76,9 @@ namespace PicDB.Layers_DA
                 UpdatePicsCamera = NewComm(Resources.Update_Pictures_Camera);
                 UpdatePicsCamera.Parameters.Add(new SqlParameter("@Pic_ID", SqlDbType.Int));
                 UpdatePicsCamera.Parameters.Add(new SqlParameter("@Cam_ID", SqlDbType.Int));
+
+                DeleteCameraId = NewComm(Resources.DeleteCamera_ID);
+                DeleteCameraId.Parameters.Add("@ID", SqlDbType.Int);
                 #endregion
 
                 #region Pictures
@@ -172,6 +176,7 @@ namespace PicDB.Layers_DA
             internal SqlCommand GetAllCameras;
             internal SqlCommand DeletePictureFileName;
             internal SqlCommand DeletePhotographerId;
+            internal SqlCommand DeleteCameraId;
             internal SqlCommand DeletePictureId;
             internal SqlCommand UpdateIPTC;
             internal SqlCommand UpdatePhotographer;

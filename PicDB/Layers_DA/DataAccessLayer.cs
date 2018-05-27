@@ -298,10 +298,16 @@ namespace PicDB.Layers_DA
         }
         public void UpdatePicsPhotographer(int pic_ID, int pg_ID)
         {
-            var output = $"Update picture {pic_ID} with photographer {pg_ID}";
-            Console.WriteLine(output);
+            log.Info("Update Picture with ID of Photographer");
             try
             {
+                log.Debug($"Update picture {pic_ID} with photographer {pg_ID}");
+
+                string warning = "";
+                if (pic_ID <= 0) warning += $"Pic ID = {pic_ID}, ";
+                if (pg_ID <= 0) warning += $"PG ID = {pg_ID}, ";
+                if (pic_ID <= 0 || pg_ID <= 0) log.Warn(warning.TrimEnd(','));
+
                 Conn.Open();
                 PS.UpdatePicsPhotographer.Parameters["@Pic_ID"].Value = pic_ID;
                 PS.UpdatePicsPhotographer.Parameters["@PG_ID"].Value = pg_ID;
@@ -310,8 +316,8 @@ namespace PicDB.Layers_DA
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
-                throw new Exception(output, e);
+                log.Error(e.Message);
+                throw;
             }
             finally
             {
@@ -435,6 +441,7 @@ namespace PicDB.Layers_DA
             try
             {
                 Conn.Open();
+                PS.UpdateCamera.Parameters["@Cam_ID"].Value = camera.ID;
                 PS.UpdateCamera.Parameters["@Producer"].Value = camera.Producer;
                 PS.UpdateCamera.Parameters["@Make"].Value = camera.Make;
                 PS.UpdateCamera.Parameters["@BoughtOn"].Value =
@@ -522,6 +529,30 @@ namespace PicDB.Layers_DA
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
+                throw new Exception(output, e);
+            }
+            finally
+            {
+                Conn.Close();
+            }
+        }
+        public virtual void DeleteCamera(int ID)
+        {
+            var output = $"Delete Camera with ID {ID}";
+            log.Info(output);
+            try
+            {
+                log.Debug(ID);
+                if (ID <= 0) log.Warn("ID <= 0");
+
+                Conn.Open();
+                PS.DeleteCameraId.Parameters["@ID"].Value = ID;
+                PS.DeleteCameraId.ExecuteNonQuery();
+                Conn.Close();
+            }
+            catch (Exception e)
+            {
+                log.Error(e);
                 throw new Exception(output, e);
             }
             finally

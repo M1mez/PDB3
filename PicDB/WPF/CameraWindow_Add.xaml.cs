@@ -13,6 +13,7 @@ namespace PicDB
 {
     public partial class CameraWindow_Add : Window
     {
+        //ctor
         public CameraWindow_Add(MainWindow sender, BusinessLayer BL)
         {
             Application curApp = Application.Current;
@@ -41,19 +42,15 @@ namespace PicDB
 
         public void CreateCamera(object sender, RoutedEventArgs e)
         {
-
-
             var mdl = new CameraModel
             {
                 Producer = _Producer.Text,
                 Make = _Make.Text,
                 BoughtOn = _BoughtOn.SelectedDate,
                 Notes = _Notes.Text,
-                ISOLimitAcceptable = _ISOLimitAcceptable.Text == null ? 0 : Decimal.Parse(_ISOLimitAcceptable.Text),
-                ISOLimitGood = _ISOLimitGood.Text == null ? 0 :  Decimal.Parse(_ISOLimitGood.Text)
+                ISOLimitAcceptable = _ISOLimitAcceptable.Text == "" ? 0 : Decimal.Parse(_ISOLimitAcceptable.Text),
+                ISOLimitGood = _ISOLimitGood.Text == "" ? 0 :  Decimal.Parse(_ISOLimitGood.Text)
             };
-
-            //TODO camera add geht noch nicht
 
             var vmdl = new CameraViewModel(mdl);
 

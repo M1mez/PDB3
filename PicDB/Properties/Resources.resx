@@ -473,6 +473,9 @@ text-align: center;
                &lt;/tr&gt;
             &lt;/table&gt;</value>
   </data>
+  <data name="DeleteCamera_ID" xml:space="preserve">
+    <value>DELETE FROM Cameras WHERE Cam_ID = @ID;</value>
+  </data>
   <data name="Update_Camera" xml:space="preserve">
     <value>UPDATE Cameras
 SET Producer = @Producer, 

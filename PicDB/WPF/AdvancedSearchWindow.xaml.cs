@@ -42,6 +42,7 @@ namespace PicDB
         public IPTCViewModel IPTCPart { get; set; } = new IPTCViewModel();
         public EXIFViewModel EXIFPart { get; set; } = new EXIFViewModel();
 
+
         //public PhotographerModel PhotographerPart { get; set; } = new PhotographerModel();
         //public IPTCModel IPTCPart = new IPTCModel();
         //public EXIFModel EXIFPart = new EXIFModel();
