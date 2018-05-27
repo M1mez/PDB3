@@ -113,6 +113,7 @@ namespace PicDB
             }
             catch (Exception ex)
             {
+                log.Error(ex.Message);
                 MessageBoxEx.Show(ex.Message, "Save IPTC", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
@@ -147,9 +148,12 @@ namespace PicDB
         private void OnRenamed(object sender, RenamedEventArgs e) => log.Debug($"File: {e.OldFullPath} renamed to {e.FullPath}");
         private void OnChanged(object sender, FileSystemEventArgs e)
         {
-            BL.Sync();
-            UpdatePictureList();
-            log.Debug($"File: {e.FullPath} {e.ChangeType}");
+            Application.Current.Dispatcher.Invoke(delegate
+            {
+                BL.Sync();
+                UpdatePictureList();
+                log.Debug($"File: {e.FullPath} {e.ChangeType}");
+            });
         }
         #endregion
 

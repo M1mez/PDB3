@@ -25,6 +25,8 @@ namespace PicDB
     /// </summary>
     public partial class AdvancedSearchWindow : Window
     {
+        private static log4net.ILog log => FileInformation.Logger;
+
         public AdvancedSearchWindow(MainWindow sender, BusinessLayer BL)
         {
             DataContext = this;
@@ -49,20 +51,20 @@ namespace PicDB
 
         private void Search(object sender, RoutedEventArgs e)
         {
-            Console.WriteLine($"np {NamePart}");
-            Console.WriteLine("photographer: " +
+            log.Debug($"np {NamePart}");
+            log.Debug("photographer: " +
                 $"id {PhotographerPart.ID} " +
                 $"fn {PhotographerPart.FirstName ?? "null"} " +
                 $"ln {PhotographerPart.LastName ?? "null"} " +
                 $"bd {(PhotographerPart.BirthDay != null ? PhotographerPart.BirthDay : DateTime.MinValue )} " +
                 $"no {PhotographerPart.Notes ?? "null"}");
-            Console.WriteLine("iptc: " +
+            log.Debug("iptc: " +
                 $"kw {(IPTCPart.Keywords != string.Empty ? IPTCPart.Keywords : "null")} " +
                 $"bl {(IPTCPart.ByLine != string.Empty ? IPTCPart.ByLine : "null")} " +
                 $"ca {(IPTCPart.Caption != string.Empty ? IPTCPart.Caption : "null")} " +
                 $"cn {(IPTCPart.CopyrightNotice != string.Empty ? IPTCPart.CopyrightNotice : "null")} " +
                 $"hl {(IPTCPart.Headline != string.Empty ? IPTCPart.Headline : "null")} ");
-            Console.WriteLine("exif: " +
+            log.Debug("exif: " +
                 $"fn {EXIFPart.FNumber} " +
                 $"ep {EXIFPart.ExposureProgram ?? "null"} " +
                 $"et {EXIFPart.ExposureTime} " +

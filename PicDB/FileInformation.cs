@@ -63,7 +63,7 @@ namespace PicDB
             finalOutput += ".pdf";
             pdf.SaveAs(finalOutput);
             Process.Start(finalOutput);
-            Console.WriteLine(pdfstring);
+            _logger.Debug(pdfstring);
         }
 
         private static string FillTable(IIPTCViewModel vmdl)
@@ -124,7 +124,7 @@ namespace PicDB
             try
             {
                 var filePath = Path.Combine(Constants.PicPath, filename);
-                Console.WriteLine(filePath);
+                _logger.Debug(filePath);
                 if (!File.Exists(filePath)) throw new FileNotFoundException();
                 using (Image image = new Bitmap(filePath))
                 {
@@ -189,7 +189,7 @@ namespace PicDB
             }
             catch(Exception e)
             {
-                Console.WriteLine(e);
+                _logger.Error(e);
                 throw;
             }
         }
@@ -222,7 +222,7 @@ namespace PicDB
         public static void WriteIPTC(string filename, IIPTCModel iptc)
         {
 
-            Console.WriteLine($"{iptc.ByLine} {iptc.Caption} {iptc.CopyrightNotice} {iptc.Headline} {iptc.Keywords}");
+            _logger.Debug($"{iptc.ByLine} {iptc.Caption} {iptc.CopyrightNotice} {iptc.Headline} {iptc.Keywords}");
 
             string filePath = Path.Combine(Constants.PicPath, filename);
 
@@ -249,7 +249,7 @@ namespace PicDB
         {
             if (string.IsNullOrEmpty(fileName))
             {
-                Console.WriteLine("was null");
+                _logger.Debug("Bitmap Filename was null");
                 return new BitmapImage();
             }
             var bitmapImage = new BitmapImage();
@@ -259,7 +259,7 @@ namespace PicDB
                 bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
                 bitmapImage.StreamSource = stream;
                 bitmapImage.EndInit();
-                bitmapImage.Freeze(); // just in case you want to load the image in another thread
+//                bitmapImage.Freeze(); // just in case you want to load the image in another thread
             }
                 return bitmapImage;
         }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.IO;
@@ -16,7 +17,8 @@ namespace PicDB.Layers_DA
     partial class DataAccessLayer : IDataAccessLayer
     {
         //TODO: Konfigurationsfile
-        private static SqlConnection Conn = new SqlConnection() { ConnectionString = Constants.ConnString };
+//        private static SqlConnection Conn = new SqlConnection() { ConnectionString = Constants.ConnString };
+        private static SqlConnection Conn = new SqlConnection(ConfigurationSettings.AppSettings["DBConStringSteffePC"]);
         private readonly PreparedStatements PS;
         private static log4net.ILog log => FileInformation.Logger;
 
@@ -93,18 +95,18 @@ namespace PicDB.Layers_DA
         public void DeletePicture(string fileName)
         {
             var output = $"DeletePicture with FileName: {fileName}";
-            Console.WriteLine(output);
+            log.Debug(output);
             try
             {
                 Conn.Open();
                 PS.DeletePictureFileName.Parameters["@FileName"].Value = fileName;
-                Console.WriteLine(PS.DeletePictureFileName.Parameters["@FileName"].Value + "isvalue");
+                log.Debug(PS.DeletePictureFileName.Parameters["@FileName"].Value + "isvalue");
                 PS.DeletePictureFileName.ExecuteNonQuery();
                 Conn.Close();
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                log.Error(e);
                 throw new Exception(output, e);
             }
             finally
@@ -124,7 +126,8 @@ namespace PicDB.Layers_DA
         public virtual ICameraModel GetCamera(int ID)
         {
             var output = $"Get Camera with ID: {ID}";
-            Console.WriteLine(output);
+            log.Debug(output);
+
             try
             {
                 Conn.Open();
@@ -140,7 +143,7 @@ namespace PicDB.Layers_DA
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                log.Error(e);
                 throw new Exception(output, e);
             }
             finally
@@ -152,7 +155,7 @@ namespace PicDB.Layers_DA
         public virtual IEnumerable<ICameraModel> GetCameras()
         {
             var output = "Get all cameras";
-            Console.WriteLine(output);
+            log.Debug(output);
             var cameras = new List<ICameraModel>();
             try
             {
@@ -166,7 +169,7 @@ namespace PicDB.Layers_DA
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                log.Error(e);
                 throw new Exception(output, e);
             }
             finally
@@ -178,7 +181,7 @@ namespace PicDB.Layers_DA
         public virtual IPhotographerModel GetPhotographer(int ID)
         {
             var output = $"Get Photographer with ID: {ID}";
-            Console.WriteLine(output);
+            log.Debug(output);
             try
             {
                 Conn.Open();
@@ -194,7 +197,7 @@ namespace PicDB.Layers_DA
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                log.Error(e);
                 throw new Exception(output, e);
             }
             finally
@@ -206,7 +209,7 @@ namespace PicDB.Layers_DA
         public virtual IEnumerable<IPhotographerModel> GetPhotographers()
         {
             var output = "Get all photographers";
-            Console.WriteLine(output);
+            log.Debug(output);
             var photographers = new List<IPhotographerModel>();
             try
             {
@@ -221,7 +224,7 @@ namespace PicDB.Layers_DA
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                log.Error(e);
                 throw new Exception(output, e);
             }
             finally
@@ -233,7 +236,7 @@ namespace PicDB.Layers_DA
         public virtual IPictureModel GetPicture(int ID)
         {
             var output = $"Get picture with ID: {ID}";
-            Console.WriteLine(output);
+            log.Debug(output);
             try
             {
                 Conn.Open();
@@ -249,7 +252,7 @@ namespace PicDB.Layers_DA
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                log.Error(e);
                 throw new Exception(output, e);
             }
             finally
@@ -261,7 +264,7 @@ namespace PicDB.Layers_DA
         public virtual IEnumerable<IPictureModel> GetPictures()
         {
             var output = "Get all pictures";
-            Console.WriteLine(output);
+            log.Debug(output);
             var pictures = new List<IPictureModel>();
             try
             {
@@ -271,12 +274,12 @@ namespace PicDB.Layers_DA
                     while (reader.Read()) pictures.Add(DTOParser.ParsePictureModel(RecordToDictionary(reader)));
                 }
                 Conn.Close();
-                Console.WriteLine($"Returned {pictures.Count} pictures!");
+                log.Debug($"Returned {pictures.Count} pictures!");
                 return pictures;
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                log.Error(e);
                 throw new Exception(output, e);
             }
             finally
@@ -288,7 +291,7 @@ namespace PicDB.Layers_DA
         public virtual IEnumerable<IPictureModel> GetPictures(string namePart, IPhotographerModel photographerParts, IIPTCModel iptcParts, IEXIFModel exifParts)
         {
             var output = "Search Pictures";
-            Console.WriteLine(output);
+            log.Debug(output);
 
             var pictures = new List<IPictureModel>();
             try
@@ -352,7 +355,7 @@ namespace PicDB.Layers_DA
                 Conn.Open();
                 using (var reader = PS.GetSearchPictures.ExecuteReader())
                 {
-                    Console.WriteLine("FieldCount" + reader.FieldCount);
+                    log.Debug("FieldCount" + reader.FieldCount);
                     while (reader.Read())
                     {
                         pictures.Add(DTOParser.ParsePictureModel(RecordToDictionary(reader)));
@@ -363,7 +366,7 @@ namespace PicDB.Layers_DA
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                log.Error(e);
                 throw new Exception(output, e);
             }
             finally
@@ -376,7 +379,7 @@ namespace PicDB.Layers_DA
         {
             var output = $"Save picture with ID: {picture.ID}";
             if (picture == null) throw new ArgumentNullException(nameof(picture));
-            Console.WriteLine(output);
+            log.Debug(output);
             try
             {
                 Conn.Open();
@@ -388,7 +391,7 @@ namespace PicDB.Layers_DA
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                log.Error(e);
                 throw new Exception(output, e);
             }
             finally
@@ -401,7 +404,7 @@ namespace PicDB.Layers_DA
         {
             var output = $"Save photographer {photographer.LastName} {photographer.FirstName}, born on {photographer.BirthDay}";
             if (photographer == null) throw new ArgumentNullException(nameof(photographer));
-            Console.WriteLine(output);
+            log.Debug(output);
             try
             {
                 Conn.Open();
@@ -415,7 +418,7 @@ namespace PicDB.Layers_DA
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                log.Error(e);
                 throw new Exception(output, e);
             }
             finally
@@ -428,7 +431,7 @@ namespace PicDB.Layers_DA
         {
             var output = $"Save EXIF model for picture with ID: {exif.Pic_ID}";
             if (exif == null) throw new ArgumentNullException(nameof(exif));
-            Console.WriteLine(output);
+            log.Debug(output);
             try
             {
                 Conn.Open();
@@ -444,7 +447,7 @@ namespace PicDB.Layers_DA
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                log.Error(e);
                 throw new Exception(output, e);
             }
             finally
@@ -456,7 +459,7 @@ namespace PicDB.Layers_DA
         public void UpdatePicsCamera(int pic_ID, int cam_ID)
         {
             var output = $"Update picture {pic_ID} with camera {cam_ID}";
-            Console.WriteLine(output);
+            log.Debug(output);
             try
             {
                 Conn.Open();
@@ -467,7 +470,7 @@ namespace PicDB.Layers_DA
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                log.Error(e);
                 throw new Exception(output, e);
             }
             finally
@@ -479,7 +482,7 @@ namespace PicDB.Layers_DA
         public void UpdatePicsEXIF(int pic_ID, int exif_ID)
         {
             var output = $"Update picture {pic_ID} with exif {exif_ID}";
-            Console.WriteLine(output);
+            log.Debug(output);
             try
             {
                 Conn.Open();
@@ -490,7 +493,7 @@ namespace PicDB.Layers_DA
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                log.Error(e);
                 throw new Exception(output, e);
             }
             finally
@@ -502,7 +505,7 @@ namespace PicDB.Layers_DA
         public void UpdatePicsIPTC(int pic_ID, int iptc_ID)
         {
             var output = $"Update picture {pic_ID} with iptc {iptc_ID}";
-            Console.WriteLine(output);
+            log.Debug(output);
             try
             {
                 Conn.Open();
@@ -513,7 +516,7 @@ namespace PicDB.Layers_DA
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                log.Error(e);
                 throw new Exception(output, e);
             }
             finally
@@ -525,7 +528,7 @@ namespace PicDB.Layers_DA
         public void UpdatePicsPhotographer(int pic_ID, int pg_ID)
         {
             var output = $"Update picture {pic_ID} with photographer {pg_ID}";
-            Console.WriteLine(output);
+            log.Debug(output);
             try
             {
                 Conn.Open();
@@ -536,7 +539,7 @@ namespace PicDB.Layers_DA
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                log.Error(e);
                 throw new Exception(output, e);
             }
             finally
@@ -549,7 +552,7 @@ namespace PicDB.Layers_DA
         {
             var output = $"Update photographer with ID \"{photographer.ID}\": {photographer.LastName} {photographer.FirstName}, born on {photographer.BirthDay}";
             if (photographer == null) throw new ArgumentNullException(nameof(photographer));
-            Console.WriteLine(output);
+            log.Debug(output);
             try
             {
                 Conn.Open();
@@ -564,7 +567,7 @@ namespace PicDB.Layers_DA
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                log.Error(e);
                 throw new Exception(output, e);
             }
             finally
@@ -577,7 +580,7 @@ namespace PicDB.Layers_DA
         {
             var output = $"Update IPTC model for picture with ID: {iptc.Pic_ID}";
             if (iptc == null) throw new ArgumentNullException(nameof(iptc));
-            Console.WriteLine(output);
+            log.Debug(output);
             try
             {
                 Conn.Open();
@@ -592,7 +595,7 @@ namespace PicDB.Layers_DA
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                log.Error(e);
                 throw new Exception(output, e);
             }
             finally
@@ -605,7 +608,7 @@ namespace PicDB.Layers_DA
         {
             var output = $"Save IPTC model for picture with ID: {iptc.Pic_ID}";
             if (iptc == null) throw new ArgumentNullException(nameof(iptc));
-            Console.WriteLine(output);
+            log.Debug(output);
             try
             {
                 Conn.Open();
@@ -620,7 +623,7 @@ namespace PicDB.Layers_DA
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                log.Error(e);
                 throw new Exception(output, e);
             }
             finally
@@ -632,7 +635,7 @@ namespace PicDB.Layers_DA
         public virtual void AddPictureToPhotographer(int Pic_ID, int PG_ID)
         {
             var output = $"Add picture ID {Pic_ID} to photographer ID {PG_ID}";
-            Console.WriteLine(output);
+            log.Debug(output);
             try
             {
                 Conn.Open();
@@ -643,7 +646,7 @@ namespace PicDB.Layers_DA
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                log.Error(e);
                 throw new Exception(output, e);
             }
             finally
@@ -661,7 +664,7 @@ namespace PicDB.Layers_DA
         {
             var output = camera.ID <= 0 ? "Save new Camera" : $"Save Camera model for ID: {camera.ID}";
             if (camera == null) throw new ArgumentNullException(nameof(camera));
-            Console.WriteLine(output);
+            log.Debug(output);
             try
             {
                 Conn.Open();
@@ -677,7 +680,7 @@ namespace PicDB.Layers_DA
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                log.Error(e);
                 throw new Exception(output, e);
             }
             finally

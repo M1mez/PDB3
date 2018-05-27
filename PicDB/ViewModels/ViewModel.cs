@@ -13,7 +13,6 @@ namespace PicDB.ViewModels
         protected void OnPropertyChanged(string prop)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
-            Console.WriteLine("DA WAR WAS!!!" + prop);
         }
     }
 }

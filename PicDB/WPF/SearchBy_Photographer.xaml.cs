@@ -21,6 +21,8 @@ namespace PicDB.WPF
     /// </summary>
     public partial class SearchBy_Photographer : UserControl
     {
+        private static log4net.ILog log => FileInformation.Logger;
+
         public SearchBy_Photographer()
         {
             DataContextChanged += SearchBy_Photographer_DataContextChanged;
@@ -29,8 +31,7 @@ namespace PicDB.WPF
 
         private void SearchBy_Photographer_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            Console.WriteLine("newval" + 
-                e.NewValue.GetType().ToString());
+            log.Debug("newval" + e.NewValue.GetType());
         }
 
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)

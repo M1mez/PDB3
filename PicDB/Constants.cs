@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -14,43 +15,30 @@ namespace PicDB
 
         private static Random rnd = new Random();
         public static int GetRandomInt() => rnd.Next();
-        private static bool JohannesPC => 
-            (Environment.MachineName == "DESKTOP-DIN7DPC");
-        private static bool StefanPC => 
-            (Environment.MachineName == "STEFFE-PC"); // HIER
-        private static bool StefanLAPTOP => 
-            (Environment.MachineName == "STEFFE"); // HIER
+//        private static bool JohannesPC => 
+//            (Environment.MachineName == "DESKTOP-DIN7DPC");
+//        private static bool StefanPC => 
+//            (Environment.MachineName == "STEFFE-PC"); // HIER
+//        private static bool StefanLAPTOP => 
+//            (Environment.MachineName == "STEFFE"); // HIER
 
-        public static string ConnString
-        {
-            get
-            {
-                if (JohannesPC)
-                    return @"Server=DESKTOP-DIN7DPC\SQLEXPRESS; Database=PicDB; Trusted_Connection=True;";
-                if (StefanPC)
-                    return @"Server=STEFFE-PC\SQLEXPRESS; Database=PicDB; Trusted_Connection=True;"; // HIER
-                if (StefanLAPTOP)
-                    return "irgendeinPfadhalt"; // HIER
+//        public static string ConnString
+//        {
+//            get
+//            {
+//                if (JohannesPC)
+//                    return @"Server=DESKTOP-DIN7DPC\SQLEXPRESS; Database=PicDB; Trusted_Connection=True;";
+//                if (StefanPC)
+//                    return @"Server=STEFFE-PC\SQLEXPRESS; Database=PicDB; Trusted_Connection=True;"; // HIER
+//                if (StefanLAPTOP)
+//                    return "irgendeinPfadhalt"; // HIER
+//
+//                else return "";
+//            }
+//        }
 
-                else return "";
-            }
-        }
 
-
-        public static string DeployPath
-        {
-            get
-            {
-                if (JohannesPC)
-                    return @"O:\GIT\SWE2\SWE2-CS";
-                if (StefanPC)
-                    return @"C:\Users\Steffe\Desktop\FH\4.Semester\PDB3\";
-                if (StefanLAPTOP)
-                    return "PFADHALT"; // HIER
-
-                else return Environment.CurrentDirectory;
-            }
-        }
+        public static string DeployPath => ConfigurationSettings.AppSettings["DeployPathSteffePC"];
 
         /// <summary>
         /// returns Bool if the program is executed via UnitTest

@@ -23,6 +23,9 @@ namespace PicDB.ViewModels
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) =>
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
+        //logger
+        private static log4net.ILog log => FileInformation.Logger;
+
         //ctor
         public EXIFViewModel() { }
         public EXIFViewModel(IEXIFModel mdl)
@@ -67,7 +70,7 @@ namespace PicDB.ViewModels
             get => EXIFModel.ExposureProgram.ToString();
             set
             {
-                Console.WriteLine($"got {(int) (ExposurePrograms)Enum.Parse(typeof(ExposurePrograms), value)} from Exp Program");
+                log.Debug($"got {(int) (ExposurePrograms)Enum.Parse(typeof(ExposurePrograms), value)} from Exp Program");
                 EXIFModel.ExposureProgram = (ExposurePrograms) Enum.Parse(typeof(ExposurePrograms), value);
             }
         }
