@@ -179,6 +179,7 @@ namespace PicDB.Classes
             }
         }
 
+        //TODO please check this out!
         #region Camera
         public void Save(CameraViewModel cVm) => Save(cVm.CameraModel);
         public void Save(ICameraModel camera)
