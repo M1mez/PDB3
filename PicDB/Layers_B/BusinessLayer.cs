@@ -17,7 +17,8 @@ namespace PicDB.Classes
 {
     public class BusinessLayer : IBusinessLayer
     {
-        private static log4net.ILog log => FileInformation.Logger;
+        private static readonly log4net.ILog log =
+            log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         public BusinessLayer(bool isUnitTest = false)
         {
@@ -27,18 +28,6 @@ namespace PicDB.Classes
 
         private static DataAccessLayer _dal;
 
-        public void DeletePhotographer(int ID)
-        {
-            try
-            {
-                _dal.DeletePhotographer(ID);
-            }
-            catch (Exception e)
-            {
-                log.Error(e);
-                throw;
-            }
-        }
 
         public void DeletePicture(int ID)
         {
@@ -50,6 +39,7 @@ namespace PicDB.Classes
             catch (Exception e)
             {
                 log.Error(e);
+                Console.WriteLine(e);
                 throw;
             }
         }
@@ -68,6 +58,7 @@ namespace PicDB.Classes
             catch (Exception e)
             {
                 log.Error(e);
+                Console.WriteLine(e);
                 throw;
             }
         }
@@ -82,6 +73,7 @@ namespace PicDB.Classes
             catch (Exception e)
             {
                 log.Error(e);
+                Console.WriteLine(e);
                 throw;
             }
         }
@@ -95,6 +87,7 @@ namespace PicDB.Classes
             catch (Exception e)
             {
                 log.Error(e);
+                Console.WriteLine(e);
                 throw;
             }
         }
@@ -109,6 +102,7 @@ namespace PicDB.Classes
             catch (Exception e)
             {
                 log.Error(e);
+                Console.WriteLine(e);
                 throw;
             }
         }
@@ -123,6 +117,7 @@ namespace PicDB.Classes
             catch (Exception e)
             {
                 log.Error(e);
+                Console.WriteLine(e);
                 throw;
             }
         }
@@ -137,6 +132,7 @@ namespace PicDB.Classes
             catch (Exception e)
             {
                 log.Error(e);
+                Console.WriteLine(e);
                 throw;
             }
         }
@@ -150,6 +146,7 @@ namespace PicDB.Classes
             catch (Exception e)
             {
                 log.Error(e);
+                Console.WriteLine(e);
                 throw;
             }
         }
@@ -163,6 +160,7 @@ namespace PicDB.Classes
             catch (Exception e)
             {
                 log.Error(e);
+                Console.WriteLine(e);
                 throw;
             }
         }
@@ -176,23 +174,68 @@ namespace PicDB.Classes
             catch (Exception e)
             {
                 log.Error(e);
+                Console.WriteLine(e);
                 throw;
             }
         }
 
-        public void AssignPictureToPhotographer(int Pic_ID, int PH_ID)
+        //TODO please check this out!
+        #region Camera
+        public void Save(CameraViewModel cVm) => Save(cVm.CameraModel);
+        public void Save(ICameraModel camera)
         {
             try
             {
-                _dal.UpdatePicsPhotographer(Pic_ID, PH_ID);
+                _dal.Save(camera);
             }
             catch (Exception e)
             {
                 log.Error(e);
+                Console.WriteLine(e.Message);
                 throw;
             }
         }
+        public void Update(ICameraModel camera)
+        {
+            try
+            {
+                _dal.Update(camera);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
+        public void AssignPictureToCamera(int Pic_ID, int Cam_ID)
+        {
+            try
+            {
+                _dal.UpdatePicsCamera(Pic_ID, Cam_ID);
+            }
+            catch (Exception e)
+            {
+                log.Error(e);
+                Console.WriteLine(e);
+                throw;
+            }
+        }
+        public void DeleteCamera(int ID)
+        {
+            try
+            {
+                _dal.DeleteCamera(ID);
+            }
+            catch (Exception e)
+            {
+                log.Error(e);
+                Console.WriteLine(e);
+                throw;
+            }
+        }
+        #endregion
 
+        #region Photographer
         public void Save(PhotographerViewModel phVM) => Save(phVM.PhotographerModel);
         public void Save(IPhotographerModel photographer)
         {
@@ -202,10 +245,38 @@ namespace PicDB.Classes
             }
             catch (Exception e)
             {
-                log.Error(e.Message);
+                log.Error(e);
+                Console.WriteLine(e.Message);
                 throw;
             }
         }
+        public void AssignPictureToPhotographer(int Pic_ID, int PH_ID)
+        {
+            try
+            {
+                _dal.UpdatePicsPhotographer(Pic_ID, PH_ID);
+            }
+            catch (Exception e)
+            {
+                log.Error(e);
+                Console.WriteLine(e);
+                throw;
+            }
+        }
+        public void DeletePhotographer(int ID)
+        {
+            try
+            {
+                _dal.DeletePhotographer(ID);
+            }
+            catch (Exception e)
+            {
+                log.Error(e);
+                Console.WriteLine(e);
+                throw;
+            }
+        }
+        #endregion
 
         public void Update(IPhotographerModel photographer)
         {
@@ -215,7 +286,7 @@ namespace PicDB.Classes
             }
             catch (Exception e)
             {
-                log.Error(e);
+                Console.WriteLine(e);
                 throw;
             }
         }
@@ -253,8 +324,24 @@ namespace PicDB.Classes
             }
             catch (Exception e)
             {
-                log.Error(e.Message);
+                log.Error(e);
+                Console.WriteLine(e.Message);
+                
                 throw new Exception("Sync", e);
+            }
+        }
+
+        public void Save(IPTCModel iptc)
+        {
+            try
+            {
+                _dal.Save(iptc);
+            }
+            catch (Exception e)
+            {
+                log.Error(e);
+                Console.WriteLine(e.Message);
+                throw;
             }
         }
 
@@ -282,5 +369,6 @@ namespace PicDB.Classes
             exifList.ForEach(_dal.Save);
             //iptcList.ForEach(_dal.Save);
         }
+
     }
 }
