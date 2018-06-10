@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows;
 
 namespace PicDB
@@ -58,5 +59,10 @@ namespace PicDB
         public static string PdfPath => Path.Combine(DeployPath, "PDF");
         public static string PicPath => Path.Combine(DeployPath, "Pictures");
         public static string IcoPath => Path.Combine(DeployPath, "Icons");
+
+
+        #region Regex
+        public static Regex dec = new Regex("^[.][0-9]+$|^[0-9]*[.]{0,1}[0-9]*$");
+        #endregion
     }
 }

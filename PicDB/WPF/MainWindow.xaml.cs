@@ -17,6 +17,7 @@ using BIF.SWE2.Interfaces.Models;
 using System.IO;
 using System.Text;
 using System.Windows.Data;
+using System.Windows.Input;
 using Helper;
 using IronPdf;
 using PicDB.Properties;
@@ -30,6 +31,7 @@ namespace PicDB
     {
         MainWindowViewModel mwvmdl = new MainWindowViewModel();
         public PhotographerListViewModel PhotographerList { get; set; } = new PhotographerListViewModel();
+        public CameraListViewModel CameraList { get; set; } = new CameraListViewModel();
         private BusinessLayer BL;
         private static log4net.ILog log => FileInformation.Logger;
 
@@ -39,6 +41,7 @@ namespace PicDB
             BL.Sync();
             Watch();
             UpdatePhotographerList();
+            UpdateCameraList();
             UpdatePictureList(BL.GetPictures());
             
             Resources.Add("NamePart", NamePart);
@@ -102,14 +105,34 @@ namespace PicDB
                 MessageBoxEx.Show(ex.Message, "Save IPTC", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+        public void UpdatePhotographerList() => PhotographerList.Update(BL.GetPhotographers());
         #endregion
 
-        private void WriteIPTC(object sender, RoutedEventArgs e)
+        #region Camera
+        private void OpenNewCameraWindow(object sender, RoutedEventArgs e)
+        {
+            var menuItem = (MenuItem)sender;
+            Window cameraWindow = null;
+            if (menuItem.Name == "tabItem_AddCamera") cameraWindow = new CameraWindow_Add(this, BL);
+            else if (menuItem.Name == "tabItem_EditCamera")
+            {
+                if (CameraList.List.Count() == 0)
+                    MessageBox.Show("No Camera available to edit!", "Edit Camera", MessageBoxButton.OK,
+                        MessageBoxImage.Error);
+                else cameraWindow = new CameraWindow_Edit(this, BL);
+            }
+            cameraWindow?.ShowDialog();
+        }
+        private void AssignPictureToCamera(object sender, RoutedEventArgs e)
         {
             try
             {
-                var iptcVm = (IPTCViewModel)mwvmdl.CurrentPicture.IPTC;
-                mwvmdl.Bl.WriteIPTC(mwvmdl.CurrentPicture.FileName, iptcVm.IPTCModel);
+                int currentPicID = mwvmdl.CurrentPicture.ID;
+                BL.AssignPictureToCamera(currentPicID, CameraList.CurrentCamera.ID);
+
+                ((PictureViewModel)mwvmdl.CurrentPicture).Camera = CameraList.CurrentCamera;
+                int index = mwvmdl.List.List.ToList().FindIndex(pic => pic.ID == currentPicID);
+                ((PictureViewModel)mwvmdl.List.List.ElementAt(index)).Camera = CameraList.CurrentCamera;
             }
             catch (Exception ex)
             {
@@ -117,10 +140,23 @@ namespace PicDB
                 MessageBoxEx.Show(ex.Message, "Save IPTC", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+        public void UpdateCameraList() => CameraList.Update(BL.GetCameras());
+        #endregion
+        
 
         public void UpdatePictureList(IEnumerable<IPictureModel> newList = null)
         {
             if (newList == null) newList = BL.GetPictures();
+            foreach (var pic in newList)
+            {
+                var iptcList = new List<IPTCModel>();
+                if (pic.IPTC == null)
+                {
+                    IPTCModel newIptc = (IPTCModel) BL.ExtractIPTC(pic.FileName);
+                    newIptc.Pic_ID = pic.ID;
+                    BL.Save(newIptc);
+                }
+            }
             var newPictureListViewModel = new PictureListViewModel(newList);
             foreach (var pic in newPictureListViewModel.List)
             {
@@ -131,8 +167,7 @@ namespace PicDB
             mwvmdl.List = newPictureListViewModel;
 
         }
-        public void UpdatePhotographerList() => PhotographerList.Update(BL.GetPhotographers());
-
+        
         #region FileWatcher
         private void Watch()
         {
@@ -145,7 +180,10 @@ namespace PicDB
             watcher.Renamed += OnRenamed;
             watcher.EnableRaisingEvents = true;
         }
-        private void OnRenamed(object sender, RenamedEventArgs e) => log.Debug($"File: {e.OldFullPath} renamed to {e.FullPath}");
+        private void OnRenamed(object sender, RenamedEventArgs e)
+        {
+            log.Debug($"File: {e.OldFullPath} renamed to {e.FullPath}");
+        }
         private void OnChanged(object sender, FileSystemEventArgs e)
         {
             Application.Current.Dispatcher.Invoke(delegate
@@ -157,9 +195,19 @@ namespace PicDB
         }
         #endregion
 
+        private void WriteIPTC(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var iptcVm = (IPTCViewModel)mwvmdl.CurrentPicture.IPTC;
+                mwvmdl.Bl.WriteIPTC(mwvmdl.CurrentPicture.FileName, iptcVm.IPTCModel);
+            }
+            catch (Exception ex)
+            {
+                MessageBoxEx.Show(ex.Message, "Save IPTC", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
         private void PrintPdf(object sender, RoutedEventArgs e) => FileInformation.PrintPdf(mwvmdl.CurrentPicture);
-
-
         private void Quit(object sender, RoutedEventArgs e) { Close(); }
     }
 }

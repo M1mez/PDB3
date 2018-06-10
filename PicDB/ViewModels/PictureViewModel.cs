@@ -59,6 +59,16 @@ namespace PicDB.ViewModels
             }
         }
 
-        public ICameraViewModel Camera => new CameraViewModel(PictureModel.Camera);
+        private ICameraViewModel _camera;
+        public ICameraViewModel Camera
+        {
+            get => _camera;
+            set
+            {
+                if (_camera == value) return;
+                _camera = value;
+                OnPropertyChanged();
+            }
+        }
     }
 }

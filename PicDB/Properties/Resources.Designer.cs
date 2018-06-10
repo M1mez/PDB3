@@ -171,6 +171,15 @@ namespace PicDB.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to DELETE FROM Cameras WHERE Cam_ID = @ID;.
+        /// </summary>
+        public static string DeleteCamera_ID {
+            get {
+                return ResourceManager.GetString("DeleteCamera_ID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to DELETE FROM Photographers WHERE PG_ID = @ID;.
         /// </summary>
         public static string DeletePhotographer_ID {
@@ -209,8 +218,8 @@ namespace PicDB.Properties {
         ///	
         ///		AND (@PG_PG_ID IS NULL OR @PG_PG_ID = PG.PG_ID)
         ///		AND (@PG_Birthday IS NULL OR @PG_Birthday = PG.BirthDay)
-        ///		AND (@PG_FirstName IS NULL OR @PG_FirstName = PG.FirstName)
-        ///		AND (@PG_LastName IS NULL  [rest of string was truncated]&quot;;.
+        ///		AND (@PG_FirstName IS NULL OR PG.FirstName LIKE &apos;%&apos; + @PG_FirstName + &apos;%&apos;)
+        ///		AND (@PG_La [rest of string was truncated]&quot;;.
         /// </summary>
         public static string Get_Search_Pictures {
             get {
@@ -346,14 +355,8 @@ namespace PicDB.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to IF (@Cam_ID IS NULL) BEGIN
-        ///INSERT INTO Cameras (Producer, Make_Cam, BoughtOn, Notes_Cam, ISOLimitGood, ISOLimitAcceptable)
-        ///VALUES (@Producer, @Make, @BoughtOn, @Notes, @ISOLimitGood, @ISOLimitAcceptable);
-        ///END ELSE BEGIN
-        ///UPDATE Cameras
-        ///SET Producer = @Producer, Make_Cam = @Make, BoughtOn = @BoughtOn, Notes_Cam = @Notes, ISOLimitGood = @ISOLimitGood, ISOLimitAcceptable = @ISOLimitAcceptable
-        ///WHERE Cameras.Cam_ID = @Cam_ID;
-        ///END.
+        ///   Looks up a localized string similar to INSERT INTO Cameras (Producer, Make_Cam, BoughtOn, Notes_Cam, ISOLimitGood, ISOLimitAcceptable)
+        ///VALUES (@Producer, @Make, @BoughtOn, @Notes, @ISOLimitGood, @ISOLimitAcceptable);.
         /// </summary>
         public static string Save_Camera {
             get {
@@ -422,8 +425,8 @@ namespace PicDB.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to INSERT INTO Pictures (FileName, FK_Cam_ID) 
-        ///VALUES (@FileName, @Cam_ID);.
+        ///   Looks up a localized string similar to INSERT INTO Pictures (FileName) 
+        ///VALUES (@FileName);.
         /// </summary>
         public static string Save_Picture {
             get {
@@ -534,6 +537,22 @@ namespace PicDB.Properties {
         public static string table_Photographer {
             get {
                 return ResourceManager.GetString("table_Photographer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to UPDATE Cameras
+        ///SET Producer = @Producer, 
+        ///	Make_Cam = @Make, 
+        ///	BoughtOn = @BoughtOn, 
+        ///	Notes_Cam = @Notes, 
+        ///	ISOLimitGood = @ISOLimitGood, 
+        ///	ISOLimitAcceptable = @ISOLimitAcceptable
+        ///WHERE Cameras.Cam_ID = @Cam_ID;.
+        /// </summary>
+        public static string Update_Camera {
+            get {
+                return ResourceManager.GetString("Update_Camera", resourceCulture);
             }
         }
         

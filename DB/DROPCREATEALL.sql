@@ -162,10 +162,6 @@ PRIMARY KEY CLUSTERED
 ) ON [PRIMARY]
 GO
 
-ALTER TABLE [dbo].[Pictures]  WITH CHECK ADD FOREIGN KEY([FK_Cam_ID])
-REFERENCES [dbo].[Cameras] ([Cam_ID])
-GO
-
 ALTER TABLE [dbo].[Pictures]  WITH CHECK ADD FOREIGN KEY([FK_EXIF_ID])
 REFERENCES [dbo].[EXIF] ([EXIF_ID])
 GO
@@ -303,5 +299,29 @@ BEGIN
 END 
 GO
 
-ALTER TABLE [dbo].[Pictures] ENABLE TRIGGER [t_DeletedPicture]
+ALTER TABLE [dbo].[Photographers] ENABLE TRIGGER [t_DeletedPhotographer]
 GO
+
+CREATE TRIGGER [dbo].[t_DeletedCamera] ON [dbo].[Cameras]
+AFTER DELETE
+AS
+BEGIN
+	DECLARE @Cam_ID INT;
+	DECLARE deleteCursor CURSOR FOR
+	SELECT Cam_ID FROM deleted as DEL
+
+	OPEN deleteCursor
+	FETCH NEXT FROM deleteCursor INTO @Cam_ID;
+	WHILE @@FETCH_STATUS = 0
+		BEGIN
+			UPDATE Pictures SET Pictures.FK_Cam_ID = NULL WHERE Pictures.FK_Cam_ID = @Cam_ID;
+			FETCH NEXT FROM deleteCursor INTO @Cam_ID;
+		END
+	CLOSE deleteCursor;
+	DEALLOCATE deleteCursor;
+END 
+GO
+
+ALTER TABLE [dbo].[Cameras] ENABLE TRIGGER [t_DeletedCamera]
+GO
+

@@ -13,7 +13,7 @@ using PicDB.Models;
 
 namespace PicDB.ViewModels
 {
-    class CameraViewModel : ICameraViewModel, INotifyPropertyChanged
+    public class CameraViewModel : ICameraViewModel, INotifyPropertyChanged
     {
         //notify
         public event PropertyChangedEventHandler PropertyChanged;
@@ -101,6 +101,8 @@ namespace PicDB.ViewModels
         }
 
         public int NumberOfPictures { get; }
+
+        public string ProducerMake => $"{Producer} {Make}";
 
         //validity check
         public bool IsValidProducer => (!string.IsNullOrEmpty(Producer));

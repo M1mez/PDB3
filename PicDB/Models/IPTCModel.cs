@@ -8,7 +8,7 @@ using System.Text;
 
 namespace PicDB.Models
 {
-    class IPTCModel : IIPTCModel
+    public class IPTCModel : IIPTCModel
     {
         public IPTCModel()
         { }

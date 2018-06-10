@@ -1,0 +1,106 @@
+﻿<Window 
+    WindowStartupLocation="CenterOwner"
+    x:Class="PicDB.CameraWindow_Edit"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vmdl="clr-namespace:PicDB.ViewModels"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    x:Name="main"
+    
+    TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+    TextElement.FontWeight="Regular"
+    TextElement.FontSize="13"
+    Title="Add Camera"
+    TextOptions.TextFormattingMode="Ideal"
+    TextOptions.TextRenderingMode="Auto"
+    Background="{DynamicResource MaterialDesignPaper}"
+    FontFamily="{DynamicResource MaterialDesignFont}" 
+    ResizeMode="NoResize"
+    Width="320"
+    SizeToContent="Height">
+
+    <Window.Resources>
+        <Style TargetType="DatePickerTextBox">
+            <Setter Property="IsReadOnly" Value="True"></Setter>
+            <Setter Property="Focusable" Value="False"></Setter>
+        </Style>
+    </Window.Resources>
+
+    <StackPanel DataContext="{Binding ElementName=main, Path=CameraList}">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="3*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="10*"/>
+                <RowDefinition Height="10*"/>
+                <RowDefinition Height="10*"/>
+                <RowDefinition Height="10*"/>
+                <RowDefinition Height="10*"/>
+                <RowDefinition Height="10*"/>
+                <RowDefinition Height="10*"/>
+                <RowDefinition Height="10*"/>
+                <RowDefinition Height="10*"/>
+                <RowDefinition Height="10*"/>
+            </Grid.RowDefinitions>
+            <Label Grid.Column="0" Grid.Row="0">Producer</Label>
+            <TextBox Name ="_Producer" Text="{Binding CurrentCamera.Producer, UpdateSourceTrigger=PropertyChanged}" 
+                     TextWrapping="Wrap" 
+                     Grid.Column="1" Grid.Row="0"/>
+
+            <Label Grid.Row="1" Grid.Column="0">Model</Label>
+            <TextBox Name ="_Make" Text="{Binding CurrentCamera.Make, UpdateSourceTrigger=PropertyChanged}"
+                     TextWrapping="Wrap" 
+                     Grid.Column="1" Grid.Row="1"/>
+
+            <Label Grid.Row="2" Grid.Column="0">Buy date</Label>
+            <DatePicker Name="_BoughtOn" Text="{Binding CurrentCamera.BoughtOn, UpdateSourceTrigger=PropertyChanged}"
+                        Focusable="False" Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
+                        Grid.Column="1" Grid.Row="2"/>
+
+                <Label Grid.Row="3" Grid.Column="0">Notes</Label>
+            <TextBox Name="_Notes" Text="{Binding CurrentCamera.Notes, UpdateSourceTrigger=PropertyChanged}"
+                     TextWrapping="Wrap" AcceptsReturn="True" AcceptsTab="True" SpellCheck.IsEnabled="True" 
+                     Grid.Column="1" Grid.Row="3"/>
+
+            <Label Grid.Row="4" Grid.Column="0">ISO Limit Acceptable</Label>
+            <TextBox Name="_ISOLimitAcceptable" Text="{Binding CurrentCamera.ISOLimitAcceptable, UpdateSourceTrigger=PropertyChanged}"
+                     TextWrapping="Wrap" 
+                     AcceptsReturn="True" AcceptsTab="True" 
+                     SpellCheck.IsEnabled="True" PreviewTextInput="TextBox_PreviewTextInputDecimal"
+                     Grid.Column="1" Grid.Row="4"/>
+
+            <Label Grid.Row="5" Grid.Column="0">ISO Limit Good</Label>
+            <TextBox Name="_ISOLimitGood" Text="{Binding CurrentCamera.ISOLimitGood, UpdateSourceTrigger=PropertyChanged}"
+                     TextWrapping="Wrap" 
+                     AcceptsReturn="True" AcceptsTab="True" 
+                     SpellCheck.IsEnabled="True"  PreviewTextInput="TextBox_PreviewTextInputDecimal"
+                     Grid.Column="1" Grid.Row="5"/>
+
+            <ComboBox Name="_Cameras"  HorizontalAlignment="Center"
+                      materialDesign:HintAssist.Hint="Cameras"
+                      ItemsSource="{Binding ObsList, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                      DisplayMemberPath="ProducerMake"
+                      SelectedItem="{Binding CurrentCamera, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      Foreground="{DynamicResource PrimaryHueLightBrush}"
+                      Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2">
+            </ComboBox>
+
+            <Label Grid.Row="7" Grid.Column="0" />
+            <Grid Grid.Row="8" Grid.ColumnSpan="2" Grid.Column="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0" Height="Auto"  Click="EditCamera" VerticalAlignment="Top"
+                        Background="ForestGreen">Submit Changes</Button>
+                <Button Grid.Column="1" Height="Auto"  Click="DeleteCamera" VerticalAlignment="Top" 
+                        Background="Red">Delete</Button>
+            </Grid>
+            <Label Grid.Row="9" Grid.Column="0" Height="5"/>
+
+        </Grid>
+    </StackPanel>
+</Window>
