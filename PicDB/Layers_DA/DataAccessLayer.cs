@@ -43,6 +43,10 @@ namespace PicDB.Layers_DA
 
         public DataAccessLayer() => PS = new PreparedStatements();
 
+        /// <summary>
+        /// Deletes the Photographer with the given ID from the Database.
+        /// </summary>
+        /// <param name="ID"></param>
         public virtual void DeletePhotographer(int ID)
         {
             var output = $"Delete Photographer with ID {ID}";
