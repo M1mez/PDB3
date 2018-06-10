@@ -1,0 +1,5 @@
+var class_material_design_themes_1_1_wpf_1_1_converters_1_1_circular_progress_bar_1_1_rotate_transform_converter =
+[
+    [ "Convert", "class_material_design_themes_1_1_wpf_1_1_converters_1_1_circular_progress_bar_1_1_rotate_transform_converter.html#ada1b1c94476410b621f16fcf2a029fb5", null ],
+    [ "ConvertBack", "class_material_design_themes_1_1_wpf_1_1_converters_1_1_circular_progress_bar_1_1_rotate_transform_converter.html#ac29b267bf01779b35327a2f897a6290d", null ]
+];

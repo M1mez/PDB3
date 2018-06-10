@@ -14,6 +14,9 @@ using PicDB.Properties;
 
 namespace PicDB.Layers_DA
 {
+    /// <summary>
+    /// DataAccessLayer Class
+    /// </summary>
     partial class DataAccessLayer : IDataAccessLayer
     {
         //TODO: Konfigurationsfile
@@ -37,16 +40,18 @@ namespace PicDB.Layers_DA
         }
 
         /// <summary>
-        /// 
+        /// Update the DirPics list
         /// </summary>
         public void RefreshGallery() => _dirPics = Directory.GetFiles(Constants.PicPath, "*.jpg").Select(Path.GetFileName).ToList();
 
         public DataAccessLayer() => PS = new PreparedStatements();
 
         /// <summary>
-        /// Deletes the Photographer with the given ID from the Database.
+        /// Deletes the photographer with the given ID from the database.
         /// </summary>
         /// <param name="ID"></param>
+        /// <exception cref="Exception">Thrown when an error with the database connection occures</exception>
+        /// <exception cref="Exception">Thrown when wrong ID is given</exception>
         public virtual void DeletePhotographer(int ID)
         {
             var output = $"Delete Photographer with ID {ID}";
@@ -71,7 +76,12 @@ namespace PicDB.Layers_DA
                 Conn.Close();
             }
         }
-
+        /// <summary>
+        /// Deletes the picture with the given ID from the database.
+        /// </summary>
+        /// <param name="ID"></param>
+        /// <exception cref="Exception">Thrown when an error with the database connection occures</exception>
+        /// <exception cref="Exception">Thrown when wrong ID is given</exception>
         public virtual void DeletePicture(int ID)
         {
             var output = $"Delete Picture with ID: {ID}";
@@ -95,7 +105,12 @@ namespace PicDB.Layers_DA
                 Conn.Close();
             }
         }
-
+        /// <summary>
+        /// Deletes the picture with the fiven filename from the database.
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <exception cref="Exception">Thrown when an error with the database connection occures</exception>
+        /// <exception cref="Exception">Thrown when wrong filename is given</exception>
         public void DeletePicture(string fileName)
         {
             var output = $"DeletePicture with FileName: {fileName}";
@@ -118,7 +133,10 @@ namespace PicDB.Layers_DA
                 Conn.Close();
             }
         }
-
+        /// <summary>
+        /// Deletes all pictures in the given list from the database.
+        /// </summary>
+        /// <param name="delList"></param>
         public void DeletePictures(List<string> delList)
         {
             delList.ForEach(DeletePicture);
@@ -127,6 +145,13 @@ namespace PicDB.Layers_DA
         private static KeyValuePair<string, string> KeyVal(string key, string val) =>
             new KeyValuePair<string, string>(key, val);
 
+        /// <summary>
+        /// Returns the camera with the given ID from database.
+        /// </summary>
+        /// <param name="ID"></param>
+        /// <returns>Returns a CameraModel</returns>
+        /// <exception cref="Exception">Thrown when an error with the database connection occures</exception>
+        /// <exception cref="Exception">Thrown when wrong ID is given</exception>
         public virtual ICameraModel GetCamera(int ID)
         {
             var output = $"Get Camera with ID: {ID}";
@@ -155,7 +180,11 @@ namespace PicDB.Layers_DA
                 Conn.Close();
             }
         }
-
+        /// <summary>
+        /// Returns all cameras from the database as an ICameraModel and write them into an IEnumerable.
+        /// </summary>
+        /// <returns>IEnumerable</returns>
+        /// <exception cref="Exception">Thrown when an error with the database connection occures</exception>
         public virtual IEnumerable<ICameraModel> GetCameras()
         {
             var output = "Get all cameras";
@@ -181,7 +210,13 @@ namespace PicDB.Layers_DA
                 Conn.Close();
             }
         }
-
+        /// <summary>
+        /// Returns a IPhotographerModel with the given ID from database.
+        /// </summary>
+        /// <param name="ID"></param>
+        /// <returns>IPhotographerModel</returns>
+        /// <exception cref="Exception">Thrown when an error with the database connection occures</exception>
+        /// <exception cref="Exception">Thrown when wrong ID is given</exception>
         public virtual IPhotographerModel GetPhotographer(int ID)
         {
             var output = $"Get Photographer with ID: {ID}";
@@ -210,6 +245,11 @@ namespace PicDB.Layers_DA
             }
         }
 
+        /// <summary>
+        /// Returns all photographers as an IPhotographerModel and writes them into an IEnumerable.
+        /// </summary>
+        /// <returns>IEnumerable</returns>
+        /// <exception cref="Exception">Thrown when an error with the database connection occures</exception>
         public virtual IEnumerable<IPhotographerModel> GetPhotographers()
         {
             var output = "Get all photographers";
@@ -236,7 +276,13 @@ namespace PicDB.Layers_DA
                 Conn.Close();
             }
         }
-
+        /// <summary>
+        /// Returns a pictures with given ID from database.
+        /// </summary>
+        /// <param name="ID"></param>
+        /// <returns><see cref="IPictureModel"/></returns>
+        /// <exception cref="Exception">Thrown when an error with the database connection occures</exception>
+        /// <exception cref="Exception">Thrown when wrong ID is given</exception>
         public virtual IPictureModel GetPicture(int ID)
         {
             var output = $"Get picture with ID: {ID}";
@@ -265,6 +311,11 @@ namespace PicDB.Layers_DA
             }
         }
 
+        /// <summary>
+        /// Returns all pictures as an IPictureModel and writes them into an IEnumerable.
+        /// </summary>
+        /// <returns>IEnumerable</returns>
+        /// <exception cref="Exception">Thrown when an error with the database connection occures</exception>
         public virtual IEnumerable<IPictureModel> GetPictures()
         {
             var output = "Get all pictures";
@@ -292,6 +343,15 @@ namespace PicDB.Layers_DA
             }
         }
 
+        /// <summary>
+        /// Returns picture(s) as an IPictureModel from the database based on the search parameters and write(s) it/them into an IEnumerable.
+        /// </summary>
+        /// <param name="namePart"></param>
+        /// <param name="photographerParts"></param>
+        /// <param name="iptcParts"></param>
+        /// <param name="exifParts"></param>
+        /// <returns>IEnumerable</returns>
+        /// <exception cref="Exception">Thrown when an error with the database connection occures</exception>
         public virtual IEnumerable<IPictureModel> GetPictures(string namePart, IPhotographerModel photographerParts, IIPTCModel iptcParts, IEXIFModel exifParts)
         {
             var output = "Search Pictures";
@@ -379,6 +439,12 @@ namespace PicDB.Layers_DA
             }
         }
 
+        /// <summary>
+        /// Saves the given picture into the database.
+        /// </summary>
+        /// <param name="picture"></param>
+        /// <exception cref="Exception">Thrown when an error with the database connection occures</exception>
+        /// <exception cref="ArgumentNullException">Thrown when an empty <see cref="IPictureModel"/> was given</exception>
         public virtual void Save(IPictureModel picture)
         {
             var output = $"Save picture with ID: {picture.ID}";
@@ -404,6 +470,12 @@ namespace PicDB.Layers_DA
             }
         }
 
+        /// <summary>
+        /// Saves the given photographer into the database.
+        /// </summary>
+        /// <param name="photographer"></param>
+        /// <exception cref="Exception">Thrown when an error with the database connection occurs</exception>
+        /// <exception cref="ArgumentNullException">Thrown when an empty <see cref="IPhotographerModel"/> was given</exception>
         public virtual void Save(IPhotographerModel photographer)
         {
             var output = $"Save photographer {photographer.LastName} {photographer.FirstName}, born on {photographer.BirthDay}";
@@ -431,6 +503,12 @@ namespace PicDB.Layers_DA
             }
         }
 
+        /// <summary>
+        /// Saves the given EXIF information to the associated picture into the database
+        /// </summary>
+        /// <param name="exif"></param>
+        /// <exception cref="Exception">Thrown when an error with the database connection occurs</exception>
+        /// <exception cref="ArgumentNullException">Thrown when an empty <see cref="EXIFModel"/> was given</exception>
         public void Save(EXIFModel exif)
         {
             var output = $"Save EXIF model for picture with ID: {exif.Pic_ID}";
@@ -460,6 +538,12 @@ namespace PicDB.Layers_DA
             }
         }
 
+        /// <summary>
+        /// Updates the picture with the given <param name="pic_ID"/> with the given <param name="cam_ID"/>
+        /// </summary>
+        /// <param name="pic_ID"></param>
+        /// <param name="cam_ID"></param>
+        /// <exception cref="Exception">Thrown when an error with the database connection occurs</exception>
         public void UpdatePicsCamera(int pic_ID, int cam_ID)
         {
             var output = $"Update picture {pic_ID} with camera {cam_ID}";
@@ -483,6 +567,11 @@ namespace PicDB.Layers_DA
             }
         }
 
+        /// <summary>
+        /// Updates the picture with the given <param name="pic_ID"/> with the given <param name="exif_ID"/>
+        /// </summary>
+        /// <param name="pic_ID"></param>
+        /// <param name="exif_ID"></param>
         public void UpdatePicsEXIF(int pic_ID, int exif_ID)
         {
             var output = $"Update picture {pic_ID} with exif {exif_ID}";

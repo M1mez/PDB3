@@ -1,0 +1,25 @@
+var class_b_i_f_1_1_s_w_e2_1_1_unit_tests_1_1_u_e_b3 =
+[
+    [ "bl_should_return_Camera_by_ID", "class_b_i_f_1_1_s_w_e2_1_1_unit_tests_1_1_u_e_b3.html#a60a8e64aba06cb99735e434700534868", null ],
+    [ "bl_should_return_Cameras", "class_b_i_f_1_1_s_w_e2_1_1_unit_tests_1_1_u_e_b3.html#a7e1f7cc69024159503854ae962eef88a", null ],
+    [ "bl_should_return_Photographer_by_ID", "class_b_i_f_1_1_s_w_e2_1_1_unit_tests_1_1_u_e_b3.html#aff3adb2b10473814e91d7ac42bc3b8d1", null ],
+    [ "bl_should_return_Photographers", "class_b_i_f_1_1_s_w_e2_1_1_unit_tests_1_1_u_e_b3.html#a2cdb3baae76cdaa49264ebb564ad285c", null ],
+    [ "bl_should_return_Picture_by_ID", "class_b_i_f_1_1_s_w_e2_1_1_unit_tests_1_1_u_e_b3.html#a3d4c9c918af6d2f7fa881399dcf7cf27", null ],
+    [ "bl_should_return_Pictures", "class_b_i_f_1_1_s_w_e2_1_1_unit_tests_1_1_u_e_b3.html#a249677014adeec719e90d19f64fd635c", null ],
+    [ "bl_should_simulate_EXIF_extraction", "class_b_i_f_1_1_s_w_e2_1_1_unit_tests_1_1_u_e_b3.html#aba4285e6ead9d8ad0da7a3d45ff7c271", null ],
+    [ "HelloWorld", "class_b_i_f_1_1_s_w_e2_1_1_unit_tests_1_1_u_e_b3.html#a70cea443ecfd2e2370ce250308ea7a93", null ],
+    [ "mock_dal_should_delete_Photographer", "class_b_i_f_1_1_s_w_e2_1_1_unit_tests_1_1_u_e_b3.html#a07b8ff345f5404ed970a101b2bbfa3e2", null ],
+    [ "mock_dal_should_delete_Picture", "class_b_i_f_1_1_s_w_e2_1_1_unit_tests_1_1_u_e_b3.html#ac1b32d42e6bf9be3fed72dbf1f6c1ea9", null ],
+    [ "mock_dal_should_return_fake_Camera_data", "class_b_i_f_1_1_s_w_e2_1_1_unit_tests_1_1_u_e_b3.html#a123eda6ead1937ea04b63722d396a5fd", null ],
+    [ "mock_dal_should_return_fake_Camera_data_by_ID", "class_b_i_f_1_1_s_w_e2_1_1_unit_tests_1_1_u_e_b3.html#a8ab414a3e30023b5ac650be245e9afea", null ],
+    [ "mock_dal_should_return_fake_Photographers_data", "class_b_i_f_1_1_s_w_e2_1_1_unit_tests_1_1_u_e_b3.html#aea3c66d5475e714b97fb72506be2edcd", null ],
+    [ "mock_dal_should_return_fake_Photographers_data_by_ID", "class_b_i_f_1_1_s_w_e2_1_1_unit_tests_1_1_u_e_b3.html#a0d0e70dea0eb94595abc90f1017c0722", null ],
+    [ "mock_dal_should_return_fake_Pictures_data", "class_b_i_f_1_1_s_w_e2_1_1_unit_tests_1_1_u_e_b3.html#a8c459b8657f5809e8a2a7306ddfb538b", null ],
+    [ "mock_dal_should_return_fake_Pictures_data_by_ID", "class_b_i_f_1_1_s_w_e2_1_1_unit_tests_1_1_u_e_b3.html#acb07192f982111e1257e9ed67b82c433", null ],
+    [ "SearchViewModel_should_reflect_active_search", "class_b_i_f_1_1_s_w_e2_1_1_unit_tests_1_1_u_e_b3.html#a4578e7b120e5069870c614033bf115ad", null ],
+    [ "SearchViewModel_should_reflect_active_search_2", "class_b_i_f_1_1_s_w_e2_1_1_unit_tests_1_1_u_e_b3.html#aa58779750acbb399152094606224ccf3", null ],
+    [ "SearchViewModel_should_reflect_search", "class_b_i_f_1_1_s_w_e2_1_1_unit_tests_1_1_u_e_b3.html#aa68bf7593e645c4f93b0199088ceaea8", null ],
+    [ "SearchViewModel_should_reflect_search_2", "class_b_i_f_1_1_s_w_e2_1_1_unit_tests_1_1_u_e_b3.html#a9d5253dc00a7f5167993df110e0d3f7b", null ],
+    [ "Setup", "class_b_i_f_1_1_s_w_e2_1_1_unit_tests_1_1_u_e_b3.html#a7e1430eb77db0380674fbb88678eefa9", null ],
+    [ "TestSetup", "class_b_i_f_1_1_s_w_e2_1_1_unit_tests_1_1_u_e_b3.html#a0b14e2f1b4b84221b04927942641028a", null ]
+];

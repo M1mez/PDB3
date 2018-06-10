@@ -1,0 +1,6 @@
+var searchData=
+[
+  ['click',['Click',['../namespace_material_design_themes_1_1_wpf.html#ad51a6b0571cab3f9b83c1be65f78a0b9a316853cc3718335f11c048e33b9be98a',1,'MaterialDesignThemes::Wpf']]],
+  ['closewindoworlayoutbranch',['CloseWindowOrLayoutBranch',['../namespace_dragablz.html#ad4a2d8dbbe98563cb71be886868cc5d4a512967656659f3e0e369dbe77da28cd9',1,'Dragablz.CloseWindowOrLayoutBranch()'],['../namespace_dragablz.html#ad4a2d8dbbe98563cb71be886868cc5d4a512967656659f3e0e369dbe77da28cd9',1,'Dragablz.CloseWindowOrLayoutBranch()'],['../namespace_dragablz.html#ad4a2d8dbbe98563cb71be886868cc5d4a512967656659f3e0e369dbe77da28cd9',1,'Dragablz.CloseWindowOrLayoutBranch()'],['../namespace_dragablz.html#ad4a2d8dbbe98563cb71be886868cc5d4a512967656659f3e0e369dbe77da28cd9',1,'Dragablz.CloseWindowOrLayoutBranch()']]],
+  ['collapse',['Collapse',['../namespace_dragablz.html#af092cd9b1b346fb723efff6ade5a6c68a2b31634e3cfef1bfdd7d0d2cdfdc3f9d',1,'Dragablz.Collapse()'],['../namespace_dragablz.html#af092cd9b1b346fb723efff6ade5a6c68a2b31634e3cfef1bfdd7d0d2cdfdc3f9d',1,'Dragablz.Collapse()'],['../namespace_dragablz.html#af092cd9b1b346fb723efff6ade5a6c68a2b31634e3cfef1bfdd7d0d2cdfdc3f9d',1,'Dragablz.Collapse()'],['../namespace_dragablz.html#af092cd9b1b346fb723efff6ade5a6c68a2b31634e3cfef1bfdd7d0d2cdfdc3f9d',1,'Dragablz.Collapse()']]]
+];
